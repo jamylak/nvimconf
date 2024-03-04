@@ -89,6 +89,9 @@ P.S. You can delete this when you're done too. It's your config now! :)
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
+vim.o.guicursor = ''
+-- -- https://www.reddit.com/r/neovim/comments/12cc7gq/startup_screen_disappears_immediately_after_using/
+vim.opt.shortmess:append { I = true }
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -99,7 +102,7 @@ vim.g.maplocalleader = ' '
 vim.opt.number = true
 -- You can also add relative line numbers, for help with jumping.
 --  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -110,7 +113,7 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -179,10 +182,27 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  Use CTRL+<hjkl> to switch between windows
 --
 --  See `:help wincmd` for a list of all window commands
+
+-- Other bindings
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set('n', '<leader>cd', function()
+  local file_path = vim.fn.expand '%:p'
+  local dir_path = vim.fn.fnamemodify(file_path, ':h')
+  vim.api.nvim_set_current_dir(dir_path)
+end, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+
+-- Useful keymaps
+vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
+vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
+
+-- Custom command to start a new terminal with tmux attach
+vim.api.nvim_create_user_command('TA', function()
+  vim.cmd 'new | term tmux a'
+end, {})
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -315,7 +335,7 @@ require('lazy').setup {
       -- Useful for getting pretty icons, but requires special font.
       --  If you already have a Nerd Font, or terminal set up with fallback fonts
       --  you can enable this
-      -- { 'nvim-tree/nvim-web-devicons' }
+      { 'nvim-tree/nvim-web-devicons' },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -343,11 +363,11 @@ require('lazy').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -364,7 +384,9 @@ require('lazy').setup {
       local builtin = require 'telescope.builtin'
       vim.keymap.set('n', '<leader>sh', builtin.help_tags, { desc = '[S]earch [H]elp' })
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
-      vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
+      vim.keymap.set('n', '<leader>sf', function()
+        builtin.find_files { no_ignore = false }
+      end, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
@@ -531,9 +553,9 @@ require('lazy').setup {
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -585,6 +607,7 @@ require('lazy').setup {
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
+        'clangd',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
@@ -652,7 +675,7 @@ require('lazy').setup {
       --    you can use this plugin to help you. It even has snippets
       --    for various frameworks/libraries/etc. but you will have to
       --    set up the ones that are useful for you.
-      -- 'rafamadriz/friendly-snippets',
+      'rafamadriz/friendly-snippets',
     },
     config = function()
       -- See `:help cmp`
@@ -708,6 +731,7 @@ require('lazy').setup {
           end, { 'i', 's' }),
         },
         sources = {
+          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -781,11 +805,69 @@ require('lazy').setup {
 
       ---@diagnostic disable-next-line: missing-fields
       require('nvim-treesitter.configs').setup {
-        ensure_installed = { 'bash', 'c', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
+        ensure_installed = { 'bash', 'c', 'python', 'html', 'lua', 'markdown', 'vim', 'vimdoc' },
         -- Autoinstall languages that are not installed
         auto_install = true,
         highlight = { enable = true },
         indent = { enable = true },
+        incremental_selection = { enable = true },
+        textobjects = {
+          select = {
+            enable = true,
+            lookahead = true,
+            keymaps = {
+              ['ak'] = { query = '@block.outer', desc = 'around block' },
+              ['ik'] = { query = '@block.inner', desc = 'inside block' },
+              ['ac'] = { query = '@class.outer', desc = 'around class' },
+              ['ic'] = { query = '@class.inner', desc = 'inside class' },
+              ['a?'] = { query = '@conditional.outer', desc = 'around conditional' },
+              ['i?'] = { query = '@conditional.inner', desc = 'inside conditional' },
+              ['af'] = { query = '@function.outer', desc = 'around function ' },
+              ['if'] = { query = '@function.inner', desc = 'inside function ' },
+              ['al'] = { query = '@loop.outer', desc = 'around loop' },
+              ['il'] = { query = '@loop.inner', desc = 'inside loop' },
+              ['aa'] = { query = '@parameter.outer', desc = 'around argument' },
+              ['ia'] = { query = '@parameter.inner', desc = 'inside argument' },
+            },
+          },
+          move = {
+            enable = true,
+            set_jumps = true,
+            goto_next_start = {
+              [']k'] = { query = '@block.outer', desc = 'Next block start' },
+              [']f'] = { query = '@function.outer', desc = 'Next function start' },
+              [']a'] = { query = '@parameter.inner', desc = 'Next argument start' },
+            },
+            goto_next_end = {
+              [']K'] = { query = '@block.outer', desc = 'Next block end' },
+              [']F'] = { query = '@function.outer', desc = 'Next function end' },
+              [']A'] = { query = '@parameter.inner', desc = 'Next argument end' },
+            },
+            goto_previous_start = {
+              ['[k'] = { query = '@block.outer', desc = 'Previous block start' },
+              ['[f'] = { query = '@function.outer', desc = 'Previous function start' },
+              ['[a'] = { query = '@parameter.inner', desc = 'Previous argument start' },
+            },
+            goto_previous_end = {
+              ['[K'] = { query = '@block.outer', desc = 'Previous block end' },
+              ['[F'] = { query = '@function.outer', desc = 'Previous function end' },
+              ['[A'] = { query = '@parameter.inner', desc = 'Previous argument end' },
+            },
+          },
+          swap = {
+            enable = true,
+            swap_next = {
+              ['>K'] = { query = '@block.outer', desc = 'Swap next block' },
+              ['>F'] = { query = '@function.outer', desc = 'Swap next function' },
+              ['>A'] = { query = '@parameter.inner', desc = 'Swap next argument' },
+            },
+            swap_previous = {
+              ['<K'] = { query = '@block.outer', desc = 'Swap previous block' },
+              ['<F'] = { query = '@function.outer', desc = 'Swap previous function' },
+              ['<A'] = { query = '@parameter.inner', desc = 'Swap previous argument' },
+            },
+          },
+        },
       }
 
       -- There are additional nvim-treesitter modules that you can use to interact
@@ -814,7 +896,7 @@ require('lazy').setup {
   --
   --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
+  { import = 'custom.plugins' },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
