@@ -390,7 +390,7 @@ require('lazy').setup {
       end, { desc = '[F]ind [F]iles' })
       vim.keymap.set('n', '<leader>fF', function()
         builtin.find_files { no_ignore = true, hidden = true }
-      end, { desc = '[F]ind [F]iles' })
+      end, { desc = '[F]ind All [F]iles' })
       vim.keymap.set('n', '<leader>ft', builtin.builtin, { desc = '[F]ind [T]elescope' })
       vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[F]ind current [W]ord' })
       vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
@@ -403,7 +403,12 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
       vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>b', builtin.buffers, { desc = '[ ] Find existing [b]uffers' })
+      vim.keymap.set('n', '<leader>fb', function()
+        builtin.find_files {
+          prompt_title = 'Find Projects',
+          cwd = os.getenv 'PROJECTS_DIR',
+        }
+      end, { desc = '[ ] Find projects' })
       vim.keymap.set('n', '<leader>`', builtin.marks, { desc = 'Find marks' })
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -426,7 +431,7 @@ require('lazy').setup {
       -- Shortcut for searching your neovim configuration files
       vim.keymap.set('n', '<leader>fn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[F]ind  [N]eovim Files' })
+      end, { desc = '[F]ind [N]eovim Files' })
 
       local function searchDotFiles()
         builtin.find_files {
