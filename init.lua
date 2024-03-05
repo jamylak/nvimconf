@@ -848,6 +848,11 @@ require('lazy').setup {
 
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter-textobjects',
+      'nvim-treesitter/nvim-treesitter-context',
+      'nvim-treesitter/playground',
+    },
     build = ':TSUpdate',
     config = function()
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -870,6 +875,8 @@ require('lazy').setup {
               ['ik'] = { query = '@block.inner', desc = 'inside block' },
               ['ac'] = { query = '@class.outer', desc = 'around class' },
               ['ic'] = { query = '@class.inner', desc = 'inside class' },
+              ['ae'] = { query = '@call.outer', desc = 'around call expression' },
+              ['ie'] = { query = '@call.inner', desc = 'inside call expression' },
               ['a?'] = { query = '@conditional.outer', desc = 'around conditional' },
               ['i?'] = { query = '@conditional.inner', desc = 'inside conditional' },
               ['af'] = { query = '@function.outer', desc = 'around function ' },
@@ -884,22 +891,25 @@ require('lazy').setup {
             enable = true,
             set_jumps = true,
             goto_next_start = {
+              [']c'] = { query = '@class.outer', desc = 'Next class start' },
               [']k'] = { query = '@block.outer', desc = 'Next block start' },
               [']f'] = { query = '@function.outer', desc = 'Next function start' },
               [']a'] = { query = '@parameter.inner', desc = 'Next argument start' },
             },
             goto_next_end = {
+              [']C'] = { query = '@class.outer', desc = 'Next class end' },
               [']K'] = { query = '@block.outer', desc = 'Next block end' },
               [']F'] = { query = '@function.outer', desc = 'Next function end' },
               [']A'] = { query = '@parameter.inner', desc = 'Next argument end' },
             },
             goto_previous_start = {
+              ['[c'] = { query = '@class.outer', desc = 'Previous class start' },
               ['[k'] = { query = '@block.outer', desc = 'Previous block start' },
               ['[f'] = { query = '@function.outer', desc = 'Previous function start' },
               ['[a'] = { query = '@parameter.inner', desc = 'Previous argument start' },
             },
             goto_previous_end = {
-              ['[K'] = { query = '@block.outer', desc = 'Previous block end' },
+              ['[C'] = { query = '@class.outer', desc = 'Previous class end' },
               ['[F'] = { query = '@function.outer', desc = 'Previous function end' },
               ['[A'] = { query = '@parameter.inner', desc = 'Previous argument end' },
             },
@@ -907,11 +917,13 @@ require('lazy').setup {
           swap = {
             enable = true,
             swap_next = {
+              ['>C'] = { query = '@class.outer', desc = 'Swap next class' },
               ['>K'] = { query = '@block.outer', desc = 'Swap next block' },
               ['>F'] = { query = '@function.outer', desc = 'Swap next function' },
               ['>A'] = { query = '@parameter.inner', desc = 'Swap next argument' },
             },
             swap_previous = {
+              ['<C'] = { query = '@class.outer', desc = 'Swap previous class' },
               ['<K'] = { query = '@block.outer', desc = 'Swap previous block' },
               ['<F'] = { query = '@function.outer', desc = 'Swap previous function' },
               ['<A'] = { query = '@parameter.inner', desc = 'Swap previous argument' },
@@ -919,6 +931,12 @@ require('lazy').setup {
           },
         },
       }
+
+      local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
+      -- Repeat movement with ; and ,
+      -- ensure ; goes forward and , goes backward regardless of the last direction
+      vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move_next)
+      vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_previous)
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
