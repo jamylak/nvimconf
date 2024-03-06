@@ -172,6 +172,13 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
+-- Faster window switching keymap alias
+vim.keymap.set('n', '<leader><leader>', '<C-W><C-W>', { desc = 'Switch Window', noremap = true, silent = true })
+
+-- System clipboard
+vim.api.nvim_set_keymap('n', '<leader>y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
+
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -184,10 +191,10 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
 --  See `:help wincmd` for a list of all window commands
 
 -- Other bindings
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+-- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+-- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+-- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+-- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
 vim.keymap.set('n', '<leader>cd', function()
   local file_path = vim.fn.expand '%:p'
@@ -299,7 +306,7 @@ require('lazy').setup {
         ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
         ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
         ['<leader>f'] = { name = '[F]ind', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
+        ['<leader>s'] = { name = '[S]ymbols', _ = 'which_key_ignore' },
       }
     end,
   },
@@ -405,7 +412,7 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
       vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
       vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
-      vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
       vim.keymap.set('n', '<leader>fb', function()
         builtin.find_files {
           prompt_title = 'Find Projects',
@@ -541,11 +548,11 @@ require('lazy').setup {
 
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
-          map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
+          map('<leader>sd', require('telescope.builtin').lsp_document_symbols, '[S]ymbols: [D]ocument ')
 
           -- Fuzzy find all the symbols in your current workspace
           --  Similar to document symbols, except searches over your whole project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>sw', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[S]ymbols: [W]orkspace')
 
           -- Rename the variable under your cursor
           --  Most Language Servers support renaming across files, etc.
@@ -700,9 +707,6 @@ require('lazy').setup {
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
       {
-        -- nvim-cmp source for neovim Lua API
-        -- so that things like vim.keymap.set, etc. are autocompleted
-        'hrsh7th/cmp-nvim-lua',
         'L3MON4D3/LuaSnip',
         build = (function()
           -- Build Step is needed for regex support in snippets
@@ -720,7 +724,10 @@ require('lazy').setup {
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-path',
+      'hrsh7th/cmp-buffer',
 
       -- If you want to add a bunch of pre-configured snippets,
       --    you can use this plugin to help you. It even has snippets
@@ -733,6 +740,28 @@ require('lazy').setup {
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
+
+      -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+      -- cmp.setup.cmdline(':', {
+      --   mapping = cmp.mapping.preset.cmdline(),
+      --   sources = cmp.config.sources(
+      --     {
+      --     { name = 'path' },
+      --   },
+      --     {
+      --     { name = 'cmdline' },
+      --   }
+      --   ),
+      -- })
+      -- could reenable this if i can disable tab and only tab native
+      -- or find way eg. start typing ne and it has good completion
+
+      -- cmp.setup.cmdline('/', {
+      --   mapping = cmp.mapping.preset.cmdline(),
+      --   sources = {
+      --     { name = 'buffer' },
+      --   },
+      -- })
 
       cmp.setup {
         snippet = {
@@ -747,35 +776,40 @@ require('lazy').setup {
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
-          -- Select the [n]ext item
-          ['<C-n>'] = cmp.mapping.select_next_item(),
-          -- Select the [p]revious item
-          ['<C-p>'] = cmp.mapping.select_prev_item(),
-
-          -- Accept ([y]es) the completion.
-          --  This will auto-import if your LSP supports it.
-          --  This will expand snippets if the LSP sent a snippet.
-          ['<C-y>'] = cmp.mapping.confirm { select = true },
-
+          -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          -- ['<S-m>'] = cmp.mapping.select_next_item(),
+          -- ['<S-n>'] = cmp.mapping.select_prev_item(),
+          -- ['<S-j>'] = cmp.mapping.confirm { select = true },
+          -- -- Manually trigger a completion from nvim-cmp.
+          -- --  Generally you don't need this, because nvim-cmp will display
+          -- --  completions whenever it has completion options available.
+          -- ['<S-Space>'] = cmp.mapping.complete {},
+          -- ['<S-k>'] = cmp.mapping(function()
+          --   if luasnip.expand_or_locally_jumpable() then
+          --     luasnip.expand_or_jump()
+          --   end
+          -- end, { 'i', 's' }),
+          -- ['<S-o>'] = cmp.mapping(function()
+          --   if luasnip.locally_jumpable(-1) then
+          --     luasnip.jump(-1)
+          --   end
+          -- end, { 'i', 's' }),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-m>'] = cmp.mapping.select_next_item(),
+          ['<C-n>'] = cmp.mapping.select_prev_item(),
+          ['<C-j>'] = cmp.mapping.confirm { select = true },
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
           ['<C-Space>'] = cmp.mapping.complete {},
-
-          -- Think of <c-l> as moving to the right of your snippet expansion.
-          --  So if you have a snippet that's like:
-          --  function $name($args)
-          --    $body
-          --  end
-          --
-          -- <c-l> will move you to the right of each of the expansion locations.
-          -- <c-h> is similar, except moving you backwards.
-          ['<C-l>'] = cmp.mapping(function()
+          ['<C-k>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
             end
           end, { 'i', 's' }),
-          ['<C-h>'] = cmp.mapping(function()
+          ['<C-o>'] = cmp.mapping(function()
             if luasnip.locally_jumpable(-1) then
               luasnip.jump(-1)
             end
@@ -783,7 +817,6 @@ require('lazy').setup {
         },
         sources = {
           { name = 'nvim_lua' },
-          { name = 'copilot' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
@@ -880,6 +913,10 @@ require('lazy').setup {
               ['ic'] = { query = '@class.inner', desc = 'inside class' },
               ['ae'] = { query = '@call.outer', desc = 'around call expression' },
               ['ie'] = { query = '@call.inner', desc = 'inside call expression' },
+              -- TODO: figure out how to do this since it's not builtin
+              -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#overriding-or-extending-textobjects
+              -- ['av'] = { query = '@value.outer', desc = 'around value' },
+              -- ['iv'] = { query = '@value.inner', desc = 'inside value' },
               ['a?'] = { query = '@conditional.outer', desc = 'around conditional' },
               ['i?'] = { query = '@conditional.inner', desc = 'inside conditional' },
               ['af'] = { query = '@function.outer', desc = 'around function ' },
@@ -940,6 +977,12 @@ require('lazy').setup {
       -- vim way: ; goes to the direction you were moving.
       vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move)
       vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_opposite)
+
+      -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
+      vim.keymap.set({ 'n', 'x', 'o' }, 'f', ts_repeat_move.builtin_f)
+      vim.keymap.set({ 'n', 'x', 'o' }, 'F', ts_repeat_move.builtin_F)
+      vim.keymap.set({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t)
+      vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T)
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
