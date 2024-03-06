@@ -395,6 +395,9 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[F]ind current [W]ord' })
       vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
       vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
+      vim.keymap.set('n', '<leader>fp', function()
+        builtin.live_grep { prompt_title = 'Find words in projects', cwd = os.getenv 'PROJECTS_DIR' }
+      end, { desc = '[F]ind Words in Projects' })
       vim.keymap.set('n', '<leader>fr', builtin.registers, { desc = '[F]ind [R]egisters' })
       vim.keymap.set('n', '<leader>fW', function()
         builtin.live_grep { no_ignore = true, hidden = true }
@@ -934,9 +937,9 @@ require('lazy').setup {
 
       local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
       -- Repeat movement with ; and ,
-      -- ensure ; goes forward and , goes backward regardless of the last direction
-      vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move_next)
-      vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_previous)
+      -- vim way: ; goes to the direction you were moving.
+      vim.keymap.set({ 'n', 'x', 'o' }, ';', ts_repeat_move.repeat_last_move)
+      vim.keymap.set({ 'n', 'x', 'o' }, ',', ts_repeat_move.repeat_last_move_opposite)
 
       -- There are additional nvim-treesitter modules that you can use to interact
       -- with nvim-treesitter. You should go explore a few and see what interests you:
