@@ -163,7 +163,8 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gg', ':Neogit<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gn', ':Neogit<CR>', { noremap = true })
+vim.keymap.set('n', '<leader>gg', ':term lazygit<CR>i', { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -172,6 +173,32 @@ vim.keymap.set('n', '<leader>gg', ':Neogit<CR>', { noremap = true })
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', 'ko', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+-- Redo without CTRL
+vim.keymap.set('n', 'rr', '<C-r>', { desc = 'Redo without CTRL', silent = true })
+-- Faster ctrl-r without having to move finger weirdly
+vim.keymap.set('t', '90', '<C-r>', { desc = 'Faster ctrl-r' })
+-- vim.keymap.set('t', '0i0', '<C-r>', { desc = 'Faster ctrl-r' })
+vim.keymap.set('t', 'oio', '<C-r>', { desc = 'Faster ctrl-r' })
+-- vim.keymap.set('t', '9090', function()
+--   print 'hi'
+--   local ctrlr = vim.api.nvim_replace_termcodes('<C-r>', true, true, true)
+--   vim.api.nvim_feedkeys('i' .. ctrlr, false)
+-- end, { desc = 'Faster ctrl-r' })
+-- vim.keymap.set('t', '9090', 'i<C-r>', { desc = 'Faster ctrl-r' })
+
+vim.keymap.set('n', '90w', '<C-W><C-W>', { desc = 'Faster ctrl-w w' })
+vim.keymap.set('i', '90w', '<C-W>', { desc = 'Faster ctrl-w' })
+vim.keymap.set('t', '90w', '<C-W>', { desc = 'Faster ctrl-w' })
+
+vim.keymap.set('n', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('i', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('t', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('n', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('i', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('t', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
 
 -- Faster window switching keymap alias
 vim.keymap.set('n', '<leader><leader>', '<C-W><C-W>', { desc = 'Switch Window', noremap = true, silent = true })
@@ -179,7 +206,13 @@ vim.keymap.set('n', '<leader><leader>', '<C-W><C-W>', { desc = 'Switch Window', 
 -- System clipboard
 vim.api.nvim_set_keymap('n', '<leader>y', '"+y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap('v', '<S-y>', '"+y', { noremap = true, silent = true })
 
+-- Faster write
+vim.api.nvim_set_keymap('n', '<leader>w', ':w<cr>', { silent = true })
+
+-- Faster comment line
+vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
 -- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
@@ -196,12 +229,13 @@ vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true
 -- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 -- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 -- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
-vim.keymap.set('n', '<leader>cd', function()
+local changeDir = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
   vim.api.nvim_set_current_dir(dir_path)
-end, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+end
+vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
@@ -210,6 +244,12 @@ vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
 -- Custom command to start a new terminal with tmux attach
 vim.api.nvim_create_user_command('TA', function()
   vim.cmd 'new | term tmux a'
+end, {})
+vim.api.nvim_create_user_command('WQ', function()
+  vim.cmd 'wq!'
+end, {})
+vim.api.nvim_create_user_command('Q', function()
+  vim.cmd 'q!'
 end, {})
 
 -- [[ Basic Autocommands ]]
@@ -413,6 +453,8 @@ require('lazy').setup {
       vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
       vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
       vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
+      vim.keymap.set('n', '<leader>fj', builtin.oldfiles, { desc = '[F]ind Recent' })
+      vim.keymap.set('n', '<leader>o', builtin.oldfiles, { desc = '[F]ind Recent' })
       vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
       vim.keymap.set('n', '<leader>fb', function()
         builtin.find_files {
@@ -743,6 +785,16 @@ require('lazy').setup {
       local luasnip = require 'luasnip'
       luasnip.config.setup {}
 
+      local completeOrJump = cmp.mapping(function(fallback)
+        if cmp.visible() then
+          cmp.confirm { select = true }
+        elseif luasnip.expand_or_locally_jumpable() then
+          luasnip.expand_or_jump()
+        else
+          fallback()
+        end
+      end, { 'i', 's' })
+
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       -- cmp.setup.cmdline(':', {
       --   mapping = cmp.mapping.preset.cmdline(),
@@ -799,16 +851,16 @@ require('lazy').setup {
           -- end, { 'i', 's' }),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<Tab>'] = cmp.mapping.select_next_item(),
+          -- ['nknk'] = cmp.mapping.select_next_item(),
+          -- ['njnj'] = cmp.mapping.select_next_item(),
+          ['jiji'] = cmp.mapping.select_next_item(),
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_prev_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
-          ['<C-j>'] = cmp.mapping(function()
-            if cmp.visible() then
-              cmp.confirm { select = true }
-            elseif luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
-          end, { 'i', 's' }),
+          ['<CR>'] = completeOrJump,
+          -- ['<S-CR>'] = completeOrJump,
+          ['<C-j>'] = completeOrJump,
           -- ['<C-j>'] = cmp.mapping.confirm { select = true },
           -- ['<C-j>'] = cmp.mapping(function()
           --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-y>', true, true, true), 'i', false)
