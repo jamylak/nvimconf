@@ -1,89 +1,3 @@
---[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
-      - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
-
-Kickstart Guide:
-
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know how the Neovim basics, you can skip this step)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not sure exactly what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or neovim features used in kickstart.
-
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your nvim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -130,7 +44,7 @@ vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 250
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -174,12 +88,13 @@ vim.keymap.set('n', '<leader>gg', ':term lazygit<CR>i', { noremap = true })
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', 'ko', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', 'ji', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- Redo without CTRL
 vim.keymap.set('n', 'rr', '<C-r>', { desc = 'Redo without CTRL', silent = true })
 -- Faster ctrl-r without having to move finger weirdly
 vim.keymap.set('t', '90', '<C-r>', { desc = 'Faster ctrl-r' })
+vim.keymap.set('t', '89', '<C-t>', { desc = 'Faster ctrl-t' })
 -- vim.keymap.set('t', '0i0', '<C-r>', { desc = 'Faster ctrl-r' })
 vim.keymap.set('t', 'oio', '<C-r>', { desc = 'Faster ctrl-r' })
 -- vim.keymap.set('t', '9090', function()
@@ -225,10 +140,10 @@ vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
 --  See `:help wincmd` for a list of all window commands
 
 -- Other bindings
--- vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
--- vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
--- vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
--- vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
+vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
+vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
+vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 local changeDir = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
@@ -240,6 +155,30 @@ vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irect
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
 vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
+
+-- Custom key remapping
+-- Function to run when entering insert mode
+local function onInsertEnter()
+  -- Set Caps Lock to Escape
+  vim.fn.jobstart('karabiner_cli --select-profile viminsert', { detach = true })
+end
+
+-- Function to run when leaving insert mode
+local function onInsertLeave()
+  -- Set caps lock to control
+  vim.fn.jobstart('karabiner_cli --select-profile default', { detach = true })
+end
+
+-- Set up autocommands
+vim.api.nvim_create_autocmd('InsertEnter', {
+  pattern = '*',
+  callback = onInsertEnter,
+})
+
+vim.api.nvim_create_autocmd('InsertLeave', {
+  pattern = '*',
+  callback = onInsertLeave,
+})
 
 -- Custom command to start a new terminal with tmux attach
 vim.api.nvim_create_user_command('TA', function()
@@ -357,165 +296,7 @@ require('lazy').setup {
   -- The dependencies are proper plugin specifications as well - anything
   -- you do for a plugin at the top level, you can do for a dependency.
   --
-  -- Use the `dependencies` key to specify the dependencies of a particular plugin
-
-  { -- Fuzzy Finder (files, lsp, etc)
-    'nvim-telescope/telescope.nvim',
-    event = 'VimEnter',
-    branch = '0.1.x',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      { -- If encountering errors, see telescope-fzf-native README for install instructions
-        'nvim-telescope/telescope-fzf-native.nvim',
-
-        -- `build` is used to run some command when the plugin is installed/updated.
-        -- This is only run then, not every time Neovim starts up.
-        build = 'make',
-
-        -- `cond` is a condition used to determine whether this plugin should be
-        -- installed and loaded.
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
-      },
-      { 'nvim-telescope/telescope-ui-select.nvim' },
-
-      -- Useful for getting pretty icons, but requires special font.
-      --  If you already have a Nerd Font, or terminal set up with fallback fonts
-      --  you can enable this
-      { 'nvim-tree/nvim-web-devicons' },
-    },
-    config = function()
-      -- Telescope is a fuzzy finder that comes with a lot of different things that
-      -- it can fuzzy find! It's more than just a "file finder", it can search
-      -- many different aspects of Neovim, your workspace, LSP, and more!
-      --
-      -- The easiest way to use telescope, is to start by doing something like:
-      --  :Telescope help_tags
-      --
-      -- After running this command, a window will open up and you're able to
-      -- type in the prompt window. You'll see a list of help_tags options and
-      -- a corresponding preview of the help.
-      --
-      -- Two important keymaps to use while in telescope are:
-      --  - Insert mode: <c-/>
-      --  - Normal mode: ?
-      --
-      -- This opens a window that shows you all of the keymaps for the current
-      -- telescope picker. This is really useful to discover what Telescope can
-      -- do as well as how to actually do it!
-
-      -- [[ Configure Telescope ]]
-      -- See `:help telescope` and `:help telescope.setup()`
-      require('telescope').setup {
-        -- You can put your default mappings / updates / etc. in here
-        --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        defaults = {
-          mappings = {
-            i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-          },
-        },
-        -- pickers = {}
-        extensions = {
-          ['ui-select'] = {
-            require('telescope.themes').get_dropdown(),
-          },
-        },
-      }
-
-      -- Enable telescope extensions, if they are installed
-      pcall(require('telescope').load_extension, 'fzf')
-      pcall(require('telescope').load_extension, 'ui-select')
-
-      -- See `:help telescope.builtin`
-      local builtin = require 'telescope.builtin'
-      vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
-      vim.keymap.set('n', '<leader>fm', builtin.man_pages, { desc = '[F]ind [M]an' })
-      vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
-      vim.keymap.set('n', '<leader>ff', function()
-        builtin.find_files { no_ignore = false }
-      end, { desc = '[F]ind [F]iles' })
-      vim.keymap.set('n', '<leader>fF', function()
-        builtin.find_files { no_ignore = true, hidden = true }
-      end, { desc = '[F]ind All [F]iles' })
-      vim.keymap.set('n', '<leader>ft', builtin.builtin, { desc = '[F]ind [T]elescope' })
-      vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[F]ind current [W]ord' })
-      vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
-      vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
-      vim.keymap.set('n', '<leader>fp', function()
-        builtin.live_grep { prompt_title = 'Find words in projects', cwd = os.getenv 'PROJECTS_DIR' }
-      end, { desc = '[F]ind Words in Projects' })
-      vim.keymap.set('n', '<leader>fr', builtin.registers, { desc = '[F]ind [R]egisters' })
-      vim.keymap.set('n', '<leader>fW', function()
-        builtin.live_grep { no_ignore = true, hidden = true }
-      end, { desc = 'Find words in all files' })
-      vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
-      vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
-      vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
-      vim.keymap.set('n', '<leader>fj', builtin.oldfiles, { desc = '[F]ind Recent' })
-      vim.keymap.set('n', '<leader>o', builtin.oldfiles, { desc = '[F]ind Recent' })
-      vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
-      vim.keymap.set('n', '<leader>fb', function()
-        builtin.find_files {
-          prompt_title = 'Find Projects',
-          cwd = os.getenv 'PROJECTS_DIR',
-        }
-      end, { desc = '[ ] Find projects' })
-      vim.keymap.set('n', '<leader>`', builtin.marks, { desc = 'Find marks' })
-      -- Slightly advanced example of overriding default behavior and theme
-      vim.keymap.set('n', '<leader>/', function()
-        -- You can pass additional configuration to telescope to change theme, layout, etc.
-        builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-          winblend = 10,
-          previewer = false,
-        })
-      end, { desc = '[/] Fuzzily search in current buffer' })
-
-      -- Also possible to pass additional configuration options.
-      --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>f/', function()
-        builtin.live_grep {
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-        }
-      end, { desc = '[F]ind [/] in Open Files' })
-
-      -- Shortcut for searching your neovim configuration files
-      vim.keymap.set('n', '<leader>fn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[F]ind [N]eovim Files' })
-
-      local function searchDotFiles()
-        builtin.find_files {
-          find_command = {
-            'fd',
-            '^\\.',
-            os.getenv 'HOME',
-            '-d',
-            '1',
-            '-t',
-            'f',
-            '-H',
-          },
-        }
-      end
-      local function searchConfigFiles()
-        builtin.find_files {
-          find_command = {
-            'fd',
-            '.',
-            os.getenv 'HOME' .. '/.config/',
-            '-H',
-          },
-        }
-      end
-
-      -- Key mapping to invoke the custom search function
-      vim.keymap.set('n', '<leader>f.', searchDotFiles, { desc = '[F]ind [.] files' })
-      vim.keymap.set('n', '<leader>f,', searchConfigFiles, { desc = '[F]ind Config files' })
-    end,
-  },
+  -- Use the `dependencies` key to specify the dependencies of a particular plugin,
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -592,6 +373,7 @@ require('lazy').setup {
           -- Fuzzy find all the symbols in your current document.
           --  Symbols are things like variables, functions, types, etc.
           map('<leader>sd', require('telescope.builtin').lsp_document_symbols, '[S]ymbols: [D]ocument ')
+          map('<leader>dn', require('telescope.builtin').lsp_document_symbols, '[S]ymbols: [D]ocument ')
 
           -- Fuzzy find all the symbols in your current workspace
           --  Similar to document symbols, except searches over your whole project.
@@ -746,7 +528,7 @@ require('lazy').setup {
 
   { -- Autocompletion
     'hrsh7th/nvim-cmp',
-    -- event = { "InsertEnter", "CmdlineEnter" },
+    -- event = { 'InsertEnter', 'CmdlineEnter' },
     event = 'InsertEnter',
     dependencies = {
       -- Snippet Engine & its associated nvim-cmp source
@@ -762,6 +544,8 @@ require('lazy').setup {
           return 'make install_jsregexp'
         end)(),
       },
+
+      'onsails/lspkind.nvim',
       'saadparwaiz1/cmp_luasnip',
 
       -- Adds other completion capabilities.
@@ -783,6 +567,7 @@ require('lazy').setup {
       -- See `:help cmp`
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require 'lspkind'
       luasnip.config.setup {}
 
       local completeOrJump = cmp.mapping(function(fallback)
@@ -798,14 +583,11 @@ require('lazy').setup {
       -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
       -- cmp.setup.cmdline(':', {
       --   mapping = cmp.mapping.preset.cmdline(),
-      --   sources = cmp.config.sources(
-      --     {
-      --     { name = 'path' },
-      --   },
-      --     {
-      --     { name = 'cmdline' },
-      --   }
-      --   ),
+      --   sources = cmp.config.sources({
+      --     { name = 'cmdline', keyword_length = 5 },
+      --   }, {
+      --     { name = 'path', keyword_length = 5 },
+      --   }),
       -- })
       -- could reenable this if i can disable tab and only tab native
       -- or find way eg. start typing ne and it has good completion
@@ -818,6 +600,24 @@ require('lazy').setup {
       -- })
 
       cmp.setup {
+
+        formatting = {
+          format = lspkind.cmp_format {
+            mode = 'symbol', -- show only symbol annotations
+            maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
+            -- can also be a function to dynamically calculate max width such as
+            -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
+            ellipsis_char = '...', -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
+            show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+
+            -- The function below will be called before any actual modifications from lspkind
+            -- so that you can provide more controls on popup customization. (See [#30](https://github.com/onsails/lspkind-nvim/pull/30))
+            -- before = function (entry, vim_item)
+            --   return vim_item
+            -- end
+          },
+        },
+
         snippet = {
           expand = function(args)
             luasnip.lsp_expand(args.body)
@@ -854,9 +654,16 @@ require('lazy').setup {
           ['<Tab>'] = cmp.mapping.select_next_item(),
           -- ['nknk'] = cmp.mapping.select_next_item(),
           -- ['njnj'] = cmp.mapping.select_next_item(),
-          ['jiji'] = cmp.mapping.select_next_item(),
+          -- ['jiji'] = cmp.mapping(function(fallback)
+          --   if cmp.visible() then
+          --     cmp.mapping.select_next_item()
+          --   else
+          --     fallback()
+          --   end
+          -- end),
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_prev_item(),
+          ['<S-Tab>'] = cmp.mapping.select_next_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           ['<CR>'] = completeOrJump,
           -- ['<S-CR>'] = completeOrJump,
@@ -976,6 +783,8 @@ require('lazy').setup {
               ['ic'] = { query = '@class.inner', desc = 'inside class' },
               ['ae'] = { query = '@call.outer', desc = 'around call expression' },
               ['ie'] = { query = '@call.inner', desc = 'inside call expression' },
+              ['au'] = { query = '@field_expresion.outer', desc = 'around field expression' },
+              ['iu'] = { query = '@field_expresion.outer', desc = 'inside field expression' },
               -- TODO: figure out how to do this since it's not builtin
               -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#overriding-or-extending-textobjects
               -- ['av'] = { query = '@value.outer', desc = 'around value' },
@@ -1053,6 +862,21 @@ require('lazy').setup {
       --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
       --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
       --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+      --
+      require('treesitter-context').setup {
+        -- enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+        max_lines = 3, -- How many lines the window should span. Values <= 0 mean no limit.
+        -- min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+        -- line_numbers = true,
+        -- multiline_threshold = 20, -- Maximum number of lines to show for a single context
+        -- trim_scope = 'outer', -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+        -- mode = 'cursor', -- Line used to calculate context. Choices: 'cursor', 'topline'
+        -- -- Separator between context and content. Should be a single character string, like '-'.
+        -- -- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+        -- separator = nil,
+        -- zindex = 20, -- The Z-index of the context window
+        -- on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+      }
     end,
   },
 
