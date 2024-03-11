@@ -12,6 +12,10 @@ vim.opt.shortmess:append { I = true }
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
+-- Set tabstop and shiftwidth as 4
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, for help with jumping.
@@ -44,7 +48,7 @@ vim.opt.signcolumn = 'yes'
 
 -- Decrease update time
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 250
+vim.opt.timeoutlen = 200
 
 -- Configure how new splits should be opened
 vim.opt.splitright = true
@@ -86,40 +90,56 @@ vim.keymap.set('n', '<leader>gg', ':term lazygit<CR>i', { noremap = true })
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', 'jk', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('t', 'ji', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
+vim.keymap.set('t', 'jk', '<C-\\><C-n>', { silent = true })
+vim.keymap.set('t', 'ji', '<C-\\><C-n>', { silent = true })
+vim.keymap.set('t', 'fh', '<C-\\><C-n>', { silent = true })
+vim.keymap.set('t', 'fj', '<C-\\><C-n>', { silent = true })
 
 -- Redo without CTRL
-vim.keymap.set('n', 'rr', '<C-r>', { desc = 'Redo without CTRL', silent = true })
+-- vim.keymap.set('n', 'rr', '<C-r>', { silent = true })
 -- Faster ctrl-r without having to move finger weirdly
-vim.keymap.set('t', '90', '<C-r>', { desc = 'Faster ctrl-r' })
-vim.keymap.set('t', '89', '<C-t>', { desc = 'Faster ctrl-t' })
--- vim.keymap.set('t', '0i0', '<C-r>', { desc = 'Faster ctrl-r' })
-vim.keymap.set('t', 'oio', '<C-r>', { desc = 'Faster ctrl-r' })
+vim.keymap.set('t', '90', '<C-r>', { silent = true })
+vim.keymap.set('t', '89', '<C-t>', { silent = true })
+-- vim.keymap.set('t', '0i0', '<C-r>', { silent = true })
+vim.keymap.set('t', 'oio', '<C-r>', { silent = true })
 -- vim.keymap.set('t', '9090', function()
 --   print 'hi'
 --   local ctrlr = vim.api.nvim_replace_termcodes('<C-r>', true, true, true)
 --   vim.api.nvim_feedkeys('i' .. ctrlr, false)
 -- end, { desc = 'Faster ctrl-r' })
--- vim.keymap.set('t', '9090', 'i<C-r>', { desc = 'Faster ctrl-r' })
+-- vim.keymap.set('t', '9090', 'i<C-r>', { silent = true })
 
-vim.keymap.set('n', '90w', '<C-W><C-W>', { desc = 'Faster ctrl-w w' })
-vim.keymap.set('i', '90w', '<C-W>', { desc = 'Faster ctrl-w' })
-vim.keymap.set('t', '90w', '<C-W>', { desc = 'Faster ctrl-w' })
+vim.keymap.set('n', '90w', '<C-W><C-W>', { silent = true })
+vim.keymap.set('n', '89', '<C-W><C-W>', { silent = true })
+vim.keymap.set('i', '90w', '<C-W>', { silent = true })
+vim.keymap.set('t', '90w', '<C-W>', { silent = true })
+vim.keymap.set('i', 'fb', '<Esc><C-W><C-W>', { silent = true })
+vim.keymap.set('t', 'fb', '<C-\\><C-n><C-W><C-W>', { silent = true })
+vim.keymap.set('i', 'fg', '<Esc><C-W><C-W>', { silent = true })
+vim.keymap.set('t', 'fg', '<C-\\><C-n><C-W><C-W>', { silent = true })
 
-vim.keymap.set('n', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
-vim.keymap.set('i', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
-vim.keymap.set('t', '90o', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
-vim.keymap.set('n', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
-vim.keymap.set('i', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
-vim.keymap.set('t', '90q', '<C-W><C-O>', { desc = 'Faster ctrl-w o' })
+vim.keymap.set('n', '90o', '<C-W><C-O>', { silent = true })
+vim.keymap.set('i', '90o', '<C-W><C-O>', { silent = true })
+vim.keymap.set('t', '90o', '<C-W><C-O>', { silent = true })
+vim.keymap.set('n', '90q', '<C-W><C-O>', { silent = true })
+vim.keymap.set('i', '90q', '<C-W><C-O>', { silent = true })
+vim.keymap.set('t', '90q', '<C-W><C-O>', { silent = true })
 
 -- Faster window switching keymap alias
 vim.keymap.set('n', '<leader><leader>', '<C-W><C-W>', { desc = 'Switch Window', noremap = true, silent = true })
 
 -- System clipboard
-vim.api.nvim_set_keymap('n', '<leader>y', '"+y', { noremap = true, silent = true })
+-- Function to copy yanked text to system clipboard
+local function yank_to_clipboard()
+  local yanked_text = vim.fn.getreg '"' -- Get the last yanked text
+  vim.fn.setreg('+', yanked_text) -- Set the yanked text to the clipboard register
+end
+
+-- Command to call the Lua function
+vim.api.nvim_create_user_command('Y', yank_to_clipboard, {})
+
+vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<S-y>', '"+y', { noremap = true, silent = true })
 
@@ -150,7 +170,7 @@ local changeDir = function()
   vim.api.nvim_set_current_dir(dir_path)
 end
 vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
-vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
@@ -160,13 +180,13 @@ vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
 -- Function to run when entering insert mode
 local function onInsertEnter()
   -- Set Caps Lock to Escape
-  vim.fn.jobstart('karabiner_cli --select-profile viminsert', { detach = true })
+  -- vim.fn.jobstart('karabiner_cli --select-profile viminsert', { detach = true })
 end
 
 -- Function to run when leaving insert mode
 local function onInsertLeave()
   -- Set caps lock to control
-  vim.fn.jobstart('karabiner_cli --select-profile default', { detach = true })
+  -- vim.fn.jobstart('karabiner_cli --select-profile default', { detach = true })
 end
 
 -- Set up autocommands
@@ -278,7 +298,14 @@ require('lazy').setup {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
+      require('which-key').setup {
+        triggers_blacklist = {
+          -- list of mode / prefixes that should never be hooked by WhichKey
+          -- this is mostly relevant for keymaps that start with a native binding
+          i = { 'j', 'k', 'f', 'i', '9', '8', 'w', 'd' },
+          v = { 'j', 'k' },
+        },
+      }
 
       -- Document existing key chains
       require('which-key').register {
