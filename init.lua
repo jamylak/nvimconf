@@ -194,7 +194,6 @@ end
 vim.api.nvim_create_autocmd('InsertEnter', {
   pattern = '*',
   callback = onInsertEnter,
-    blah=false,
 })
 
 vim.api.nvim_create_autocmd('InsertLeave', {
@@ -205,17 +204,17 @@ vim.api.nvim_create_autocmd('InsertLeave', {
 -- Only load treesitter after the first buffer is loaded
 -- to try and avoid some delays
 vim.api.nvim_create_autocmd('BufReadPost', {
-  pattern="*",
-  once=true,
+  pattern = '*',
+  once = true,
   callback = function()
-      -- TODO: Fix the pattern and only run once
-      vim.schedule(function ()
-        vim.cmd("Lazy load nvim-treesitter nvim-lspconfig")
-        vim.cmd("LspStart")
-      end)
-      -- vim.defer_fn(function ()
-      --   vim.cmd("TSEnable highlight " .. vim.o.ft)
-      -- end, 100)
+    -- TODO: Fix the pattern and only run once
+    vim.schedule(function()
+      vim.cmd 'Lazy load nvim-treesitter nvim-lspconfig'
+      vim.cmd 'LspStart'
+    end)
+    -- vim.defer_fn(function ()
+    --   vim.cmd("TSEnable highlight " .. vim.o.ft)
+    -- end, 100)
   end,
 })
 
@@ -266,7 +265,7 @@ vim.opt.rtp:prepend(lazypath)
 -- NOTE: Here is where you install your plugins.
 require('lazy').setup {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  {'tpope/vim-sleuth', event='BufReadPost'}, -- Detect tabstop and shiftwidth automatically
+  { 'tpope/vim-sleuth', lazy = false }, -- Detect tabstop and shiftwidth automatically
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -278,7 +277,7 @@ require('lazy').setup {
   --    require('Comment').setup({})
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {}, event='BufReadPost' },
+  { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPost' },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following lua:
@@ -287,7 +286,7 @@ require('lazy').setup {
   -- See `:help gitsigns` to understand what the configuration keys do
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
-    event='BufReadPost',
+    event = 'BufReadPost',
     opts = {
       signs = {
         add = { text = '+' },
@@ -301,7 +300,7 @@ require('lazy').setup {
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    keys={ '<leader>', 'a', 'b', 'c',   'g', 'h',  'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
+    keys = { '<leader>', 'a', 'b', 'c', 'g', 'h', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup {
         triggers_blacklist = {
@@ -332,10 +331,9 @@ require('lazy').setup {
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
-    lazy=false,
-    -- cmd={"Mason"},
-    -- module=false,
-    -- lazy=true,
+    cmd = { 'Mason' },
+    module = false,
+    lazy = true,
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for neovim
       'williamboman/mason.nvim',
@@ -533,7 +531,7 @@ require('lazy').setup {
 
   { -- Autoformat
     'stevearc/conform.nvim',
-    lazy = true,
+    lazy = false,
     opts = {
       notify_on_error = false,
       format_on_save = {
@@ -719,7 +717,7 @@ require('lazy').setup {
 
   { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
-    event='BufReadPost',
+    event = 'BufReadPost',
     config = function()
       -- Better Around/Inside textobjects
       --
