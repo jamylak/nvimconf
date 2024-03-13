@@ -1,10 +1,13 @@
 return {
   'smjonas/live-command.nvim',
   event = 'VeryLazy',
-  opts = {
-    commands = {
-      Norm = { cmd = 'norm' },
-      G = { cmd = 'g' },
-    },
-  },
+  -- If i don't put config it says the command has changed
+  config = function()
+    require('live-command').setup {
+      commands = {
+        Norm = { cmd = 'norm' },
+        G = { cmd = 'g' },
+      },
+    }
+  end,
 }
