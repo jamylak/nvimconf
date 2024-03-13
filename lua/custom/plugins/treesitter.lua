@@ -3,7 +3,7 @@ return { -- Highlight, edit, and navigate code
   module = false,
   lazy = true,
   dependencies = {
-    -- 'nvim-treesitter/playground',
+    'nvim-treesitter/playground',
     'nvim-treesitter/nvim-treesitter-textobjects',
     'nvim-treesitter/nvim-treesitter-context',
   },
