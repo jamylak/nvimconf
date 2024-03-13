@@ -2,6 +2,7 @@ return {
   {
     'abecodes/tabout.nvim',
     config = function()
+      vim.cmd("Lazy load nvim-treesitter")
       require('tabout').setup {
         tabkey = '<Tab>', -- key to trigger tabout, set to an empty string to disable
         backwards_tabkey = '<S-Tab>', -- key to trigger backwards tabout, set to an empty string to disable
