@@ -8,7 +8,7 @@
 -- end, { desc = 'Open [O]il' })
 return {
   'stevearc/oil.nvim',
-  lazy = true,
+  cmd = { 'Oil' },
   dependencies = {
     'nvim-tree/nvim-web-devicons',
   },
