@@ -337,6 +337,7 @@ require('lazy').setup {
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
       { 'j-hui/fidget.nvim', opts = {} },
+      { 'folke/neodev.nvim', opts = {} },
     },
     config = function()
       -- Brief Aside: **What is LSP?**
@@ -480,18 +481,6 @@ require('lazy').setup {
           -- capabilities = {},
           settings = {
             Lua = {
-              runtime = { version = 'LuaJIT' },
-              workspace = {
-                checkThirdParty = false,
-                -- Tells lua_ls where to find all the Lua files that you have loaded
-                -- for your neovim configuration.
-                library = {
-                  '${3rd}/luv/library',
-                  unpack(vim.api.nvim_get_runtime_file('', true)),
-                },
-                -- If lua_ls is really slow on your computer, you can try this instead:
-                -- library = { vim.env.VIMRUNTIME },
-              },
               completion = {
                 callSnippet = 'Replace',
               },
@@ -580,7 +569,6 @@ require('lazy').setup {
       --  nvim-cmp does not ship with all sources by default. They are split
       --  into multiple repos for maintenance purposes.
       'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-cmdline',
       'hrsh7th/cmp-path',
       'hrsh7th/cmp-buffer',
@@ -665,64 +653,32 @@ require('lazy').setup {
         --
         -- No, but seriously. Please read `:help ins-completion`, it is really good!
         mapping = cmp.mapping.preset.insert {
-          -- ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-          -- ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          -- ['<S-m>'] = cmp.mapping.select_next_item(),
-          -- ['<S-n>'] = cmp.mapping.select_prev_item(),
-          -- ['<S-j>'] = cmp.mapping.confirm { select = true },
-          -- -- Manually trigger a completion from nvim-cmp.
-          -- --  Generally you don't need this, because nvim-cmp will display
-          -- --  completions whenever it has completion options available.
-          -- ['<S-Space>'] = cmp.mapping.complete {},
-          -- ['<S-k>'] = cmp.mapping(function()
-          --   if luasnip.expand_or_locally_jumpable() then
-          --     luasnip.expand_or_jump()
-          --   end
-          -- end, { 'i', 's' }),
-          -- ['<S-o>'] = cmp.mapping(function()
-          --   if luasnip.locally_jumpable(-1) then
-          --     luasnip.jump(-1)
-          --   end
-          -- end, { 'i', 's' }),
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<Tab>'] = cmp.mapping.select_next_item(),
-          -- ['nknk'] = cmp.mapping.select_next_item(),
-          -- ['njnj'] = cmp.mapping.select_next_item(),
-          -- ['jiji'] = cmp.mapping(function(fallback)
-          --   if cmp.visible() then
-          --     cmp.mapping.select_next_item()
-          --   else
-          --     fallback()
-          --   end
-          -- end),
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<S-Tab>'] = cmp.mapping.select_next_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
+          -- Manually trigger a completion from nvim-cmp.
+          --  Generally you don't need this, because nvim-cmp will display
+          --  completions whenever it has completion options available.
+          ['<C-Space>'] = cmp.mapping.complete {},
           ['<CR>'] = completeOrJump,
-          -- ['<S-CR>'] = completeOrJump,
           ['<C-j>'] = completeOrJump,
-          -- ['<C-j>'] = cmp.mapping.confirm { select = true },
-          -- ['<C-j>'] = cmp.mapping(function()
-          --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-y>', true, true, true), 'i', false)
-          --   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-k>', true, true, true), 'i', false)
-          -- end, { 'i', 's' }),
-          -- ['<C-Space>'] = cmp.mapping.complete {},
           ['<C-l>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
               luasnip.expand_or_jump()
             end
           end, { 'i', 's' }),
-          ['<C-k>'] = cmp.mapping(function()
+          ['<C-h>'] = cmp.mapping(function()
             if luasnip.locally_jumpable(-1) then
               luasnip.jump(-1)
             end
           end, { 'i', 's' }),
         },
         sources = {
-          { name = 'nvim_lua' },
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
