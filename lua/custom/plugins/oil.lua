@@ -8,6 +8,7 @@
 -- end, { desc = 'Open [O]il' })
 return {
   'stevearc/oil.nvim',
+  event = 'VimEnter',
   cmd = { 'Oil' },
   dependencies = {
     'nvim-tree/nvim-web-devicons',
