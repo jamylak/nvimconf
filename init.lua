@@ -81,7 +81,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gn', ':Neogit<CR>', { noremap = true })
 vim.keymap.set('n', '<leader>gg', ':term lazygit<CR>i', { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -112,6 +111,8 @@ vim.keymap.set('t', 'oio', '<C-r>', { silent = true })
 
 vim.keymap.set('n', '90w', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', '89', '<C-W><C-W>', { silent = true })
+vim.keymap.set('n', 'fg', '<C-W><C-W>', { silent = true })
+vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
 vim.keymap.set('i', '90w', '<C-W>', { silent = true })
 vim.keymap.set('t', '90w', '<C-W>', { silent = true })
 vim.keymap.set('i', 'fb', '<Esc><C-W><C-W>', { silent = true })
@@ -642,6 +643,13 @@ require('lazy').setup {
             -- before = function (entry, vim_item)
             --   return vim_item
             -- end
+            with_text = true,
+            menu = {
+              nvim_lsp = '[LSP]',
+              luasnip = '[LuaSnip]',
+              path = '[Path]',
+              cody = '[cody]',
+            },
           },
         },
 
@@ -689,7 +697,8 @@ require('lazy').setup {
           --   end
           -- end),
           ['<C-m>'] = cmp.mapping.select_next_item(),
-          ['<C-n>'] = cmp.mapping.select_prev_item(),
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
           ['<S-Tab>'] = cmp.mapping.select_next_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           ['<CR>'] = completeOrJump,
@@ -717,6 +726,7 @@ require('lazy').setup {
           { name = 'nvim_lsp' },
           { name = 'luasnip' },
           { name = 'path' },
+          -- { name = 'cody' },
         },
       }
     end,
@@ -808,10 +818,10 @@ require('lazy').setup {
               ['ik'] = { query = '@block.inner', desc = 'inside block' },
               ['ac'] = { query = '@class.outer', desc = 'around class' },
               ['ic'] = { query = '@class.inner', desc = 'inside class' },
-              ['ae'] = { query = '@call.outer', desc = 'around call expression' },
-              ['ie'] = { query = '@call.inner', desc = 'inside call expression' },
-              ['au'] = { query = '@field_expresion.outer', desc = 'around field expression' },
-              ['iu'] = { query = '@field_expresion.outer', desc = 'inside field expression' },
+              ['ae'] = { query = '@expression', desc = 'around expression', query_group = 'expression' },
+              ['ie'] = { query = '@expression', desc = 'inside expression', query_group = 'expression' },
+              ['au'] = { query = '@call.outer', desc = 'around call expression' },
+              ['iu'] = { query = '@call.inner', desc = 'inside call expression' },
               -- TODO: figure out how to do this since it's not builtin
               -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#overriding-or-extending-textobjects
               -- ['av'] = { query = '@value.outer', desc = 'around value' },

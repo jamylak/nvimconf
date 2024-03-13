@@ -6,11 +6,14 @@
 --
 --   require('oil').open(pardir)
 -- end, { desc = 'Open [O]il' })
-vim.keymap.set('n', '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' })
 return {
   'stevearc/oil.nvim',
+  lazy = true,
   dependencies = {
     'nvim-tree/nvim-web-devicons',
+  },
+  keys = {
+    { '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' } },
   },
   opts = {
     default_file_explorer = true,

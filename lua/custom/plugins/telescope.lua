@@ -46,6 +46,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
+    local function setCWDtoPicker()
+      -- Set the current working directory to the picker
+      local prompt_bufnr = vim.api.nvim_get_current_buf()
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+      local action_utils = require 'telescope.actions.utils'
+      local current_picker = action_state.get_current_picker(prompt_bufnr)
+
+      -- Set the current working directory to the picker
+      vim.api.nvim_set_current_dir(current_picker.cwd)
+    end
 
     local function openOil()
       -- Open oil at the currrrent directory
@@ -59,6 +70,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
       -- Get the current selcetion
       local selection = action_state.get_selected_entry()
       local path = selection.value
+
+      -- Check if path doesn't start with a /
+      if not path:match '^/' then
+        path = selection.cwd .. '/' .. path
+      end
 
       -- Get parent of the path
       -- If the path is a file...
@@ -84,6 +100,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
           n = {
             ['o'] = openOil,
             ['q'] = require('telescope.actions').close,
+            ['cd'] = setCWDtoPicker,
           },
         },
       },

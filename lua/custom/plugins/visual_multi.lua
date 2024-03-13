@@ -3,8 +3,8 @@ vim.g.VM_leader = '=' -- sets vim.g.VM_leader for visual multi
 return {
   'mg979/vim-visual-multi',
   branch = 'master',
-  config = function()
-    vim.keymap.set('n', '<C-j>', '<Plug>(VM-Select-Cursor-Down)')
-    vim.keymap.set('n', '<C-k>', '<Plug>(VM-Select-Cursor-Up)')
-  end,
+  keys = {
+    { '<C-j>', '<Plug>(VM-Select-Cursor-Down)' },
+    { '<C-k>', '<Plug>(VM-Select-Cursor-Up)' },
+  },
 }

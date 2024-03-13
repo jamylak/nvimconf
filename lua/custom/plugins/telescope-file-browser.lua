@@ -1,7 +1,4 @@
-vim.api.nvim_set_keymap('n', '<leader>b', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', { noremap = true })
--- vim.api.nvim_set_keymap('n', '<leader>fi', ':Telescope file_browser path=%:p:h select_buffer=true<CR>', { noremap = true })
-
-vim.keymap.set('n', '<leader>fi', function()
+local function openTSFB()
   local path = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
   -- If path starts with oil:// then get the part after
   if string.match(path, '^oil://') then
@@ -13,9 +10,12 @@ vim.keymap.set('n', '<leader>fi', function()
     path = path,
     select_buffer = true,
   }
-end, { noremap = true })
--- vim.api.nvim_set_keymap('n', '<leader>fb', ':Telescope file_browser path=' .. os.getenv 'PROJECTS_DIR' .. 'select_buffer=true<CR>', { noremap = true })
+end
 return {
   'nvim-telescope/telescope-file-browser.nvim',
+  keys = {
+    { '<leader>b', openTSFB },
+    { '<leader>fi', openTSFB },
+  },
   dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
 }
