@@ -102,22 +102,9 @@ for _, key in ipairs(mapping) do
   vim.keymap.set('i', key, '<Esc>', { silent = true })
 end
 
--- For combo in mapping
-
--- Redo without CTRL
--- vim.keymap.set('n', 'rr', '<C-r>', { silent = true })
--- Faster ctrl-r without having to move finger weirdly
 vim.keymap.set('t', '90', '<C-r>', { silent = true })
 vim.keymap.set('t', '89', '<C-t>', { silent = true })
--- vim.keymap.set('t', '0i0', '<C-r>', { silent = true })
 vim.keymap.set('t', 'oio', '<C-r>', { silent = true })
--- vim.keymap.set('t', '9090', function()
---   print 'hi'
---   local ctrlr = vim.api.nvim_replace_termcodes('<C-r>', true, true, true)
---   vim.api.nvim_feedkeys('i' .. ctrlr, false)
--- end, { desc = 'Faster ctrl-r' })
--- vim.keymap.set('t', '9090', 'i<C-r>', { silent = true })
-
 vim.keymap.set('n', '90w', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', '89', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', 'fg', '<C-W><C-W>', { silent = true })
@@ -135,9 +122,6 @@ vim.keymap.set('t', '90o', '<C-W><C-O>', { silent = true })
 vim.keymap.set('n', '90q', '<C-W><C-O>', { silent = true })
 vim.keymap.set('i', '90q', '<C-W><C-O>', { silent = true })
 vim.keymap.set('t', '90q', '<C-W><C-O>', { silent = true })
-
--- Faster window switching keymap alias
-vim.keymap.set('n', '<leader><leader>', '<C-W><C-W>', { desc = 'Switch Window', noremap = true, silent = true })
 
 -- System clipboard
 -- Function to copy yanked text to system clipboard
@@ -158,22 +142,12 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':w<cr>', { silent = true })
 
 -- Faster comment line
 vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
--- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
--- Keybinds to make split navigation easier.
---  Use CTRL+<hjkl> to switch between windows
---
---  See `:help wincmd` for a list of all window commands
-
--- Other bindings
 vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
 local changeDir = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
