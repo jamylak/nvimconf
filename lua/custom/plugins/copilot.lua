@@ -1,5 +1,6 @@
 return {
   'zbirenbaum/copilot.lua',
+  event = 'InsertCharPre',
   cmd = 'Copilot',
   opts = {
     suggestion = {

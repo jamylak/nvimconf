@@ -4,6 +4,7 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.o.guicursor = ''
+-- vim.opt.guicursor = "n-v-c-i:block"
 -- -- https://www.reddit.com/r/neovim/comments/12cc7gq/startup_screen_disappears_immediately_after_using/
 vim.opt.shortmess:append { I = true }
 
@@ -94,6 +95,14 @@ vim.keymap.set('t', 'jk', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'ji', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'fh', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'fj', '<C-\\><C-n>', { silent = true })
+
+-- Testing escape keys
+local mapping = { 'dh', 'fj', 'fh', 'hf', 'ji', 'jk', 'jj' }
+for _, key in ipairs(mapping) do
+  vim.keymap.set('i', key, '<Esc>', { silent = true })
+end
+
+-- For combo in mapping
 
 -- Redo without CTRL
 -- vim.keymap.set('n', 'rr', '<C-r>', { silent = true })
@@ -208,10 +217,10 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   once = true,
   callback = function()
     -- TODO: Fix the pattern and only run once
-    vim.schedule(function()
+    vim.defer_fn(function()
       vim.cmd 'Lazy load nvim-treesitter nvim-lspconfig'
       vim.cmd 'LspStart'
-    end)
+    end, 100)
     -- vim.defer_fn(function ()
     --   vim.cmd("TSEnable highlight " .. vim.o.ft)
     -- end, 100)
