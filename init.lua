@@ -107,14 +107,11 @@ vim.keymap.set('t', '89', '<C-t>', { silent = true })
 vim.keymap.set('t', 'oio', '<C-r>', { silent = true })
 vim.keymap.set('n', '90w', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', '89', '<C-W><C-W>', { silent = true })
-vim.keymap.set('n', 'fg', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
 vim.keymap.set('i', '90w', '<C-W>', { silent = true })
 vim.keymap.set('t', '90w', '<C-W>', { silent = true })
 vim.keymap.set('i', 'fb', '<Esc><C-W><C-W>', { silent = true })
 vim.keymap.set('t', 'fb', '<C-\\><C-n><C-W><C-W>', { silent = true })
-vim.keymap.set('i', 'fg', '<Esc><C-W><C-W>', { silent = true })
-vim.keymap.set('t', 'fg', '<C-\\><C-n><C-W><C-W>', { silent = true })
 
 vim.keymap.set('n', '90o', '<C-W><C-O>', { silent = true })
 vim.keymap.set('i', '90o', '<C-W><C-O>', { silent = true })
@@ -646,6 +643,7 @@ require('lazy').setup {
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
           ['<Tab>'] = cmp.mapping.select_next_item(),
+          ['<C-e>'] = cmp.mapping.close(),
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
