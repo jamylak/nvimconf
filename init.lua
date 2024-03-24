@@ -286,7 +286,7 @@ require('lazy').setup {
         triggers_blacklist = {
           -- list of mode / prefixes that should never be hooked by WhichKey
           -- this is mostly relevant for keymaps that start with a native binding
-          i = { 'j', 'k', 'f', 'i', '9', '8', 'w', 'd' },
+          i = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'f', 'i', '9', '8', 'w', 'd' },
           v = { 'j', 'k' },
         },
       }
