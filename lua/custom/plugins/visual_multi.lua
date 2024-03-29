@@ -4,6 +4,7 @@ return {
   'mg979/vim-visual-multi',
   branch = 'master',
   keys = {
+    { '<C-n>', '<Plug>(VM-Find-Word)' },
     { '<C-j>', '<Plug>(VM-Select-Cursor-Down)' },
     { '<C-k>', '<Plug>(VM-Select-Cursor-Up)' },
   },

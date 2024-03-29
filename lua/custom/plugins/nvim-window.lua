@@ -1,7 +1,6 @@
 vim.keymap.set('i', 'gj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
 vim.keymap.set('t', 'gj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
--- vim.keymap.set('i', 'wj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window' })
--- vim.keymap.set('t', 'wj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window' })
+
 return {
   'yorickpeterse/nvim-window',
   keys = {
@@ -12,21 +11,18 @@ return {
     require('nvim-window').setup {
       -- The characters available for hinting windows.
       chars = {
-        'a',
-        's',
-        'd',
+        'i',
+        'o',
+        'k',
+        -- 'd', -- Or try l
+        'l', -- Or try d
         'e',
         'f',
         'g',
         'h',
-        'i',
         'j',
-        'k',
-        'l',
         'm',
         'n',
-        'o',
-        'p',
         'q',
         'r',
         't',

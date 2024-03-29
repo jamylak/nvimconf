@@ -80,9 +80,41 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+
+-- [t and ]t to navigate between tabs
+vim.keymap.set('n', '[t', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
+vim.keymap.set('n', ']t', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
+-- gh to do the same as gt -- switch tabs
+vim.keymap.set('n', 'gy', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
+vim.keymap.set('n', 'gh', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
+-- Quick  ways to get to certain tabs
+
+-- Iterate through modes: ['n', 'i', 't']
+-- and set the keymapping in each mode
+for _, mode in ipairs { 'n', 'i', 't' } do
+  local cmd = ''
+  if mode == 'i' then
+    cmd = '<Esc>'
+  elseif mode == 't' then
+    cmd = '<C-\\><C-n>'
+  end
+  vim.keymap.set(mode, 'gko', cmd .. ':tabn 1<CR>', {})
+  vim.keymap.set(mode, 'gkp', cmd .. ':tabn 2<CR>', {})
+  vim.keymap.set(mode, 'gkl', cmd .. ':tabn 3<CR>', {})
+  vim.keymap.set(mode, 'gkd', cmd .. ':tabn 4<CR>', {})
+  vim.keymap.set(mode, 'gk;', cmd .. ':tabn 4<CR>', {})
+  vim.keymap.set(mode, 'gke', cmd .. ':tabn 5<CR>', {})
+  vim.keymap.set(mode, 'gkf', cmd .. ':tabn 6<CR>', {})
+  vim.keymap.set(mode, 'gkg', cmd .. ':tabn 7<CR>', {})
+  vim.keymap.set(mode, 'gkh', cmd .. ':tabn 8<CR>', {})
+  vim.keymap.set(mode, 'gki', cmd .. ':tabn 9<CR>', {})
+  vim.keymap.set(mode, 'gkj', cmd .. ':tabn 10<CR>', {})
+  vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
+end
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gg', ':term lazygit<CR>i', { noremap = true })
+vim.keymap.set('n', '<leader>gg', ':tabnew | term lazygit<CR>i', { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -97,7 +129,7 @@ vim.keymap.set('t', 'fh', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'fj', '<C-\\><C-n>', { silent = true })
 
 -- Testing escape keys
-local mapping = { 'dh', 'fj', 'fh', 'hf', 'ji', 'jk', 'jj' }
+local mapping = { 'ji', 'jk', 'jj' }
 for _, key in ipairs(mapping) do
   vim.keymap.set('i', key, '<Esc>', { silent = true })
 end
@@ -156,6 +188,9 @@ vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to p
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
 vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
+vim.keymap.set('n', '<C-\\>', ':split | term<CR>', { desc = 'Vertical Split' })
+-- Not working yet
+vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { desc = 'Horizontal Split' })
 
 -- Custom key remapping
 -- Function to run when entering insert mode
@@ -198,6 +233,19 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end,
 })
 
+vim.api.nvim_create_user_command('T', ':tabnew', {})
+vim.api.nvim_create_user_command('TT', function()
+  vim.cmd 'tabnew | term'
+  vim.cmd 'startinsert'
+end, {})
+vim.api.nvim_create_user_command('TV', function()
+  vim.cmd 'vsplit | term'
+  vim.cmd 'startinsert'
+end, {})
+vim.api.nvim_create_user_command('TH', function()
+  vim.cmd 'split | term'
+  vim.cmd 'startinsert'
+end, {})
 -- Custom command to start a new terminal with tmux attach
 vim.api.nvim_create_user_command('TA', function()
   vim.cmd 'new | term tmux a'
@@ -206,7 +254,7 @@ vim.api.nvim_create_user_command('WQ', function()
   vim.cmd 'wq!'
 end, {})
 vim.api.nvim_create_user_command('Q', function()
-  vim.cmd 'q!'
+  vim.cmd 'qall!'
 end, {})
 
 -- [[ Basic Autocommands ]]
