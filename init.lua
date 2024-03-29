@@ -232,20 +232,28 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     -- end, 100)
   end,
 })
-
-vim.api.nvim_create_user_command('T', ':tabnew', {})
-vim.api.nvim_create_user_command('TT', function()
+local function terminalNewTab()
   vim.cmd 'tabnew | term'
   vim.cmd 'startinsert'
-end, {})
-vim.api.nvim_create_user_command('TV', function()
+end
+local function terminalVertical()
   vim.cmd 'vsplit | term'
   vim.cmd 'startinsert'
-end, {})
-vim.api.nvim_create_user_command('TH', function()
+end
+local function terminalHorizontal()
   vim.cmd 'split | term'
   vim.cmd 'startinsert'
-end, {})
+end
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
+vim.keymap.set('n', '<leader>tv', terminalVertical, { desc = 'Terminal - Vertical' })
+vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
+vim.keymap.set('n', '<leader>tr', ':tabclose<CR>', { desc = 'Tab Remove' })
+vim.api.nvim_create_user_command('T', ':tabnew', {})
+vim.api.nvim_create_user_command('TC', ':tabclose', {})
+vim.api.nvim_create_user_command('TT', terminalNewTab, {})
+vim.api.nvim_create_user_command('TV', terminalVertical, {})
+vim.api.nvim_create_user_command('TH', terminalHorizontal, {})
 -- Custom command to start a new terminal with tmux attach
 vim.api.nvim_create_user_command('TA', function()
   vim.cmd 'new | term tmux a'
