@@ -232,6 +232,10 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     -- end, 100)
   end,
 })
+local function terminal()
+  vim.cmd 'term'
+  vim.cmd 'startinsert'
+end
 local function terminalNewTab()
   vim.cmd 'tabnew | term'
   vim.cmd 'startinsert'
@@ -245,6 +249,7 @@ local function terminalHorizontal()
   vim.cmd 'startinsert'
 end
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
 vim.keymap.set('n', '<leader>tv', terminalVertical, { desc = 'Terminal - Vertical' })
 vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
