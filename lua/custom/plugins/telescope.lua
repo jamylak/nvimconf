@@ -64,8 +64,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
       local prompt_bufnr = vim.api.nvim_get_current_buf()
       local actions = require 'telescope.actions'
       local action_state = require 'telescope.actions.state'
-      local action_utils = require 'telescope.actions.utils'
-      local current_picker = action_state.get_current_picker(prompt_bufnr)
 
       -- Get the current selcetion
       local selection = action_state.get_selected_entry()
@@ -95,11 +93,15 @@ return { -- Fuzzy Finder (files, lsp, etc)
         mappings = {
           i = {
             ['<c-o>'] = openOil,
+            ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
           },
           n = {
             ['o'] = openOil,
             ['q'] = require('telescope.actions').close,
+            ['v'] = require('telescope.actions').select_vertical,
+            ['h'] = require('telescope.actions').select_horizontal,
+            ['t'] = require('telescope.actions').select_tab,
             ['cd'] = setCWDtoPicker,
           },
         },
