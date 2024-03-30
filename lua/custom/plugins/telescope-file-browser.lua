@@ -14,7 +14,6 @@ end
 return {
   'nvim-telescope/telescope-file-browser.nvim',
   keys = {
-    { '<leader>b', openTSFB },
     { '<leader>fi', openTSFB },
   },
   dependencies = { 'nvim-telescope/telescope.nvim', 'nvim-lua/plenary.nvim' },
