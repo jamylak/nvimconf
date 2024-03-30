@@ -155,9 +155,26 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
     vim.keymap.set('n', '<leader>fj', builtin.oldfiles, { desc = '[F]ind Recent' })
-    vim.keymap.set('n', '<leader>sb', builtin.buffers, { desc = '[S]earch [B]uffers' })
+
+    local function deleteBuffer(prompt_bufnr)
+      -- Currently if it's the last buffer it deletes it
+      -- but since it's still open nothing really happens
+      local entry = require('telescope.actions.state').get_selected_entry()
+      require('telescope.actions').delete_buffer(prompt_bufnr)
+    end
+
+    vim.keymap.set('n', '<leader>sb', function()
+      -- Like normal search buffers but also with option to delete
+      builtin.buffers {
+        attach_mappings = function(_, map)
+          map('i', '<c-r>', deleteBuffer)
+          map('n', 'D', deleteBuffer)
+          return true
+        end,
+      }
+    end, { desc = '[S]earch [B]uffers' })
     -- Can remap <leader><leader> to something more useful
-    vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[S]earch [B]uffers' })
+    -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[S]earch [B]uffers' })
     vim.keymap.set('n', '<leader>fb', function()
       builtin.find_files {
         prompt_title = 'Find Projects',

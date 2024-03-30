@@ -81,6 +81,9 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 
+-- [t and ]t to navigate between buffers
+vim.keymap.set('n', '[b', ':bprev<CR>', { desc = 'Go to previous [B]uffer' })
+vim.keymap.set('n', ']b', ':bnext<CR>', { desc = 'Go to next [B]uffer' })
 -- [t and ]t to navigate between tabs
 vim.keymap.set('n', '[t', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', ']t', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
@@ -182,7 +185,6 @@ local changeDir = function()
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
   vim.api.nvim_set_current_dir(dir_path)
 end
-vim.keymap.set('n', '<leader>cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
@@ -250,10 +252,19 @@ local function terminalHorizontal()
 end
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
+vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
 vim.keymap.set('n', '<leader>tv', terminalVertical, { desc = 'Terminal - Vertical' })
+vim.keymap.set('n', '<leader>tj', terminalVertical, { desc = 'Terminal - Vertical' })
 vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
 vim.keymap.set('n', '<leader>tr', ':tabclose<CR>', { desc = 'Tab Remove' })
+vim.keymap.set('n', '<leader>tl', ':tabnext #<CR>', { desc = 'Tab Last' })
+local changeDirTab = function()
+  local file_path = vim.fn.expand '%:p'
+  local dir_path = vim.fn.fnamemodify(file_path, ':h')
+  vim.cmd('tcd ' .. dir_path)
+end
+vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
 vim.api.nvim_create_user_command('T', ':tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
 vim.api.nvim_create_user_command('TT', terminalNewTab, {})
@@ -269,6 +280,9 @@ end, {})
 vim.api.nvim_create_user_command('Q', function()
   vim.cmd 'qall!'
 end, {})
+
+vim.api.nvim_create_user_command('B', ':b#', {})
+vim.keymap.set('n', '<leader>b', ':b#<CR>', { desc = '[B]uffer [L]ast' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
