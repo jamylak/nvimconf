@@ -289,6 +289,9 @@ end, {})
 vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>b', ':b#<CR>', { desc = '[B]uffer [L]ast' })
 vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer' })
+vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer' })
+vim.keymap.set('n', 'sk', ':tabnext<CR>', { desc = '[S]wap Tab - Next' })
+vim.keymap.set('n', 'st', ':tabnext#<CR>', { desc = '[S]wap [T]ab' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
