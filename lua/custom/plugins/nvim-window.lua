@@ -1,5 +1,5 @@
 vim.keymap.set('i', 'gj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
-vim.keymap.set('t', 'gj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
+vim.keymap.set('t', 'gj', "<C-\\><C-n><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
 
 return {
   'yorickpeterse/nvim-window',
