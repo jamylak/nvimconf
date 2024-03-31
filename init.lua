@@ -283,6 +283,7 @@ end, {})
 
 vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>b', ':b#<CR>', { desc = '[B]uffer [L]ast' })
+vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
