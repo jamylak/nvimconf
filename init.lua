@@ -218,6 +218,11 @@ vim.api.nvim_create_autocmd('InsertLeave', {
   callback = onInsertLeave,
 })
 
+vim.api.nvim_create_autocmd('TermClose', {
+  pattern = 'term://*lazygit',
+  command = "lua vim.api.nvim_input('<CR>')",
+})
+
 -- Only load treesitter after the first buffer is loaded
 -- to try and avoid some delays
 vim.api.nvim_create_autocmd('BufReadPost', {
