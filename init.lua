@@ -115,6 +115,16 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
 end
 
+-- For letter in a-z make a keymapping
+-- gm<char> in normal mode to go to the upper case mark
+-- <CHAR>
+
+-- Iterate through the lowercase alphabet
+for ch = 97, 122 do
+  local char = string.char(ch)
+  vim.keymap.set('n', 'gm' .. char, ':normal! `' .. char:upper() .. '<CR>', {})
+end
+
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>gg', ':tabnew | term lazygit<CR>i', { noremap = true })
@@ -731,7 +741,7 @@ require('lazy').setup {
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<S-Tab>'] = cmp.mapping.select_next_item(),
+          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
