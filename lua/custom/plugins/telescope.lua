@@ -244,6 +244,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
           '.',
           os.getenv 'HOME' .. '/.config/',
           '-H',
+          '--exclude',
+          'gcloud',
+          '--exclude',
+          '.git',
         },
       }
     end
