@@ -6,6 +6,13 @@ local function openExa(params)
   -- NOTE: Sometimes on first launch you need extra button for tab close
   vim.cmd('-tabnew | term exa --icons --tree -l --git ' .. params .. ' ' .. path)
 end
+local function windowChangeDirectory()
+  local path = vim.fn.expand '%:p'
+  -- If path starts with oil:// then get the part after
+  path = string.sub(path, 7)
+  local dir_path = vim.fn.fnamemodify(path, ':h')
+  vim.cmd('lcd ' .. dir_path)
+end
 local function tabChangeDirectory()
   local path = vim.fn.expand '%:p'
   -- If path starts with oil:// then get the part after
@@ -56,12 +63,12 @@ return {
     },
     keymaps = {
       ['cd'] = 'actions.cd',
-      ['<leader>tc'] = {
-        callback = tabChangeDirectory,
+      ['<leader>lc'] = {
+        callback = windowChangeDirectory,
         desc = '[T]ab [C]hange [D]irectory',
         mode = 'n',
       },
-      ['tcd'] = {
+      ['<leader>tc'] = {
         callback = tabChangeDirectory,
         desc = '[T]ab [C]hange [D]irectory',
         mode = 'n',

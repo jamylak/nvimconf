@@ -127,7 +127,7 @@ end
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gg', ':tabnew | term lazygit<CR>i', { noremap = true })
+vim.keymap.set('n', '<leader>gg', ':-tabnew | term lazygit<CR>i', { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -229,7 +229,7 @@ vim.api.nvim_create_autocmd('InsertLeave', {
 })
 
 vim.api.nvim_create_autocmd('TermClose', {
-  pattern = 'term://*lazygit',
+  pattern = 'term://*',
   command = "lua vim.api.nvim_input('<CR>')",
 })
 
@@ -249,12 +249,18 @@ vim.api.nvim_create_autocmd('BufReadPost', {
     -- end, 100)
   end,
 })
+
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*.frag,*.vert,*.tesc,*.tese,*.geom,*.comp',
+  command = 'set filetype=glsl',
+})
+
 local function terminal()
   vim.cmd 'term'
   vim.cmd 'startinsert'
 end
 local function terminalNewTab()
-  vim.cmd 'tabnew | term'
+  vim.cmd '-tabnew | term'
   vim.cmd 'startinsert'
 end
 local function terminalVertical()
@@ -265,7 +271,7 @@ local function terminalHorizontal()
   vim.cmd 'split | term'
   vim.cmd 'startinsert'
 end
-vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<leader>tn', ':-tabnew<CR>', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
@@ -274,13 +280,19 @@ vim.keymap.set('n', '<leader>tj', terminalVertical, { desc = 'Terminal - Vertica
 vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
 vim.keymap.set('n', '<leader>tr', ':tabclose<CR>', { desc = 'Tab Remove' })
 vim.keymap.set('n', '<leader>tl', ':tabnext #<CR>', { desc = 'Tab Last' })
+local changeDirWindow = function()
+  local file_path = vim.fn.expand '%:p'
+  local dir_path = vim.fn.fnamemodify(file_path, ':h')
+  vim.cmd('lcd ' .. dir_path)
+end
 local changeDirTab = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
   vim.cmd('tcd ' .. dir_path)
 end
 vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
-vim.api.nvim_create_user_command('T', ':tabnew', {})
+vim.keymap.set('n', '<leader>lc', changeDirWindow, { desc = 'Window Change [C]urrent Directory to parent of curfile' })
+vim.api.nvim_create_user_command('T', ':-tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
 vim.api.nvim_create_user_command('TT', terminalNewTab, {})
 vim.api.nvim_create_user_command('TV', terminalVertical, {})
@@ -545,6 +557,9 @@ require('lazy').setup {
         clangd = {},
         -- gopls = {},
         pyright = {},
+        -- glslls = {
+        --   filetypes = { 'glsl', 'vert', 'frag', 'geom', 'comp' },
+        -- },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -585,6 +600,7 @@ require('lazy').setup {
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format lua code
         'clangd',
+        'glslls',
       })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 

@@ -144,9 +144,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>h', function()
       builtin.find_files { no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
-    vim.keymap.set('n', 'su', function()
-      builtin.find_files { silent = true, no_ignore = false }
-    end, { desc = '[F]ind [F]iles' })
     vim.keymap.set('n', '<leader>fF', function()
       builtin.find_files { no_ignore = true, hidden = true }
     end, { desc = '[F]ind All [F]iles' })
@@ -165,7 +162,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
-    vim.keymap.set('n', 'si', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+    vim.keymap.set('n', 'su', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+    vim.keymap.set('n', 'si', function()
+      builtin.find_files { silent = true, no_ignore = false }
+    end, { desc = '[F]ind [F]iles' })
     vim.keymap.set('n', '<leader>j', builtin.oldfiles, { desc = '[F]ind Recent' })
     vim.keymap.set('n', '<leader>fj', builtin.oldfiles, { desc = '[F]ind Recent' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
