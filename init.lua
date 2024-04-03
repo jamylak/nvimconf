@@ -140,11 +140,9 @@ vim.keymap.set('n', '<leader>gg', ':-tabnew | term lazygit<CR>i', { noremap = tr
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'jk', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', 'ji', '<C-\\><C-n>', { silent = true })
-vim.keymap.set('t', 'fh', '<C-\\><C-n>', { silent = true })
-vim.keymap.set('t', 'fj', '<C-\\><C-n>', { silent = true })
 
 -- Testing escape keys
-local mapping = { 'ji', 'jk', 'jj' }
+local mapping = { 'ji', 'jk' }
 for _, key in ipairs(mapping) do
   vim.keymap.set('i', key, '<Esc>', { silent = true })
 end
@@ -166,6 +164,8 @@ vim.keymap.set('t', '90o', '<C-W><C-O>', { silent = true })
 vim.keymap.set('n', '90q', '<C-W><C-O>', { silent = true })
 vim.keymap.set('i', '90q', '<C-W><C-O>', { silent = true })
 vim.keymap.set('t', '90q', '<C-W><C-O>', { silent = true })
+
+vim.keymap.set('i', 'jfj', ';', { silent = true })
 
 -- System clipboard
 -- Function to copy yanked text to system clipboard
@@ -353,6 +353,9 @@ vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer' })
 vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer' })
 vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next' })
 vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab' })
+vim.keymap.set('n', 'qj', '<C-W><C-W>', { desc = 'Swap Window' })
+vim.keymap.set('n', 'sn', '<C-W><C-W>', { desc = 'Swap Window', noremap = true })
+vim.keymap.set('n', 'qk', '$', { desc = 'End of line' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -862,7 +865,11 @@ require('lazy').setup {
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      require('mini.surround').setup {
+        mappings = {
+          update_n_lines = '',
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
