@@ -187,11 +187,6 @@ vim.api.nvim_set_keymap('n', '<leader>w', ':w<cr>', { silent = true })
 -- Faster comment line
 vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
 
-vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left window' })
-vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
-vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
-vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
-
 local changeDir = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
@@ -259,6 +254,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
 vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
+vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run vertical ' })
 
 -- Keymapping to run code inside of a visual selection
 -- using :lua (visually selected code)
