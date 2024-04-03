@@ -25,8 +25,8 @@ return {
         'i',
         'o',
         'k',
-        -- 'd', -- Or try l
-        'l', -- Or try d
+        'd', -- Or try l
+        -- 'l', -- Or try d
         'e',
         'f',
         'g',
