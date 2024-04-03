@@ -5,7 +5,7 @@ return {
   branch = 'master',
   keys = {
     { '<C-n>', '<Plug>(VM-Find-Word)' },
-    { '<C-j>', '<Plug>(VM-Select-Cursor-Down)' },
-    { '<C-k>', '<Plug>(VM-Select-Cursor-Up)' },
+    { '<A-Down>', '<Plug>(VM-Select-Cursor-Down)' },
+    { '<A-Up>', '<Plug>(VM-Select-Cursor-Up)' },
   },
 }
