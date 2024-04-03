@@ -166,6 +166,10 @@ vim.keymap.set('i', '90q', '<C-W><C-O>', { silent = true })
 vim.keymap.set('t', '90q', '<C-W><C-O>', { silent = true })
 
 vim.keymap.set('i', 'jfj', ';', { silent = true })
+vim.keymap.set('i', 'jfd', '.', { silent = true })
+vim.keymap.set('i', 'jfg', '>', { silent = true })
+vim.keymap.set('i', 'jfq', '?', { silent = true })
+vim.keymap.set('i', 'jfs', '/', { silent = true })
 
 -- System clipboard
 -- Function to copy yanked text to system clipboard
@@ -232,20 +236,17 @@ vim.api.nvim_create_autocmd('TermClose', {
 
 -- Only load treesitter after the first buffer is loaded
 -- to try and avoid some delays
-vim.api.nvim_create_autocmd('BufReadPost', {
-  pattern = '*',
-  once = true,
-  callback = function()
-    -- TODO: Fix the pattern and only run once
-    vim.defer_fn(function()
-      vim.cmd 'Lazy load nvim-treesitter nvim-lspconfig'
-      vim.cmd 'LspStart'
-    end, 100)
-    -- vim.defer_fn(function ()
-    --   vim.cmd("TSEnable highlight " .. vim.o.ft)
-    -- end, 100)
-  end,
-})
+-- vim.api.nvim_create_autocmd('BufReadPost', {
+--   pattern = '*',
+--   once = true,
+--   callback = function()
+--     -- TODO: Fix the pattern and only run once
+--     vim.defer_fn(function()
+--       vim.cmd 'Lazy load nvim-treesitter nvim-lspconfig'
+--       vim.cmd 'LspStart'
+--     end, 100)
+--   end,
+-- })
 
 vim.api.nvim_create_autocmd('BufReadPost', {
   pattern = '*.frag,*.vert,*.tesc,*.tese,*.geom,*.comp',
@@ -456,8 +457,7 @@ require('lazy').setup {
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     cmd = { 'Mason' },
-    module = false,
-    lazy = true,
+    lazy = false,
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for neovim
       'williamboman/mason.nvim',

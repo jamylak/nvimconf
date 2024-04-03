@@ -1,7 +1,6 @@
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  module = false,
-  lazy = true,
+  lazy = false,
   dependencies = {
     'nvim-treesitter/playground',
     'nvim-treesitter/nvim-treesitter-textobjects',
