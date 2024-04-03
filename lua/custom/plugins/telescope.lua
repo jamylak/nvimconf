@@ -173,8 +173,19 @@ return { -- Fuzzy Finder (files, lsp, etc)
     local function deleteBuffer(prompt_bufnr)
       -- Currently if it's the last buffer it deletes it
       -- but since it's still open nothing really happens
-      local entry = require('telescope.actions.state').get_selected_entry()
+      -- local buftype = vim.api.nvim_buf_get_option(bufnr, 'buftype')
+      -- if buftype == 'terminal' then
+      --   vim.api.nvim_buf_delete(prompt_bufnr, {})
+      -- end
+      local action_state = require 'telescope.actions.state'
+      local selection = action_state.get_selected_entry()
+      local buftype = vim.api.nvim_buf_get_option(selection.bufnr, 'buftype')
       require('telescope.actions').delete_buffer(prompt_bufnr)
+
+      -- Fixes error with deleting terminals
+      if buftype == 'terminal' then
+        vim.api.nvim_buf_delete(selection.bufnr, { force = true })
+      end
     end
 
     vim.keymap.set('n', '<leader>sb', function()
