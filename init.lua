@@ -115,6 +115,8 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
 end
 
+vim.keymap.set('n', '<leader>q', ':q<CR>', {})
+
 -- For letter in a-z make a keymapping
 -- gm<char> in normal mode to go to the upper case mark
 -- <CHAR>
@@ -126,7 +128,7 @@ for ch = 97, 122 do
 end
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>gg', ':-tabnew | term lazygit<CR>i', { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
@@ -254,13 +256,40 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   pattern = '*.frag,*.vert,*.tesc,*.tese,*.geom,*.comp',
   command = 'set filetype=glsl',
 })
+vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
+vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
+vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
 
+-- Keymapping to run code inside of a visual selection
+-- using :lua (visually selected code)
+function ExecuteVisualSelectionAsLua()
+  -- Save the original cursor position
+  local save_cursor = vim.api.nvim_win_get_cursor(0)
+  -- Get the current visual selection boundaries
+  local _, start_line, _, _ = unpack(vim.fn.getpos "'<")
+  local _, end_line, _, _ = unpack(vim.fn.getpos "'>")
+  -- Adjust the line numbers for correct indexing
+  start_line = start_line - 1
+  end_line = end_line
+  -- Capture the text within the visual selection
+  local lines = vim.api.nvim_buf_get_lines(0, start_line, end_line, false)
+  local code_to_execute = table.concat(lines, '\n')
+  -- Execute the captured Lua code
+  local func = load(code_to_execute)
+  if func then
+    pcall(func)
+  else
+    print 'Error in the selected Lua code.'
+  end
+  -- Restore the cursor position
+  vim.api.nvim_win_set_cursor(0, save_cursor)
+end
 local function terminal()
   vim.cmd 'term'
   vim.cmd 'startinsert'
 end
 local function terminalNewTab()
-  vim.cmd '-tabnew | term'
+  vim.cmd 'tabnew | term'
   vim.cmd 'startinsert'
 end
 local function terminalVertical()
@@ -271,7 +300,7 @@ local function terminalHorizontal()
   vim.cmd 'split | term'
   vim.cmd 'startinsert'
 end
-vim.keymap.set('n', '<leader>tn', ':-tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
@@ -280,6 +309,8 @@ vim.keymap.set('n', '<leader>tj', terminalVertical, { desc = 'Terminal - Vertica
 vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
 vim.keymap.set('n', '<leader>tr', ':tabclose<CR>', { desc = 'Tab Remove' })
 vim.keymap.set('n', '<leader>tl', ':tabnext #<CR>', { desc = 'Tab Last' })
+vim.keymap.set('n', '<leader>to', ':tabonly <CR>', { desc = 'Tab Only' })
+vim.keymap.set('n', '<leader>tb', '<C-W>T', { desc = 'Move window into tab' })
 local changeDirWindow = function()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
@@ -291,6 +322,11 @@ local changeDirTab = function()
   vim.cmd('tcd ' .. dir_path)
 end
 vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
+vim.keymap.set('n', '<T', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
+vim.keymap.set('n', '>T', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
+vim.keymap.set('n', '<<T', ':tabmove 0<CR>', { desc = 'Move tab to the left' })
+vim.keymap.set('n', '>>T', ':tabmove $<CR>', { desc = 'Move tab to the right' })
+
 vim.keymap.set('n', '<leader>lc', changeDirWindow, { desc = 'Window Change [C]urrent Directory to parent of curfile' })
 vim.api.nvim_create_user_command('T', ':-tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
@@ -312,8 +348,8 @@ vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>b', ':b#<CR>', { desc = '[B]uffer [L]ast' })
 vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer' })
 vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer' })
-vim.keymap.set('n', 'sk', ':tabnext<CR>', { desc = '[S]wap Tab - Next' })
-vim.keymap.set('n', 'st', ':tabnext#<CR>', { desc = '[S]wap [T]ab' })
+vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next' })
+vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
