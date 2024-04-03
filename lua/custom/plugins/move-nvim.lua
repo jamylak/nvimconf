@@ -5,6 +5,8 @@ return {
     { '<C-k>', ':MoveBlock(-1)<CR>', mode = 'v', desc = 'Move block up' },
     { '<C-h>', ':MoveHBlock(-1)<CR>', mode = 'v', desc = 'Move block left' },
     { '<C-l>', ':MoveHBlock(1)<CR>', mode = 'v', desc = 'Move block right' },
+    -- { '<C-j>', ':MoveLine(1)<CR>', mode = 'n', desc = 'Move block down' },
+    -- { '<C-k>', ':MoveLine(-1)<CR>', mode = 'n', desc = 'Move block up' },
   },
   opts = {
     line = {
@@ -23,10 +25,6 @@ return {
     },
   },
   -- Normal-mode commands
-  -- Turn off the normal mode one for now,
-  -- Later may turn them on but visual is enough for the moment
-  -- vim.keymap.set('n', '<A-j>', ':MoveLine(1)<CR>', opts)
-  -- vim.keymap.set('n', '<A-k>', ':MoveLine(-1)<CR>', opts)
   -- vim.keymap.set('n', '<A-h>', ':MoveHChar(-1)<CR>', opts)
   -- vim.keymap.set('n', '<A-l>', ':MoveHChar(1)<CR>', opts)
   -- vim.keymap.set('n', '<leader>wf', ':MoveWord(1)<CR>', opts)
