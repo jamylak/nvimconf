@@ -325,6 +325,8 @@ end
 vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
 vim.keymap.set('n', '<t', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
 vim.keymap.set('n', '>t', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
+vim.keymap.set('n', '<R', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
+vim.keymap.set('n', '>R', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
 vim.keymap.set('n', '<T', ':tabmove 0<CR>', { desc = 'Move tab to the far left' })
 vim.keymap.set('n', '>T', ':tabmove $<CR>', { desc = 'Move tab to the far right' })
 
