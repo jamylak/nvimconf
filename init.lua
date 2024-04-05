@@ -188,7 +188,10 @@ vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true
 vim.api.nvim_set_keymap('v', '<S-y>', '"+y', { noremap = true, silent = true })
 
 -- Faster write
-vim.api.nvim_set_keymap('n', '<leader>w', ':w<cr>', { silent = true })
+-- Only with function it doesn't come up as double write
+vim.keymap.set('n', '<leader>w', function()
+  vim.cmd 'w'
+end, { silent = true })
 
 -- Faster comment line
 vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
