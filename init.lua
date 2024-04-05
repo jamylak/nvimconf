@@ -4,6 +4,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.o.guicursor = ''
+-- Don't give ATTENTION when existing swap file found
+vim.o.shortmess = vim.o.shortmess .. 'A'
 -- vim.opt.guicursor = "n-v-c-i:block"
 -- -- https://www.reddit.com/r/neovim/comments/12cc7gq/startup_screen_disappears_immediately_after_using/
 vim.opt.shortmess:append { I = true }
