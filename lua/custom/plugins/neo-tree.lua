@@ -13,7 +13,7 @@ local function expandAllNeoTreeNodes()
   end
 end
 
-vim.keymap.set('n', '<leader>n', function()
+vim.keymap.set('n', '<leader>nn', function()
   vim.cmd 'Neotree toggle'
   vim.defer_fn(expandAllNeoTreeNodes, 50)
 end, { desc = '[N]eotree - Toggle' })
