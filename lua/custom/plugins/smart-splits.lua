@@ -56,6 +56,6 @@ return {
     },
   },
   opts = {
-    default_amount = 15,
+    default_amount = 8,
   },
 }
