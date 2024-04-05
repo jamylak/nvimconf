@@ -127,6 +127,16 @@ return { -- Fuzzy Finder (files, lsp, etc)
       --   },
       -- },
     }
+    local function getCWD()
+      local path = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+      -- If path starts with oil:// then get the part after
+      if string.match(path, '^oil://') then
+        path = string.sub(path, 7)
+      else
+        path = vim.fn.expand '%:p:h'
+      end
+      return path
+    end
 
     -- Enable telescope extensions, if they are installed
     pcall(require('telescope').load_extension, 'fzf')
@@ -141,23 +151,49 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>ff', function()
       builtin.find_files { no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
+    vim.keymap.set('n', '<leader>sf', function()
+      builtin.find_files { no_ignore = false, cwd = getCWD(), prompt_title = 'Find files (cwd)' }
+    end, { desc = '[F]ind [F]iles (cwd)' })
     vim.keymap.set('n', '<leader>h', function()
       builtin.find_files { no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
     vim.keymap.set('n', '<leader>fF', function()
       builtin.find_files { no_ignore = true, hidden = true }
     end, { desc = '[F]ind All [F]iles' })
+    vim.keymap.set('n', '<leader>sF', function()
+      builtin.find_files { no_ignore = true, hidden = true, prompt_title = 'Find files (cwd)', cwd = getCWD() }
+    end, { desc = '[F]ind All [F]iles (cwd)' })
     vim.keymap.set('n', '<leader>ft', builtin.builtin, { desc = '[F]ind [T]elescope' })
     vim.keymap.set('n', '<leader>fc', builtin.grep_string, { desc = '[F]ind current [W]ord' })
-    vim.keymap.set('n', '<leader>fu', builtin.grep_string, { desc = '[F]ind current [W]ord' })
+    vim.keymap.set('n', '<leader>sc', function()
+      builtin.grep_string { cwd = getCWD(), prompt_title = 'Find current word (cwd)' }
+    end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
+    vim.keymap.set('n', '<leader>sw', function()
+      builtin.live_grep { cwd = getCWD(), prompt_title = 'Find word (cwd)' }
+    end, { desc = '[F]ind [W]ord in Current Dir' })
+
     vim.keymap.set('n', '<leader>fp', function()
       builtin.live_grep { prompt_title = 'Find words in projects', cwd = os.getenv 'PROJECTS_DIR' }
     end, { desc = '[F]ind Words in Projects' })
     vim.keymap.set('n', '<leader>fr', builtin.registers, { desc = '[F]ind [R]egisters' })
     vim.keymap.set('n', '<leader>fW', function()
-      builtin.live_grep { no_ignore = true, hidden = true }
+      builtin.live_grep {
+        prompt_title = 'Find words in all files',
+        additional_args = function(opts)
+          return { '--hidden', '--no-ignore' }
+        end,
+      }
+    end, { desc = 'Find words in all files (cwd)' })
+    vim.keymap.set('n', '<leader>sW', function()
+      builtin.live_grep {
+        prompt_title = 'Find words in all files (cwd)',
+        cwd = getCWD(),
+        additional_args = function(opts)
+          return { '--hidden', '--no-ignore' }
+        end,
+      }
     end, { desc = 'Find words in all files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
