@@ -22,7 +22,12 @@ return {
         end,
         desc = 'CopilotChat - Quick chat',
       },
-      mode = 'n',
+      {
+        '<leader>cco',
+        function()
+          require('CopilotChat').open()
+        end,
+      },
     },
     branch = 'canary',
     dependencies = {
