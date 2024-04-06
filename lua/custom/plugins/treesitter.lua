@@ -41,7 +41,7 @@ return { -- Highlight, edit, and navigate code
             ['af'] = { query = '@function.outer', desc = 'around function ' },
             ['if'] = { query = '@function.inner', desc = 'inside function ' },
             ['al'] = { query = '@loop.outer', desc = 'around loop' },
-            ['il'] = { query = '@loop.inner', desc = 'inside loop' },
+            ['iL'] = { query = '@loop.inner', desc = 'inside loop' },
             ['aa'] = { query = '@parameter.outer', desc = 'around argument' },
             ['ia'] = { query = '@parameter.inner', desc = 'inside argument' },
           },
