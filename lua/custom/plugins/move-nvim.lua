@@ -1,12 +1,12 @@
 return {
   'fedepujol/move.nvim',
   keys = {
-    { '<C-j>', ':MoveBlock(1)<CR>', mode = 'v', desc = 'Move block down' },
-    { '<C-k>', ':MoveBlock(-1)<CR>', mode = 'v', desc = 'Move block up' },
-    { '<C-h>', ':MoveHBlock(-1)<CR>', mode = 'v', desc = 'Move block left' },
-    { '<C-l>', ':MoveHBlock(1)<CR>', mode = 'v', desc = 'Move block right' },
-    { '<C-j>', ':MoveLine(1)<CR>', mode = 'n', desc = 'Move block down' },
-    { '<C-k>', ':MoveLine(-1)<CR>', mode = 'n', desc = 'Move block up' },
+    { '<C-j>', ':MoveBlock(1)<CR>', mode = 'v', desc = 'Move block down', silent = true },
+    { '<C-k>', ':MoveBlock(-1)<CR>', mode = 'v', desc = 'Move block up', silent = true },
+    { '<C-h>', ':MoveHBlock(-1)<CR>', mode = 'v', desc = 'Move block left', silent = true },
+    { '<C-l>', ':MoveHBlock(1)<CR>', mode = 'v', desc = 'Move block right', silent = true },
+    { '<C-j>', ':MoveLine(1)<CR>', mode = 'n', desc = 'Move block down', silent = true },
+    { '<C-k>', ':MoveLine(-1)<CR>', mode = 'n', desc = 'Move block up', silent = true },
   },
   opts = {
     line = {
