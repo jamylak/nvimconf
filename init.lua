@@ -892,6 +892,7 @@ require('lazy').setup {
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
       require('mini.surround').setup {
+        n_lines = 100,
         mappings = {
           update_n_lines = '',
         },
