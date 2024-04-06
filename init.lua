@@ -159,7 +159,7 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
 end
 
-vim.keymap.set('n', '<leader>q', ':q<CR>', {})
+vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
 
 -- For letter in a-z make a keymapping
 -- gm<char> in normal mode to go to the upper case mark
