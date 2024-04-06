@@ -171,6 +171,7 @@ vim.keymap.set('t', 'ji', '<C-\\><C-n>', { silent = true })
 local mapping = { 'ji', 'jk' }
 for _, key in ipairs(mapping) do
   vim.keymap.set('i', key, '<Esc>', { silent = true })
+  vim.keymap.set('v', key, '<Esc>', { silent = true })
 end
 
 vim.keymap.set('t', '90', '<C-r>', { silent = true })
