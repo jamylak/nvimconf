@@ -823,8 +823,9 @@ require('lazy').setup {
       -- })
 
       cmp.setup {
-
         formatting = {
+          fields = { 'abbr', 'kind', 'menu' },
+          expandable_indicator = true,
           format = lspkind.cmp_format {
             mode = 'symbol', -- show only symbol annotations
             maxwidth = 50, -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
