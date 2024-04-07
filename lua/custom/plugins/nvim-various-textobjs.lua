@@ -35,13 +35,39 @@ vim.keymap.set('n', 'gX', function()
       return
     end
 
-    -- select one, use a plugin like dressing.nvim for nicer UI for
-    -- `vim.ui.select`
-    vim.ui.select(urls, { prompt = 'Select URL:' }, function(choice)
-      if choice then
-        openURL(choice)
-      end
-    end)
+    -- Telescope picker for URL selection
+    local pickers = require 'telescope.pickers'
+    local finders = require 'telescope.finders'
+    local conf = require('telescope.config').values
+    local action_state = require 'telescope.actions.state'
+    local actions = require 'telescope.actions'
+
+    pickers
+      .new({}, {
+        prompt_title = 'Select URL:',
+        finder = finders.new_table {
+          results = urls,
+          entry_maker = function(entry)
+            return {
+              value = entry,
+              display = entry,
+              ordinal = entry,
+            }
+          end,
+        },
+        sorter = conf.generic_sorter {},
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              openURL(selection.value)
+            end
+          end)
+          return true
+        end,
+      })
+      :find()
   end
 end, { desc = 'URL Opener' })
 
