@@ -24,8 +24,8 @@ return { -- Highlight, edit, and navigate code
           enable = true,
           lookahead = true,
           keymaps = {
-            ['ak'] = { query = '@block.outer', desc = 'around block' },
-            ['ik'] = { query = '@block.inner', desc = 'inside block' },
+            ['aU'] = { query = '@block.outer', desc = 'around block' },
+            ['iU'] = { query = '@block.inner', desc = 'inside block' },
             ['ac'] = { query = '@class.outer', desc = 'around class' },
             ['ic'] = { query = '@class.inner', desc = 'inside class' },
             ['ae'] = { query = '@expression', desc = 'around expression', query_group = 'expression' },
