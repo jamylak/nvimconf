@@ -418,13 +418,13 @@ end, {})
 
 vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
-vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer' })
-vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer' })
-vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next' })
-vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab' })
-vim.keymap.set('n', 'qj', '<C-W><C-W>', { desc = 'Swap Window' })
-vim.keymap.set('n', 'sn', '<C-W><C-W>', { desc = 'Swap Window', noremap = true })
-vim.keymap.set('n', 'qk', '$', { desc = 'End of line' })
+vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent = true })
+vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab', silent = true })
+vim.keymap.set('n', 'qj', '<C-W><C-W>', { desc = 'Swap Window', silent = true })
+vim.keymap.set('n', 'sn', '<C-W><C-W>', { desc = 'Swap Window', noremap = true, silent = true })
+vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
