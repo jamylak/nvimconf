@@ -5,6 +5,10 @@ keymap({ 'o', 'x' }, 'ad', "<cmd>lua require('various-textobjs').number('outer')
 return {
   'chrisgrieser/nvim-various-textobjs',
   event = 'BufReadPost',
-  opts = { useDefaultKeymaps = true },
+  opts = {
+    useDefaultKeymaps = true,
+    lookForwardSmall = 10,
+    lookForwardBig = 25,
+  },
   disabledKeymaps = { 'in', 'an' },
 }
