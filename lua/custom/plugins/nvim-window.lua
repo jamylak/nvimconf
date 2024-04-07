@@ -3,7 +3,6 @@ vim.keymap.set('t', 'gj', "<C-\\><C-n><cmd>lua require('nvim-window').pick()<cr>
 
 return {
   'yorickpeterse/nvim-window',
-  branch = 'feature/after-jump-callback',
   keys = {
     {
       'gj',
