@@ -213,7 +213,6 @@ vim.keymap.set('t', 'ji', '<C-\\><C-n>', { silent = true })
 local mapping = { 'ji', 'jk' }
 for _, key in ipairs(mapping) do
   vim.keymap.set('i', key, '<Esc>', { silent = true })
-  vim.keymap.set('v', key, '<Esc>', { silent = true })
 end
 
 vim.keymap.set('t', '90', '<C-r>', { silent = true })
@@ -271,11 +270,11 @@ end
 vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
-vim.keymap.set('n', '\\', ':split<CR>', { desc = 'Vertical Split' })
-vim.keymap.set('n', '|', ':vsplit<CR>', { desc = 'Horizontal Split' })
-vim.keymap.set('n', '<C-\\>', ':split | term<CR>', { desc = 'Vertical Split' })
+vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Vertical Split' })
+vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Horizontal Split' })
+vim.keymap.set('n', '<C-\\>', ':split | term<CR>', { silent = true, desc = 'Vertical Split' })
 -- Not working yet
-vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { desc = 'Horizontal Split' })
+vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { silent = true, desc = 'Horizontal Split' })
 
 -- Custom key remapping
 -- Function to run when entering insert mode
@@ -497,7 +496,7 @@ require('lazy').setup {
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    keys = { '<leader>', 'a', 'b', 'c', 'g', 'h', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' },
+    keys = { '<leader>', 'a', 'b', 'c', 'g', 'h', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ']', '[' },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup {
         triggers_blacklist = {
