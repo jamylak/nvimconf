@@ -73,7 +73,7 @@ end, { desc = 'URL Opener' })
 
 return {
   'chrisgrieser/nvim-various-textobjs',
-  event = 'BufReadPost',
+  event = 'BufReadPre',
   opts = {
     useDefaultKeymaps = true,
     lookForwardSmall = 10,
