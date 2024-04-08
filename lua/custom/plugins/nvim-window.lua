@@ -2,7 +2,7 @@ vim.keymap.set('i', 'gj', "<esc><cmd>lua require('nvim-window').pick()<cr>", { d
 vim.keymap.set('t', 'gj', "<C-\\><C-n><cmd>lua require('nvim-window').pick()<cr>", { desc = 'nvim-window: Jump to window', silent = true })
 
 return {
-  'yorickpeterse/nvim-window',
+  'jamylak/nvim-window',
   keys = {
     {
       'gj',
@@ -43,6 +43,7 @@ return {
         'y',
         'z',
       },
+      disable_hint = true,
     }
   end,
 }
