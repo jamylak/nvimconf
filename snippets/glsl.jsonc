@@ -51,7 +51,7 @@ plus various other papers & books
   "if": {
     "prefix": "if",
     "body": [
-      "if ($2){",
+      "if ($2) {",
       "\t$3",
       "}"
     ],
@@ -60,7 +60,7 @@ plus various other papers & books
   "ifelse": {
     "prefix": "ifelse",
     "body": [
-      "if ($2){",
+      "if ($2) {",
       "\t$3",
       "} else {",
       "\t$4",
@@ -80,7 +80,7 @@ plus various other papers & books
   ///EXIT EXECUTION
   "return": {
     "prefix": "return",
-    "body": "return;",
+    "body": "return $2;",
     "description": "The keyword return is used to define a proper exit for a function. If the function has the return type void no value is passed back to the caller of the function.\n\nreturn aValue;\n\nIf the function has a non-void return type a parameter of the same type has to be included in the statement. The value is passed back to the caller of the function."
   },
   "discard": {
@@ -94,7 +94,7 @@ plus various other papers & books
     "body": "vec2($2, $3)",
     "description": "The data type vec2 is used for floating point vectors with two components. There are several ways to initialize a vector:\n• Components are specified by providing a scalar value for each component (first example).\n• Components are specified by providing one scalar value. This value is used for all components (the second example is equivalent to the first).\n• Components are specified by providing a vector of higher dimension. The respective values are used to initialize the components (the second and third example are equivalent).\n\nSide note: The vector constructors can be used to cast between different vector types since type conversions are done automatically for each component."
   },
-  "vec2 (constant)": {
+  "vec2(constant)": {
     "prefix": "vec2 (constant)",
     "body": "vec2($2.$3, $4.$5)",
     "description": "Quickly define a vec2 with constant values",
@@ -104,7 +104,7 @@ plus various other papers & books
     "body": "vec3($2, $3, $4)",
     "description": "The data type vec3 is used for floating point vectors with three components. There are several ways to initialize a vector:\n• Components are specified by providing a scalar value for each component (first example).\n• Components are specified by providing one scalar value. This value is used for all components (the second example is equivalent to the first).\nComponents are specified by providing a vector of higher dimension. The respective values are used to initialize the components (the second and third example are equivalent).• Components are specified by providing a combination of vectors and/or scalars. The respective values are used to initialize the vector (the fifth and sixth example are equivalent). The arguments of the constructor must have at least as many components as the vector that is initialized.\n\nSide note: The vector constructors can be used to cast between different vector types since type conversions are done automatically for each component."
   },
-  "vec3 (constant)": {
+  "vec3(constant)": {
     "prefix": "vec3 (constant)",
     "body": "vec3($2.$3, $4.$5, $6.$7)",
     "description": "Quickly define a vec3 with constant values"
@@ -479,10 +479,10 @@ plus various other papers & books
   },
   ///FUNCTIONS
   "function float": {
-    "prefix": "float ()",
+    "prefix": "float()",
     "body": [
-      "float ${NAME}(){",
-      "\t${BODY}",
+      "float $2($3) {",
+      "\treturn $4;",
       "}"
     ],
     "description": "A standard function that would need a return of a float value for it to work"
@@ -490,7 +490,7 @@ plus various other papers & books
   "function void": {
     "prefix": "void",
     "body": [
-      "void ${NAME}(){",
+      "void ${NAME} () {",
       "\t${BODY}",
       "}"
     ],
@@ -500,7 +500,7 @@ plus various other papers & books
   "function main": {
     "prefix": "void main",
     "body": [
-      "void main(){",
+      "void main() {",
       "\t${BODY}",
       "}"
     ],
