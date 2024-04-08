@@ -863,18 +863,18 @@ require('lazy').setup {
         mapping = cmp.mapping.preset.insert {
           ['<C-b>'] = cmp.mapping.scroll_docs(-4),
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
-          ['<Tab>'] = cmp.mapping.select_next_item(),
+          -- ['<Tab>'] = cmp.mapping.select_next_item(),
           ['<C-e>'] = cmp.mapping.close(),
           ['<C-m>'] = cmp.mapping.select_next_item(),
           ['<C-n>'] = cmp.mapping.select_next_item(),
           ['<C-p>'] = cmp.mapping.select_prev_item(),
-          ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+          -- ['<S-Tab>'] = cmp.mapping.select_prev_item(),
           ['<C-y>'] = cmp.mapping.confirm { select = true },
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
           --  completions whenever it has completion options available.
           ['<C-Space>'] = cmp.mapping.complete {},
-          ['<CR>'] = completeOrJump,
+          -- ['<CR>'] = completeOrJump,
           ['<C-j>'] = completeOrJump,
           ['<C-l>'] = cmp.mapping(function()
             if luasnip.expand_or_locally_jumpable() then
