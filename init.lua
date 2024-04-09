@@ -131,6 +131,12 @@ vim.keymap.set('n', ']b', ':bnext<CR>', { desc = 'Go to next [B]uffer' })
 -- [t and ]t to navigate between tabs
 vim.keymap.set('n', '[t', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', ']t', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
+vim.keymap.set('n', 't', ':tabnext<CR>', { noremap = true, desc = 'Go to next [T]ab', silent = true })
+vim.keymap.set('n', 'T', ':tabprev<CR>', { noremap = true, desc = 'Go to prev [T]ab', silent = true })
+vim.keymap.set('n', 'H', ':tabnext #<CR>', { noremap = true, desc = 'Go to previously active [T]ab', silent = true })
+vim.keymap.set('n', 'M', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
+vim.keymap.set('n', 'm', '<C-W>p', { desc = 'Go to previously active Window', silent = true })
+vim.keymap.set('n', 'L', ':b#<CR>', { desc = 'Go to last active buffer', silent = true })
 -- gh to do the same as gt -- switch tabs
 vim.keymap.set('n', 'gy', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
 vim.keymap.set('n', 'gh', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
@@ -173,7 +179,14 @@ end
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gg', ':-tabnew | term lazygit<CR>i', { noremap = true })
+vim.keymap.set('n', '<leader>gg', function()
+  vim.cmd '-tabnew | term lazygit'
+  -- Fix for slow j scrolling because of jk escape
+  -- Just now i can't type capital J or K :P
+  vim.cmd "lua vim.keymap.set('t', 'J', 'j', {buffer = true})"
+  vim.cmd "lua vim.keymap.set('t', 'K', 'k', {buffer = true})"
+  vim.cmd 'startinsert'
+end, { noremap = true })
 
 local function openLazyGitFloating()
   local width = vim.api.nvim_get_option 'columns'
@@ -421,7 +434,7 @@ vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true }
 vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
 vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent = true })
 vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab', silent = true })
-vim.keymap.set('n', 'qj', '<C-W><C-W>', { desc = 'Swap Window', silent = true })
+vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })
 vim.keymap.set('n', 'sn', '<C-W><C-W>', { desc = 'Swap Window', noremap = true, silent = true })
 vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
 
@@ -496,7 +509,7 @@ require('lazy').setup {
 
   { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
-    keys = { '<leader>', 'a', 'b', 'c', 'g', 'h', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', ']', '[' },
+    keys = { '<leader>', 'a', 'b', 'c', 'g', 'h', 'l', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'w', 'x', 'y', 'z', ']', '[' },
     config = function() -- This is the function that runs, AFTER loading
       require('which-key').setup {
         triggers_blacklist = {
@@ -889,7 +902,7 @@ require('lazy').setup {
         },
         sources = {
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
+          { name = 'luasnip', keyword_length = 2 },
           { name = 'path' },
           -- { name = 'cody' },
         },
