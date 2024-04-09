@@ -27,22 +27,23 @@ return { -- Highlight, edit, and navigate code
             ['mai'] = { query = '@assignment.inner', desc = '@assignment.inner' },
             ['mao'] = { query = '@assignment.outer', desc = '@assignment.outer' },
             ['mal'] = { query = '@assignment.lhs', desc = '@assignment.lhs' },
+            ['mar'] = { query = '@assignment.rhs', desc = '@assignment.rhs' },
             ['mti'] = { query = '@attribute.inner', desc = '@attribute.inner' },
             ['mto'] = { query = '@attribute.outer', desc = '@attribute.outer' },
             ['mbi'] = { query = '@block.inner', desc = '@block.inner' },
             ['mbo'] = { query = '@block.outer', desc = '@block.outer' },
-            ['mci'] = { query = '@call.inner', desc = '@call.inner' },
-            ['mco'] = { query = '@call.outer', desc = '@call.outer' },
-            ['moi'] = { query = '@comment.inner', desc = '@comment.inner' },
-            ['moo'] = { query = '@comment.outer', desc = '@comment.outer' },
-            ['m/i'] = { query = '@comment.inner', desc = '@comment.inner' },
+            ['mli'] = { query = '@call.inner', desc = '@call.inner' },
+            ['mlo'] = { query = '@call.outer', desc = '@call.outer' },
+            -- I don't think comment inner works, check support table in github
+            -- ['m/i'] = { query = '@comment.inner', desc = '@comment.inner' },
             ['m/o'] = { query = '@comment.outer', desc = '@comment.outer' },
+            ['m/i'] = { query = '@comment.inner', desc = '@comment.inner' },
             ['m?i'] = { query = '@conditional.inner', desc = '@conditional.inner' },
             ['m?o'] = { query = '@conditional.outer', desc = '@conditional.outer' },
             ['mfi'] = { query = '@frame.inner', desc = '@frame.inner' },
             ['mfo'] = { query = '@frame.outer', desc = '@frame.outer' },
-            ['mli'] = { query = '@loop.inner', desc = '@loop.inner' },
-            ['mlo'] = { query = '@loop.outer', desc = '@loop.outer' },
+            ['moi'] = { query = '@loop.inner', desc = '@loop.inner' },
+            ['moo'] = { query = '@loop.outer', desc = '@loop.outer' },
             ['mni'] = { query = '@number.inner', desc = '@number.inner' },
             ['mxi'] = { query = '@regex.inner', desc = '@regex.inner' },
             ['mxo'] = { query = '@regex.outer', desc = '@regex.outer' },
@@ -55,10 +56,6 @@ return { -- Highlight, edit, and navigate code
             ['iU'] = { query = '@block.inner', desc = 'inside block' },
             ['ac'] = { query = '@class.outer', desc = 'around class' },
             ['ic'] = { query = '@class.inner', desc = 'inside class' },
-            ['ae'] = { query = '@expression', desc = 'around expression', query_group = 'expression' },
-            ['ie'] = { query = '@expression', desc = 'inside expression', query_group = 'expression' },
-            ['au'] = { query = '@call.outer', desc = 'around call expression' },
-            ['iu'] = { query = '@call.inner', desc = 'inside call expression' },
             -- TODO: figure out how to do this since it's not builtin
             -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects?tab=readme-ov-file#overriding-or-extending-textobjects
             -- ['av'] = { query = '@value.outer', desc = 'around value' },
@@ -156,6 +153,15 @@ return { -- Highlight, edit, and navigate code
         },
       },
     }
+
+    -- Change next arg powered by treesitter
+    -- Works as long as you are not right at the end of an ar
+    -- for i = 1, 9 do
+    vim.keymap.set('n', 'cina', ':normal ]A]acia<CR>', { silent = true })
+    vim.keymap.set('n', 'cila', ':normal [Acia<CR>', { silent = true })
+    vim.keymap.set('n', 'cana', ':normal ]A]acaa<CR>', { silent = true })
+    vim.keymap.set('n', 'cala', ':normal [Acaa<CR>', { silent = true })
+    -- end
 
     local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
     -- Repeat movement with ; and ,
