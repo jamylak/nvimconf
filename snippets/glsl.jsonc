@@ -328,7 +328,7 @@ plus various other papers & books
   },
   "cross": {
     "prefix": "cross",
-    "body": "cross($2, $3, $4)",
+    "body": "cross($2, $3)",
     "description": "vec3 cross(vec3 x, vec3 y)\n\nThe cross function returns the cross product of the two input parameters, i.e. a vector that is perpendicular to the plane containing x and y and has a magnitude that is equal to the area of the parallelogram that x and y span. The input parameters can only be 3-component floating vectors. The cross product is equivalent to the product of the length of the vectors times the sinus of the(smaller) angle between x and y."
   },
   "distance": {
