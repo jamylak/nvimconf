@@ -28,6 +28,8 @@ return { -- Highlight, edit, and navigate code
             ['mao'] = { query = '@assignment.outer', desc = '@assignment.outer' },
             ['mal'] = { query = '@assignment.lhs', desc = '@assignment.lhs' },
             ['mar'] = { query = '@assignment.rhs', desc = '@assignment.rhs' },
+            ['mj'] = { query = '@assignment.lhs', desc = '@assignment.lhs' },
+            ['mk'] = { query = '@assignment.rhs', desc = '@assignment.rhs' },
             ['mti'] = { query = '@attribute.inner', desc = '@attribute.inner' },
             ['mto'] = { query = '@attribute.outer', desc = '@attribute.outer' },
             ['mbi'] = { query = '@block.inner', desc = '@block.inner' },
@@ -44,7 +46,7 @@ return { -- Highlight, edit, and navigate code
             ['mfo'] = { query = '@frame.outer', desc = '@frame.outer' },
             ['moi'] = { query = '@loop.inner', desc = '@loop.inner' },
             ['moo'] = { query = '@loop.outer', desc = '@loop.outer' },
-            ['mni'] = { query = '@number.inner', desc = '@number.inner' },
+            ['mn'] = { query = '@number.inner', desc = '@number.inner' },
             ['mxi'] = { query = '@regex.inner', desc = '@regex.inner' },
             ['mxo'] = { query = '@regex.outer', desc = '@regex.outer' },
             ['mri'] = { query = '@return.inner', desc = '@return.inner' },
@@ -219,8 +221,8 @@ return { -- Highlight, edit, and navigate code
     -- Optionally, make builtin f, F, t, T also repeatable with ; and ,
     vim.keymap.set({ 'n', 'x', 'o' }, 'f', ts_repeat_move.builtin_f)
     vim.keymap.set({ 'n', 'x', 'o' }, 'F', ts_repeat_move.builtin_F)
-    vim.keymap.set({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t)
-    vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T)
+    -- vim.keymap.set({ 'n', 'x', 'o' }, 't', ts_repeat_move.builtin_t)
+    -- vim.keymap.set({ 'n', 'x', 'o' }, 'T', ts_repeat_move.builtin_T)
 
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
