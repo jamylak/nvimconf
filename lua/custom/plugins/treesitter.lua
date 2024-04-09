@@ -154,14 +154,31 @@ return { -- Highlight, edit, and navigate code
       },
     }
 
+    local function cinaIntToString(i)
+      -- Because next is the one after cia
+      -- it will start at 2nd which is just cina
+      -- then 3rd is c3ina
+      return i == 2 and '' or tostring(i)
+    end
+    local function cilaIntToString(i)
+      -- cila is just last one and c2ila is 2nd last
+      return i == 1 and '' or tostring(i)
+    end
+
     -- Change next arg powered by treesitter
     -- Works as long as you are not right at the end of an ar
-    -- for i = 1, 9 do
-    vim.keymap.set('n', 'cina', ':normal ]A]acia<CR>', { silent = true })
-    vim.keymap.set('n', 'cila', ':normal [Acia<CR>', { silent = true })
-    vim.keymap.set('n', 'cana', ':normal ]A]acaa<CR>', { silent = true })
-    vim.keymap.set('n', 'cala', ':normal [Acaa<CR>', { silent = true })
-    -- end
+    -- eg. cina = change next arg (after the normal cia)
+    -- c3ina = change n'th arg eg. 3rd arg
+    -- cila = change last arg (if in cursor then before that)
+    -- c2ila = change 2nd last arg
+    for i = 1, 9 do
+      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ina', ':normal ]A' .. string.rep(']a', i) .. 'cia<CR>', { silent = true })
+      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ana', ':normal ]A' .. string.rep(']a', i) .. 'caa<CR>', { silent = true })
+    end
+    for i = 1, 9 do
+      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ila', ':normal ' .. string.rep('[A', i) .. 'cia<CR>', { silent = true })
+      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ala', ':normal ' .. string.rep('[A', i) .. 'caa<CR>', { silent = true })
+    end
 
     local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
     -- Repeat movement with ; and ,
