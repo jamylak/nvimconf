@@ -180,6 +180,36 @@ return { -- Highlight, edit, and navigate code
       vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ala', ':normal ' .. string.rep('[A', i) .. 'caa<CR>', { silent = true })
     end
 
+    -- New function / call argument, only works with existing args
+    -- TODO: Maybe seperate new call argument, or way to make new 1st or 2nd arg
+    -- in either case
+    -- Make a new argument, go in function, go to last arg, create comma in insert mode
+    vim.keymap.set('n', 'cinFA', function()
+      vim.cmd 'normal ]F[Aa, '
+      vim.cmd 'normal l'
+      vim.cmd 'startinsert'
+    end, { silent = true })
+    -- New function first param
+    vim.keymap.set('n', 'cinFF', function()
+      -- Go inside function then outside function to make it more reliable
+      vim.cmd 'normal ]F[f]ai, '
+      vim.cmd 'normal h'
+      vim.cmd 'startinsert'
+    end, { silent = true })
+    -- New call argument
+    vim.keymap.set('n', 'cinCA', function()
+      vim.cmd 'normal ])a, '
+      vim.cmd 'normal l'
+      vim.cmd 'startinsert'
+    end, { silent = true })
+    -- New call argument first param
+    vim.keymap.set('n', 'cinCF', function()
+      -- Go into call then outside to make it more reliable
+      vim.cmd 'normal ])[l]ai, '
+      vim.cmd 'normal h'
+      vim.cmd 'startinsert'
+    end, { silent = true })
+
     local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
     -- Repeat movement with ; and ,
     -- vim way: ; goes to the direction you were moving.
