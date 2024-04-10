@@ -11,15 +11,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup {
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  { 'tpope/vim-sleuth', lazy = false }, -- Detect tabstop and shiftwidth automatically
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {}, event = 'BufReadPost' },
-
-  -- Highlight todo, notes, etc in comments
-  { 'folke/todo-comments.nvim', event = 'BufReadPost', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
-
   { import = 'plugins' },
 }
 
