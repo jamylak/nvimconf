@@ -65,8 +65,8 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-require 'custom.neovide'
-require 'custom.keymaps'
+require 'neovide'
+require 'keymaps'
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -147,7 +147,7 @@ require('lazy').setup {
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'BufReadPost', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
-  { import = 'custom.plugins' },
+  { import = 'plugins' },
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
