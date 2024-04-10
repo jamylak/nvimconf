@@ -168,53 +168,6 @@ vim.keymap.set('n', '<C-\\>', ':split | term<CR>', { silent = true, desc = 'Vert
 -- Not working yet
 vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { silent = true, desc = 'Horizontal Split' })
 
--- Custom key remapping
--- Function to run when entering insert mode
-local function onInsertEnter()
-  -- Set Caps Lock to Escape
-  -- vim.fn.jobstart('karabiner_cli --select-profile viminsert', { detach = true })
-end
-
--- Function to run when leaving insert mode
-local function onInsertLeave()
-  -- Set caps lock to control
-  -- vim.fn.jobstart('karabiner_cli --select-profile default', { detach = true })
-end
-
--- Set up autocommands
-vim.api.nvim_create_autocmd('InsertEnter', {
-  pattern = '*',
-  callback = onInsertEnter,
-})
-
-vim.api.nvim_create_autocmd('InsertLeave', {
-  pattern = '*',
-  callback = onInsertLeave,
-})
-
-vim.api.nvim_create_autocmd('TermClose', {
-  pattern = 'term://*',
-  command = "lua vim.api.nvim_input('<CR>')",
-})
-
--- Only load treesitter after the first buffer is loaded
--- to try and avoid some delays
--- vim.api.nvim_create_autocmd('BufReadPost', {
---   pattern = '*',
---   once = true,
---   callback = function()
---     -- TODO: Fix the pattern and only run once
---     vim.defer_fn(function()
---       vim.cmd 'Lazy load nvim-treesitter nvim-lspconfig'
---       vim.cmd 'LspStart'
---     end, 100)
---   end,
--- })
-
-vim.api.nvim_create_autocmd('BufReadPost', {
-  pattern = '*.frag,*.vert,*.tesc,*.tese,*.geom,*.comp',
-  command = 'set filetype=glsl',
-})
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
 vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
