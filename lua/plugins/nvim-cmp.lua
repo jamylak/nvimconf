@@ -16,9 +16,9 @@ return {
     --  nvim-cmp does not ship with all sources by default. They are split
     --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-cmdline',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-buffer',
+    -- 'hrsh7th/cmp-cmdline',
+    -- 'hrsh7th/cmp-path',
+    -- 'hrsh7th/cmp-buffer',
 
     -- If you want to add a bunch of pre-configured snippets,
     --    you can use this plugin to help you. It even has snippets
@@ -32,17 +32,8 @@ return {
     local luasnip = require 'luasnip'
     local lspkind = require 'lspkind'
     luasnip.config.setup {}
+    require 'snippets'
     -- require('luasnip.loaders.from_vscode').lazy_load { paths = { './snippets' } }
-
-    local completeOrJump = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.confirm { select = true }
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' })
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
     -- cmp.setup.cmdline(':', {
@@ -85,7 +76,7 @@ return {
             nvim_lsp = '[LSP]',
             luasnip = '[LuaSnip]',
             path = '[Path]',
-            cody = '[cody]',
+            cody = '[Cody]',
           },
         },
       },
@@ -104,22 +95,22 @@ return {
       mapping = cmp.mapping.preset.insert {
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping.scroll_docs(4),
-        ['<Tab>'] = cmp.mapping.select_next_item(),
         ['<C-e>'] = cmp.mapping.close(),
-        ['<C-m>'] = cmp.mapping.select_next_item(),
         ['<C-n>'] = cmp.mapping.select_next_item(),
         ['<C-p>'] = cmp.mapping.select_prev_item(),
-        ['<S-Tab>'] = cmp.mapping.select_prev_item(),
         ['<C-y>'] = cmp.mapping.confirm { select = true },
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
         --  completions whenever it has completion options available.
-        ['<C-Space>'] = cmp.mapping.complete {},
-        ['<CR>'] = completeOrJump,
-        ['<C-j>'] = completeOrJump,
+        ['<C-a>'] = cmp.mapping.complete {},
+        ['<C-k>'] = cmp.mapping(function()
+          if luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          end
+        end, { 'i', 's' }),
         ['<C-l>'] = cmp.mapping(function()
-          if luasnip.locally_jumpable(1) then
-            luasnip.jump(1)
+          if luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
           end
         end, { 'i', 's' }),
         ['<C-h>'] = cmp.mapping(function()
@@ -127,12 +118,23 @@ return {
             luasnip.jump(-1)
           end
         end, { 'i', 's' }),
+        ['<C-j>'] = cmp.mapping(function()
+          if luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          end
+        end, { 'i', 's' }),
       },
       sources = {
-        { name = 'nvim_lsp' },
-        { name = 'luasnip', keyword_length = 2 },
+        { name = 'luasnip' },
+        {
+          name = 'nvim_lsp',
+          -- https://stackoverflow.com/questions/73092651/neovim-how-to-filter-out-text-snippets-from-nvim-lspconfig-nvim-cmp
+          -- Filter only for lua?
+          entry_filter = function(entry, ctx)
+            return require('cmp').lsp.CompletionItemKind.Text ~= entry:get_kind()
+          end,
+        },
         { name = 'path' },
-        -- { name = 'cody' },
       },
     }
   end,
