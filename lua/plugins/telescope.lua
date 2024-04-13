@@ -262,10 +262,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[F]ind [/] in Open Files' })
 
     -- Shortcut for searching your neovim configuration files
+    vim.keymap.set('n', '<leader>sn', function()
+      builtin.find_files { cwd = vim.fn.stdpath 'config' }
+    end, { desc = '[F]ind [N]eovim Files' })
     vim.keymap.set('n', '<leader>fn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[F]ind [N]eovim Files' })
-    vim.keymap.set('n', '<leader>sn', function()
+    vim.keymap.set('n', 'sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[F]ind [N]eovim Files' })
 
