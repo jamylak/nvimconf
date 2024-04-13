@@ -39,7 +39,9 @@ return {
       expr = true,
     },
     -- Visual Selection from Normal Mode
+    { 'qh', '<cmd>STSSelectMasterNode<cr>', noremap = true, silent = true },
     { 'vx', '<cmd>STSSelectMasterNode<cr>', noremap = true, silent = true },
+    { 'qn', '<cmd>STSSelectCurrentNode<cr>', noremap = true, silent = true },
     { 'vn', '<cmd>STSSelectCurrentNode<cr>', noremap = true, silent = true },
     -- Select nodes in visual mode
     { 'J', '<cmd>STSSelectNextSiblingNode<cr>', mode = 'x', noremap = true, silent = true },
