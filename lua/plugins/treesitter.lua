@@ -93,6 +93,7 @@ return { -- Highlight, edit, and navigate code
             [']f'] = { query = '@function.outer', desc = 'Next function outer' },
             [']F'] = { query = '@function.inner', desc = 'Next function inner' },
             [']a'] = { query = '@parameter.inner', desc = 'Next argument inner' },
+            ['<c-]>'] = { query = '@parameter.inner', desc = 'Next argument inner' },
             -- [']A'] = { query = '@parameter.outer', desc = 'Next argument outer' },
           },
           goto_next_end = {
@@ -124,6 +125,7 @@ return { -- Highlight, edit, and navigate code
             ['[f'] = { query = '@function.outer', desc = 'Previous function outer' },
             ['[F'] = { query = '@function.inner', desc = 'Previous function inner' },
             ['[a'] = { query = '@parameter.inner', desc = 'Previous argument start' },
+            ['<c-[>'] = { query = '@parameter.inner', desc = 'Previous argument start' },
           },
           goto_previous_end = {
             ['[)'] = { query = '@call.inner', desc = 'Previous call inner' },
