@@ -169,7 +169,10 @@ vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to p
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Horizontal Split' })
-vim.keymap.set('n', '<C-\\>', ':split | term<CR>', { silent = true, desc = 'Vertical Split' })
+vim.keymap.set('n', '<C-\\>', function()
+  vim.cmd ':split | term'
+  vim.cmd 'startinsert'
+end, { silent = true, desc = 'Vertical Split' })
 -- Not working yet
 vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { silent = true, desc = 'Horizontal Split' })
 
