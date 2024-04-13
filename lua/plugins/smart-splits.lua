@@ -1,5 +1,6 @@
 return {
   'mrjones2014/smart-splits.nvim',
+  build = './kitty/install-kittens.bash',
   keys = {
     -- recommended mappings
     -- resizing splits
