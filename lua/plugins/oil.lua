@@ -43,6 +43,7 @@ local function loadNeotreeAndExpandNodes()
     neoTreeExpandAllNodes()
   end, 400)
 end
+
 return {
   'stevearc/oil.nvim',
   lazy = false,
@@ -51,6 +52,9 @@ return {
     'nvim-tree/nvim-web-devicons',
   },
   keys = {
+    { '<leader>od', '<CMD>Oil ' .. os.getenv 'HOME' .. '/.config/dotfiles<CR>', { desc = '[O]pen [D]otfiles' } },
+    { '<leader>oc', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '<CR>', { desc = '[O]pen [N]eovim Config' } },
+    { '<leader>on', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '/lua/plugins<CR>', { desc = '[O]pen [N]eovim Plugins Folder' } },
     { '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' } },
   },
   opts = {
