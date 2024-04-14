@@ -1,7 +1,7 @@
 -- Neovide settings
 if vim.g.neovide then
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
-  vim.o.guifont = 'MesloLGS NF:h13'
+  vim.o.guifont = 'MesloLGS NF:h14'
   -- Set current working directory to the project directory env var
   local projects_dir = os.getenv 'PROJECTS_DIR'
   vim.cmd('cd ' .. projects_dir)
