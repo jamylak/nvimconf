@@ -11,7 +11,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.highlight.on_yank()
   end,
 })
-
+-- No line numbers in terminal buffers
+vim.api.nvim_create_autocmd('TermOpen', {
+  pattern = 'term://*',
+  callback = function()
+    -- setlocal nonumber norelativenumber
+    vim.cmd 'setlocal nonumber norelativenumber'
+  end,
+})
 vim.api.nvim_create_autocmd('TermClose', {
   pattern = 'term://*',
   command = "lua vim.api.nvim_input('<CR>')",
