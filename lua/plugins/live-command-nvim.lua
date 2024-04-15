@@ -1,7 +1,7 @@
 return {
   'smjonas/live-command.nvim',
   event = 'VeryLazy',
-  -- If i don't put config it says the command has changed
+  -- Norm doesn't seem to work well
   config = function()
     require('live-command').setup {
       commands = {
