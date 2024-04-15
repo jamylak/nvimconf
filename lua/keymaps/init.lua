@@ -12,8 +12,6 @@ vim.keymap.set('n', ']b', ':bnext<CR>', { desc = 'Go to next [B]uffer' })
 -- [t and ]t to navigate between tabs
 vim.keymap.set('n', '[t', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', ']t', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
-vim.keymap.set('n', 't', ':tabnext<CR>', { noremap = true, desc = 'Go to next [T]ab', silent = true })
-vim.keymap.set('n', 'T', ':tabnew<CR>', { noremap = true, desc = 'Go to prev [T]ab', silent = true })
 vim.keymap.set('n', 'H', ':tabnext #<CR>', { noremap = true, desc = 'Go to previously active [T]ab', silent = true })
 vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
 vim.keymap.set('n', 'M', '<C-W>p', { desc = 'Go to previously active Window', silent = true })
@@ -46,11 +44,14 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
 end
 
-for i = 1, 10, 1 do
+for i = 1, 8 do
   vim.keymap.set('n', '<a-' .. i .. '>', ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
 end
+-- 9 = last tab
+vim.keymap.set('n', '<a-9>', ':tabn $<cr>', { desc = 'Go to last tab' })
 vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', silent = true })
 vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
+vim.keymap.set('n', '<a-s-x>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
 vim.keymap.set('n', 'Q', ':q<CR>', { silent = true })
