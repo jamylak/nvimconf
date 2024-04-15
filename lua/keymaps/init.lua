@@ -49,6 +49,8 @@ end
 for i = 1, 10, 1 do
   vim.keymap.set('n', '<a-' .. i .. '>', ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
 end
+vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', silent = true })
+vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
 vim.keymap.set('n', 'Q', ':q<CR>', { silent = true })
