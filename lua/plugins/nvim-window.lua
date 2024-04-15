@@ -3,6 +3,7 @@ vim.keymap.set('t', 'gj', "<C-\\><C-n><cmd>lua require('nvim-window').pick()<cr>
 
 return {
   'jamylak/nvim-window',
+  branch = 'feature/disable-hints',
   keys = {
     {
       'gj',
