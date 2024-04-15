@@ -56,6 +56,18 @@ return {
     { '<leader>oc', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '<CR>', { desc = '[O]pen [N]eovim Config' } },
     { '<leader>on', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '/lua/plugins<CR>', { desc = '[O]pen [N]eovim Plugins Folder' } },
     { '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' } },
+    {
+      'gp',
+      function()
+        -- if permissions is in columns then remove it to save space
+        if vim.tbl_contains(require('oil.config').columns, 'permissions') then
+          require('oil').set_columns { 'icon', 'size', 'mtime' }
+        else
+          require('oil').set_columns { 'permissions', 'icon', 'size', 'mtime' }
+        end
+      end,
+      { desc = 'Toggle of file permissions' },
+    },
   },
   opts = {
     default_file_explorer = true,
