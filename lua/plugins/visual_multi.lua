@@ -8,4 +8,7 @@ return {
     { '<A-Down>', '<Plug>(VM-Select-Cursor-Down)' },
     { '<A-Up>', '<Plug>(VM-Select-Cursor-Up)' },
   },
+  dependencies = {
+    'tpope/vim-surround',
+  },
 }
