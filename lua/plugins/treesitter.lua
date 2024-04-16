@@ -2,6 +2,18 @@
 -- if done in textobjects keymaps
 vim.api.nvim_set_keymap('n', '<c-[>', '[a', { silent = true })
 vim.api.nvim_set_keymap('n', '<c-]>', ']a', { silent = true })
+-- Replace <c-f> <c-b> forward and back 1 page with forward
+-- and back 1 function
+-- NOTE: Could we make these only activate if treesitter
+-- is able to navigate functions in this file?
+vim.api.nvim_set_keymap('n', '<c-f>', ']f', { silent = true })
+vim.api.nvim_set_keymap('n', '<c-b>', '[f', { silent = true })
+vim.api.nvim_set_keymap('v', '<c-f>', ']f', { silent = true })
+vim.api.nvim_set_keymap('v', '<c-b>', '[f', { silent = true })
+
+vim.api.nvim_set_keymap('n', '<c-0>', ']l', { desc = 'Next call', silent = true })
+vim.api.nvim_set_keymap('n', '<c-9>', '[l', { desc = 'Next call', silent = true })
+
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
   lazy = false,
@@ -39,6 +51,8 @@ return { -- Highlight, edit, and navigate code
             ['mbi'] = { query = '@block.inner', desc = '@block.inner' },
             ['mbo'] = { query = '@block.outer', desc = '@block.outer' },
             ['mli'] = { query = '@call.inner', desc = '@call.inner' },
+            ['mm'] = { query = '@call.inner', desc = '@call.inner' },
+            ['mi'] = { query = '@call.inner', desc = '@call.inner' },
             ['mlo'] = { query = '@call.outer', desc = '@call.outer' },
             -- I don't think comment inner works, check support table in github
             -- ['m/i'] = { query = '@comment.inner', desc = '@comment.inner' },
