@@ -280,6 +280,7 @@ vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent 
 vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab', silent = true })
 vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })
 vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
+vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
 vim.keymap.set('v', 'q', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qd', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'dq', 'dd', { desc = 'Delete line', silent = true })
