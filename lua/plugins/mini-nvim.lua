@@ -19,6 +19,7 @@ return { -- Collection of various small independent plugins/modules
       n_lines = 100,
       mappings = {
         update_n_lines = '',
+        highlight = '',
       },
     }
 
