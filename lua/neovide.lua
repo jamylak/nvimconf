@@ -14,6 +14,36 @@ if vim.g.neovide then
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
   vim.g.neovide_input_macos_alt_is_meta = true
   vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
+
+  -- For mode in Normal, Terminal, and Visual
+  for _, mode in ipairs { 'i', 'n', 't', 'v' } do
+    -- If we are in terminal mode, cmdPrefix is <C-\><C-n>
+    -- If we are in normal mode, cmdPrefix is empty
+    -- If we are in insert mode cmdPrefix is <ESC>
+    local cmd = ''
+    if mode == 't' then
+      cmd = '<C-\\><C-n>'
+    elseif mode == 'i' then
+      cmd = '<ESC>'
+    end
+    -- Set D-0 to D-9 to switch to the corresponding tab
+    for i = 0, 9 do
+      vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>', { noremap = true, silent = true })
+    end
+
+    -- Set D-Shift-[ to D-Shift-] to switch to the previous/next tab
+    vim.api.nvim_set_keymap(mode, '<D-{>', cmd .. ':tabprevious<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-}>', cmd .. ':tabnext<CR>', { noremap = true, silent = true })
+
+    -- Set D-T to open a new tab
+    vim.api.nvim_set_keymap(mode, '<D-t>', cmd .. ':tabnew<CR>', { noremap = true, silent = true })
+    -- Set D-W to close the current tab
+    vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
+    -- Set D-Shift-W to close all tabs except the current one
+    vim.api.nvim_set_keymap(mode, '<D-W>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
+    -- Set D-O to close other windows except current
+    vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':only<CR>', { noremap = true, silent = true })
+  end
 end
 vim.g.neovide_scroll_animation_length = 0.05
 vim.g.neovide_transparency = 0.7
