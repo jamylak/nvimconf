@@ -210,27 +210,27 @@ return { -- Highlight, edit, and navigate code
       vim.cmd 'normal ]F[Aa, '
       vim.cmd 'normal l'
       vim.cmd 'startinsert'
-    end, { silent = true })
+    end, { silent = true, desc = 'New function argument' })
     -- New function first param
     vim.keymap.set('n', 'cinFF', function()
       -- Go inside function then outside function to make it more reliable
       vim.cmd 'normal ]F[f]ai, '
       vim.cmd 'normal h'
       vim.cmd 'startinsert'
-    end, { silent = true })
+    end, { silent = true, desc = 'New function first argument' })
     -- New call argument
     vim.keymap.set('n', 'cinCA', function()
       vim.cmd 'normal ])a, '
       vim.cmd 'normal l'
       vim.cmd 'startinsert'
-    end, { silent = true })
+    end, { silent = true, desc = 'New call argument' })
     -- New call argument first param
     vim.keymap.set('n', 'cinCF', function()
       -- Go into call then outside to make it more reliable
       vim.cmd 'normal ])[l]ai, '
       vim.cmd 'normal h'
       vim.cmd 'startinsert'
-    end, { silent = true })
+    end, { silent = true, desc = 'New call first argument' })
 
     local ts_repeat_move = require 'nvim-treesitter.textobjects.repeatable_move'
     -- Repeat movement with ; and ,
