@@ -180,8 +180,10 @@ vim.keymap.set('n', '<C-\\>', function()
   vim.cmd ':split | term'
   vim.cmd 'startinsert'
 end, { silent = true, desc = 'Vertical Split' })
--- Not working yet
-vim.keymap.set('n', '<C-|>', ':vsplit | term<CR>', { silent = true, desc = 'Horizontal Split' })
+vim.keymap.set('n', '<C-S-\\>', function()
+  vim.cmd ':vsplit | term'
+  vim.cmd 'startinsert'
+end, { silent = true, desc = 'Horizontal Split' })
 
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
