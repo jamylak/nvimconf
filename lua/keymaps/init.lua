@@ -56,6 +56,8 @@ vim.keymap.set('n', '<a-9>', ':tabn $<cr>', { desc = 'Go to last tab' })
 vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', silent = true })
 vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
 vim.keymap.set('n', '<a-s-x>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<a-s-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<a-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 
 vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
 vim.keymap.set('n', 'Q', ':q<CR>', { silent = true })
