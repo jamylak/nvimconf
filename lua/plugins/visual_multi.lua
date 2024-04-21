@@ -7,6 +7,9 @@ return {
     { '<C-n>', '<Plug>(VM-Find-Word)' },
     { '<A-Down>', '<Plug>(VM-Select-Cursor-Down)' },
     { '<A-Up>', '<Plug>(VM-Select-Cursor-Up)' },
+    { '=A', '<Plug>(VM-Select-All)', desc = '<Plug>(VM-Select-All)' },
+    { '=/', '<Plug>(VM-Start-Regex-Search)', desc = '<Plug>(VM-Start-Regex-Search)' },
+    { '=\\', '<Plug>(VM-Add-Cursor-At-Pos)', desc = '<Plug>(VM-Add-Cursor-At-Pos)' },
   },
   dependencies = {
     'tpope/vim-surround',
