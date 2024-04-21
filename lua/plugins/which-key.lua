@@ -1,6 +1,6 @@
 return {
   'folke/which-key.nvim',
-  keys = { '<leader>', 'a', 'c', 'g', 'h', 'l', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'x', 'y', 'z', ']', '[' },
+  keys = { '<leader>', 'a', 'c', 'g', 'h', 'l', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'x', 'y', 'z', ']', '[', '=' },
   config = function() -- This is the function that runs, AFTER loading
     require('which-key').setup {
       triggers_blacklist = {
