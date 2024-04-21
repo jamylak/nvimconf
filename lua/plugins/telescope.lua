@@ -105,6 +105,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['v'] = require('telescope.actions').select_vertical,
             ['h'] = require('telescope.actions').select_horizontal,
             ['t'] = require('telescope.actions').select_tab,
+            ['T'] = function()
+              local selection = require('telescope.actions.state').get_selected_entry()
+              vim.cmd('tabnew ' .. selection.value)
+              -- Now bring back telescope
+              vim.cmd 'Telescope resume'
+              -- Enter normal mode again by doing escape
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
+            end,
             ['cd'] = setCWDtoPicker,
           },
         },
