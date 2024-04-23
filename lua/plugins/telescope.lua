@@ -181,6 +181,19 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
+    -- Git status
+    vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
+    vim.keymap.set('n', '<leader>fg', builtin.git_status, { desc = '[G]it [S]tatus' })
+    vim.keymap.set('n', '<leader>gS', builtin.git_stash, { desc = '[G]it [S]tash' })
+    -- Git files
+    vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]iles' })
+    vim.keymap.set('n', '<leader>gk', builtin.git_files, { desc = '[G]it [F]iles' })
+    vim.keymap.set('n', '<leader>fy', builtin.git_files, { desc = '[G]it [F]iles' })
+    -- Git branches
+    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' }) -- Git commits
+    vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+    vim.keymap.set('n', '<leader>gj', builtin.git_commits, { desc = '[G]it Commits' })
+
     vim.keymap.set('n', '<leader>sk', function()
       builtin.live_grep { cwd = getCWD(), prompt_title = 'Find word (cwd)' }
     end, { desc = '[F]ind [W]ord in Current Dir' })
