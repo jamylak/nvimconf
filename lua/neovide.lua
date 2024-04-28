@@ -45,6 +45,8 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-W>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
     -- Set D-O to close other windows except current
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':only<CR>', { noremap = true, silent = true })
+    -- Set D-F to run keybinding 'su' which is find on recent files
+    vim.api.nvim_set_keymap(mode, '<D-f>', 'su', { silent = true })
   end
 end
 vim.g.neovide_scroll_animation_length = 0.05
