@@ -54,8 +54,15 @@ return { -- Fuzzy Finder (files, lsp, etc)
       local action_utils = require 'telescope.actions.utils'
       local current_picker = action_state.get_current_picker(prompt_bufnr)
 
-      -- Set the current working directory to the picker
-      vim.api.nvim_set_current_dir(current_picker.cwd)
+      local finder = current_picker.finder
+      -- if finder is not nil
+      if finder.path then
+        -- If inside of telescope file browser get current path
+        vim.api.nvim_set_current_dir(finder.path)
+      else
+        -- Set the current working directory to the regular picker
+        vim.api.nvim_set_current_dir(current_picker.cwd)
+      end
     end
 
     local function openOil()
@@ -85,19 +92,30 @@ return { -- Fuzzy Finder (files, lsp, etc)
       require('oil').open(path)
     end
 
-    -- TODO: Default SHIFT ENTER = create file if the path is there
-    -- Unless it's a DIR eg. /tmp in which case navigate there
-
     require('telescope').setup {
-      -- You can put your default mappings / updates / etc. in here
-      --  All the info you're looking for is in `:help telescope.setup()`
-      --
+      extensions = {
+        file_browser = {
+          mappings = {
+            -- Backspace in normal mode goes up a directory
+            ['n'] = {
+              ['<BS>'] = function(prompt_bufnr, bypass)
+                local fb_actions = require('telescope').extensions.file_browser.actions
+                print 'Got called'
+                fb_actions.goto_parent_dir(prompt_bufnr, bypass)
+              end,
+            },
+          },
+          hidden = false,
+          show_hidden = false,
+        },
+      },
       defaults = {
         mappings = {
           i = {
             ['<c-o>'] = openOil,
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
+            ['<c-j>'] = setCWDtoPicker,
           },
           n = {
             ['o'] = openOil,
@@ -187,12 +205,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>gS', builtin.git_stash, { desc = '[G]it [S]tash' })
     -- Git files
     vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]iles' })
-    vim.keymap.set('n', '<leader>gk', builtin.git_files, { desc = '[G]it [F]iles' })
     vim.keymap.set('n', '<leader>fy', builtin.git_files, { desc = '[G]it [F]iles' })
     -- Git branches
     vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' }) -- Git commits
     vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
-    vim.keymap.set('n', '<leader>gj', builtin.git_commits, { desc = '[G]it Commits' })
+    vim.keymap.set('n', '<leader>gj', builtin.git_files, { desc = '[G]it [F]iles' })
+    vim.keymap.set('n', '<leader>gk', builtin.git_commits, { desc = '[G]it Commits' })
 
     vim.keymap.set('n', '<leader>sk', function()
       builtin.live_grep { cwd = getCWD(), prompt_title = 'Find word (cwd)' }
@@ -224,7 +242,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = 'Find words in all files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
-    vim.keymap.set('n', '<leader>fo', builtin.oldfiles, { desc = '[F]ind Recent' })
     vim.keymap.set('n', 'su', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', 'si', function()
       builtin.find_files { silent = true, no_ignore = false }
