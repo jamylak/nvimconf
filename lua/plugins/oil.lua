@@ -55,6 +55,7 @@ return {
     { '<leader>od', '<CMD>Oil ' .. os.getenv 'HOME' .. '/.config/dotfiles<CR>', { desc = '[O]pen [D]otfiles' } },
     { '<leader>oc', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '<CR>', { desc = '[O]pen [N]eovim Config' } },
     { '<leader>on', '<CMD>Oil ' .. vim.fn.stdpath 'config' .. '/lua/plugins<CR>', { desc = '[O]pen [N]eovim Plugins Folder' } },
+    { '<leader>ob', '<CMD>Oil ' .. os.getenv 'HOME' .. '/bar<CR>', { desc = '[O]pen Projects' } },
     { '-', '<CMD>Oil<CR>', { desc = 'Open parent directory' } },
     {
       'gp',
