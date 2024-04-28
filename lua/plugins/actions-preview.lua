@@ -3,7 +3,7 @@ return {
   keys = {
 
     {
-      '<leader>ca',
+      '<leader>la',
       function()
         require('actions-preview').code_actions()
       end,
