@@ -112,5 +112,6 @@ return {
         mode = 'n',
       },
     },
+    view_options = { show_hidden = true },
   },
 }
