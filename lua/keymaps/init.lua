@@ -57,8 +57,72 @@ vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', si
 vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
 vim.keymap.set('n', '<a-s-x>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 vim.keymap.set('n', '<a-s-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
-vim.keymap.set('n', '<a-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<a-q>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 
+local function find_terminal_buffer_number()
+  -- Get the current tabpage
+  local tabpage = vim.api.nvim_get_current_tabpage()
+  -- Get all windows in the current tabpage
+  local windows = vim.api.nvim_tabpage_list_wins(tabpage)
+
+  for _, window in ipairs(windows) do
+    -- Get the buffer number for each window
+    local buf = vim.api.nvim_win_get_buf(window)
+    -- Get the buffer type
+    local buftype = vim.api.nvim_buf_get_option(buf, 'buftype')
+    -- Check if the buffer type is terminal
+    if buftype == 'terminal' then
+      return buf
+    end
+  end
+
+  return nil -- Return nil if no terminal buffer is found
+end
+
+function scroll_buffer_to_bottom(buf_id)
+  -- Use nvim_buf_call to run commands in the context of the specified buffer
+  vim.api.nvim_buf_call(buf_id, function()
+    -- Execute the normal mode command 'G' to go to the end of the buffer
+    vim.cmd 'normal! G'
+  end)
+end
+local function sendTerminalRepeat(initialCommand)
+  -- First find the open terminal buffer in the current tab
+  local terminal_buffer = find_terminal_buffer_number()
+  if terminal_buffer ~= nil then
+    local chan = vim.api.nvim_buf_get_var(terminal_buffer, 'terminal_job_id')
+    -- Now send the keys to the terminal
+    if chan then
+      if initialCommand then
+        vim.fn.chansend(chan, initialCommand)
+      else
+        vim.fn.chansend(chan, 'r\r')
+      end
+      scroll_buffer_to_bottom(terminal_buffer)
+    end
+  else
+    -- If no terminal is open, open one
+    local bufname = vim.api.nvim_buf_get_name(0)
+    local cmd = nil
+    vim.cmd 'split | term'
+    if bufname:match '%.py$' then
+      -- Switch back to the original window
+      vim.cmd 'wincmd p'
+      cmd = 'python3 ' .. bufname .. ' \r'
+      print('Initial Command set to: ' .. cmd)
+      -- If we don't wait 100 ms then it sends the command but it
+      -- doesn't run
+      vim.defer_fn(function()
+        sendTerminalRepeat(cmd)
+      end, 100)
+    else
+      vim.cmd 'startinsert'
+    end
+  end
+end
+vim.api.nvim_create_user_command('M', sendTerminalRepeat, {})
+vim.keymap.set('n', '<leader>n', sendTerminalRepeat, { desc = 'Send Repeart to terminal' })
+vim.keymap.set('n', '<leader>m', ':make<CR>', { silent = true, desc = 'Run [M]ake' })
 vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
 vim.keymap.set('n', 'Q', ':q<CR>', { silent = true })
 
@@ -155,8 +219,6 @@ end
 -- Command to call the Lua function
 vim.api.nvim_create_user_command('Y', yank_to_clipboard, {})
 
-vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
 vim.api.nvim_set_keymap('v', '<S-y>', '"+y', { noremap = true, silent = true })
 
 -- Faster write
@@ -167,6 +229,8 @@ end, { silent = true })
 
 -- Faster comment line
 vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
+vim.api.nvim_set_keymap('n', '<leader>c', 'gcc', { silent = true })
+vim.api.nvim_set_keymap('v', '<leader>c', 'gc', { silent = true })
 
 local changeDir = function()
   local file_path = vim.fn.expand '%:p'
@@ -190,7 +254,12 @@ end, { silent = true, desc = 'Horizontal Split' })
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
 vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
-vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run vertical ' })
+vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run vertical ' })
+-- Leader Leader Y to yank whole file to clipboard
+vim.api.nvim_set_keymap('n', '<leader><leader>y', 'ggVG"+y', { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
+vim.api.nvim_set_keymap('n', '<leader>y', 'ggVG"+y', { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
+-- vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
+-- vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
 
 -- Keymapping to run code inside of a visual selection
 -- using :lua (visually selected code)
@@ -233,6 +302,7 @@ local function terminalHorizontal()
   vim.cmd 'startinsert'
 end
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<a-t>', ':tabnew<CR>', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
@@ -298,3 +368,9 @@ vim.keymap.set('n', 'qd', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'dq', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'qy', 'yy', { desc = 'Yank Line', silent = true })
 vim.keymap.set('n', 'qm', 'v$', { desc = 'Visual Select Until $', silent = true })
+
+-- Navigate through recent changes like g; and g,
+-- with C-; and C-,
+
+vim.keymap.set('n', '<C-;>', 'g;', { desc = 'Previous change', silent = true })
+vim.keymap.set('n', '<C-,>', 'g,', { desc = 'Next change', silent = true })
