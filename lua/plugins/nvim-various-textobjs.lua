@@ -1,6 +1,7 @@
 local keymap = vim.keymap.set
 keymap({ 'o', 'x' }, 'id', "<cmd>lua require('various-textobjs').number('inner')<CR>")
 keymap({ 'o', 'x' }, 'ad', "<cmd>lua require('various-textobjs').number('outer')<CR>")
+keymap({ 'o', 'x' }, '.', "<cmd>lua require('various-textobjs').nearEoL()<CR>")
 
 -- https://github.com/chrisgrieser/nvim-various-textobjs?tab=readme-ov-file
 local function openURL(url)
