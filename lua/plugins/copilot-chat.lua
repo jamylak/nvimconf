@@ -13,7 +13,7 @@ return {
     },
     keys = {
       {
-        '<leader>ccq',
+        '<leader>CQ',
         function()
           local input = vim.fn.input 'Quick Chat: '
           if input ~= '' then
@@ -23,7 +23,7 @@ return {
         desc = 'CopilotChat - Quick chat',
       },
       {
-        '<leader>cco',
+        '<leader>CO',
         function()
           require('CopilotChat').open()
         end,
