@@ -103,11 +103,6 @@ return {
         --  Generally you don't need this, because nvim-cmp will display
         --  completions whenever it has completion options available.
         ['<C-a>'] = cmp.mapping.complete {},
-        ['<C-k>'] = cmp.mapping(function()
-          if luasnip.expand_or_locally_jumpable() then
-            luasnip.expand_or_jump()
-          end
-        end, { 'i', 's' }),
         ['<C-l>'] = cmp.mapping(function()
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
@@ -119,6 +114,13 @@ return {
           end
         end, { 'i', 's' }),
         ['<C-j>'] = cmp.mapping(function()
+          if cmp.visible() then
+            cmp.confirm { select = true }
+          elseif luasnip.expand_or_locally_jumpable() then
+            luasnip.expand_or_jump()
+          end
+        end, { 'i', 's' }),
+        ['<C-k>'] = cmp.mapping(function()
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           end
