@@ -359,9 +359,11 @@ vim.keymap.set('n', 'st', ':tabnext<CR>', { desc = '[S]wap [T]ab', silent = true
 vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })
 vim.keymap.set('n', 'qb', '<cmd>normal sfb<CR>', { desc = 'Surrounding bracket', silent = true })
 vim.keymap.set('n', 'qv', '<cmd>normal sfnb<CR>', { desc = 'Next surrounding bracket', silent = true })
+vim.keymap.set('n', 'qo', '<cmd>normal vxov<CR>', { desc = 'Cursor to root TS node', silent = true })
 vim.keymap.set('n', 'sh', '<C-W>p', { desc = '[S]wap [W]indow', silent = true })
 vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
+vim.keymap.set('n', 'qg', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qd', 'dd', { desc = 'Delete line', silent = true })
@@ -374,3 +376,51 @@ vim.keymap.set('n', 'qm', 'v$', { desc = 'Visual Select Until $', silent = true 
 
 vim.keymap.set('n', '<C-;>', 'g;', { desc = 'Previous change', silent = true })
 vim.keymap.set('n', '<C-,>', 'g,', { desc = 'Next change', silent = true })
+
+-- Switch from header file to source file and vice versa
+-- This is useful when you are working with C/C++ projects
+-- For example if i'm in include/abc.h it will go to src/abc.cpp
+-- If i'm in src/abc.cpp it will go to include/abc.h
+vim.api.nvim_create_user_command('S', function()
+  local file_path = vim.fn.expand '%:p:h'
+  local file_name = vim.fn.expand '%:t'
+  local new_file_path = ''
+  local new_file_name = ''
+  if file_path:match 'include' then
+    new_file_path = file_path:gsub('include', 'src')
+  elseif file_path:match 'src' then
+    new_file_path = file_path:gsub('src', 'include')
+  end
+  if file_name:match '%.cpp' then
+    new_file_name = file_name:gsub('%.cpp', '.h')
+  elseif file_name:match '%.h' then
+    new_file_name = file_name:gsub('%.h', '.cpp')
+  end
+  new_file_path = new_file_path .. '/' .. new_file_name
+  vim.cmd('e ' .. new_file_path)
+end, {})
+
+-- [+Space and ]+Space to insert newline above or below cursor
+vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
+vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
+
+local function cd_to_git_root()
+  -- Execute the git command to find the root
+  local handle = io.popen('git -C ' .. vim.fn.expand '%:p:h' .. ' rev-parse --show-toplevel')
+  local result = handle:read '*a'
+  handle:close()
+
+  -- Trim whitespace from the result
+  result = string.gsub(result, '%s+$', '')
+
+  if result == '' then
+    print 'Not a git repository or some other error occurred'
+  else
+    -- Change the directory
+    vim.cmd('cd ' .. vim.fn.fnameescape(result))
+    print('Changed directory to ' .. result)
+  end
+end
+
+vim.keymap.set('n', '<leader>v', cd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>bc', cd_to_git_root, { noremap = true })
