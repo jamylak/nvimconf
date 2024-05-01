@@ -243,6 +243,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', 'su', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+    vim.keymap.set('n', 'so', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', 'si', function()
       builtin.find_files { silent = true, no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
