@@ -58,6 +58,7 @@ vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent
 vim.keymap.set('n', '<a-s-x>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 vim.keymap.set('n', '<a-s-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 vim.keymap.set('n', '<a-q>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<a-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 
 local function find_terminal_buffer_number()
   -- Get the current tabpage
@@ -366,6 +367,7 @@ vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
 vim.keymap.set('n', 'qg', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$', { desc = 'End of line', silent = true })
+vim.keymap.set('v', '<c-p>', 'ygvvo<esc>pO<esc>j', { desc = 'Duplicate current selection below', silent = true })
 vim.keymap.set('n', 'qd', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'dq', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'qy', 'yy', { desc = 'Yank Line', silent = true })
