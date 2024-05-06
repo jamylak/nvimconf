@@ -102,9 +102,24 @@ return {
       -- No, but seriously. Please read `:help ins-completion`, it is really good!
       mapping = cmp.mapping.preset.insert {
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-f>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            -- print 'Visible'
+            cmp.scroll_docs(4)
+          else
+            -- print 'fallback'
+            fallback()
+          end
+        end, { 'i', 's' }),
         ['<C-e>'] = cmp.mapping.close(),
-        ['<C-n>'] = cmp.mapping.select_next_item(),
+        ['<C-n>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_next_item()
+          else
+            fallback()
+            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>w', true, true, true), 'n', true)
+          end
+        end, { 'i', 's' }),
         ['<C-p>'] = cmp.mapping.select_prev_item(),
         ['<C-y>'] = cmp.mapping.confirm { select = true },
         -- Manually trigger a completion from nvim-cmp.
@@ -116,21 +131,29 @@ return {
             luasnip.expand_or_jump()
           end
         end, { 'i', 's' }),
-        ['<C-h>'] = cmp.mapping(function()
+        ['<C-h>'] = cmp.mapping(function(fallback)
           if luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
+            vim.cmd 'w'
           end
         end, { 'i', 's' }),
-        ['<C-j>'] = cmp.mapping(function()
+        ['<C-j>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.confirm { select = true }
           elseif luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
+          else
+            -- fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>w', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
-        ['<C-k>'] = cmp.mapping(function()
+        ['<C-k>'] = cmp.mapping(function(fallback)
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>$', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
       },
