@@ -42,3 +42,8 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   pattern = '*.frag,*.vert,*.tesc,*.tese,*.geom,*.comp',
   command = 'set filetype=glsl',
 })
+-- Don't have a good metal one yet
+vim.api.nvim_create_autocmd('BufReadPost', {
+  pattern = '*.metal',
+  command = 'set filetype=glsl',
+})
