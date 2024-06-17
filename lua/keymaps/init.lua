@@ -27,6 +27,7 @@ vim.keymap.set('n', 'gh', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
 
 -- Iterate through modes: ['n', 'i', 't']
 -- and set the keymapping in each mode
+-- TODO: Test HU, HI etc
 for _, mode in ipairs { 'n', 'i', 't' } do
   local cmd = ''
   if mode == 'i' then
@@ -47,6 +48,13 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkj', cmd .. ':tabn 10<CR>', {})
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
 end
+
+vim.keymap.set('n', 'HE', ':tabn 1<CR>', {})
+vim.keymap.set('n', 'HR', ':tabn 2<CR>', {})
+vim.keymap.set('n', 'HF', ':tabn 3<CR>', {})
+vim.keymap.set('n', 'HU', ':tabn 4<CR>', {})
+vim.keymap.set('n', 'HI', ':tabn 5<CR>', {})
+vim.keymap.set('n', 'HO', ':tabn 6<CR>', {})
 
 for i = 1, 8 do
   vim.keymap.set('n', '<a-' .. i .. '>', ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
@@ -195,6 +203,14 @@ vim.keymap.set('n', '90w', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', '89', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
 vim.keymap.set('i', '90w', '<C-W>', { silent = true })
+vim.keymap.set('i', 'JF', ';', { silent = true })
+vim.keymap.set('i', '901', ';', { silent = true })
+vim.keymap.set('i', '90e', ';', { silent = true })
+vim.keymap.set('i', 'jfe', ';', { silent = true })
+vim.keymap.set('i', 'jgr', ';', { silent = true })
+vim.keymap.set('i', '902', '>', { silent = true })
+vim.keymap.set('i', '903', '->', { silent = true })
+vim.keymap.set('i', '904', ');', { silent = true })
 vim.keymap.set('t', '90w', '<C-W>', { silent = true })
 vim.keymap.set('i', 'fb', '<Esc><C-W><C-W>', { silent = true })
 vim.keymap.set('t', 'fb', '<C-\\><C-n><C-W><C-W>', { silent = true })
@@ -365,6 +381,8 @@ vim.keymap.set('n', 'sh', '<C-W>p', { desc = '[S]wap [W]indow', silent = true })
 vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
 vim.keymap.set('n', 'qg', 'G', { desc = 'Go to end of file', silent = true })
+vim.keymap.set('n', 'gl', 'G', { desc = 'Go to end of file', silent = true })
+vim.keymap.set('n', 'gp', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('v', '<c-p>', 'ygvvo<esc>pO<esc>j', { desc = 'Duplicate current selection below', silent = true })
@@ -392,6 +410,8 @@ vim.api.nvim_create_user_command('S', function()
     new_file_path = file_path:gsub('include', 'src')
   elseif file_path:match 'src' then
     new_file_path = file_path:gsub('src', 'include')
+  else
+    new_file_path = file_path
   end
   if file_name:match '%.cpp' then
     new_file_name = file_name:gsub('%.cpp', '.h')
@@ -434,3 +454,25 @@ vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
 vim.keymap.set('i', '<C-x>', '<c-o>x', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
+
+-- Create a new project
+local function newProj()
+  require('telescope').extensions.file_browser.file_browser {
+    cwd = '~/bar',
+    attach_mappings = function(prompt_bufnr, map)
+      -- Define what happens when you press Enter
+      map('i', '<CR>', function()
+        -- Get the current input text
+        local current_input = require('telescope.actions.state').get_current_line()
+        print('Current input: ' .. current_input)
+        require('telescope.actions').close(prompt_bufnr)
+        local path = '~/bar/' .. current_input
+        vim.fn.mkdir(vim.fn.expand(path), 'p')
+        vim.cmd('e ' .. path)
+      end)
+      return true -- Return true to keep default mappings as well
+    end,
+  }
+end
+
+vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })

@@ -40,6 +40,22 @@ return {
     local luasnip = require 'luasnip'
     local lspkind = require 'lspkind'
     luasnip.config.setup {}
+    local super = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm { select = true }
+      elseif luasnip.expand_or_locally_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' })
+    local superBack = cmp.mapping(function(fallback)
+      if luasnip.locally_jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' })
     require 'snippets'
     -- require('luasnip.loaders.from_vscode').lazy_load { paths = { './snippets' } }
 
@@ -139,6 +155,12 @@ return {
             vim.cmd 'w'
           end
         end, { 'i', 's' }),
+        ['JH'] = superBack,
+        ['jh'] = superBack,
+        ['JJ'] = super,
+        ['JI'] = super,
+        ['JK'] = cmp.mapping.select_next_item(),
+        ['jj'] = super,
         ['<C-j>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.confirm { select = true }
