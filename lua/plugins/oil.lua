@@ -69,6 +69,23 @@ return {
       end,
       { desc = 'Toggle of file permissions' },
     },
+    {
+      '<leader>c',
+      function()
+        if require('oil.config').view_options.sort[2][1] == 'mtime' then
+          require('oil').set_sort {
+            { 'type', 'asc' },
+            { 'name', 'asc' },
+          }
+        else
+          require('oil').set_sort {
+            { 'type', 'desc' },
+            { 'mtime', 'desc' },
+          }
+        end
+      end,
+      { desc = '[C]hange sort order' },
+    },
   },
   opts = {
     default_file_explorer = true,
