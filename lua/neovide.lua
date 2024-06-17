@@ -1,7 +1,20 @@
+local function adjustFontSize(inc)
+  local font = vim.o.guifont
+  local size = tonumber(font:match '%d+')
+  size = size + inc
+  -- print("New Size: " .. size)
+  vim.o.guifont = font:gsub('%d+', size)
+end
+local function decreaseFontSize()
+  adjustFontSize(-2)
+end
+local function increaseFontSize()
+  adjustFontSize(2)
+end
 -- Neovide settings
 if vim.g.neovide then
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
-  vim.o.guifont = 'Fira Code Medium'
+  vim.o.guifont = 'Fira Code Medium:h16'
   -- vim.o.guifont = 'MesloLGS NF:h14'
   -- Set current working directory to the project directory env var
   local projects_dir = os.getenv 'PROJECTS_DIR'
@@ -37,6 +50,9 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-{>', cmd .. ':tabprevious<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, '<D-}>', cmd .. ':tabnext<CR>', { noremap = true, silent = true })
 
+    vim.api.nvim_set_keymap(mode, '<D-]>', '<C-w>w', { silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-[>', '<C-w>W', { silent = true })
+
     -- Set D-T to open a new tab
     vim.api.nvim_set_keymap(mode, '<D-t>', cmd .. ':tabnew<CR>', { noremap = true, silent = true })
     -- Set D-W to close the current tab
@@ -47,6 +63,8 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':only<CR>', { noremap = true, silent = true })
     -- Set D-F to run keybinding 'su' which is find on recent files
     vim.api.nvim_set_keymap(mode, '<D-f>', 'su', { silent = true })
+    vim.keymap.set(mode, '<D-=>', increaseFontSize, { silent = true })
+    vim.keymap.set(mode, '<D-->', decreaseFontSize, { silent = true })
   end
 end
 vim.g.neovide_scroll_animation_length = 0.05
