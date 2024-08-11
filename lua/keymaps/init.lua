@@ -449,11 +449,15 @@ vim.keymap.set('n', '<leader>bc', cd_to_git_root, { noremap = true })
 
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
-vim.keymap.set('i', '<C-f>', '<c-o>w', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
 vim.keymap.set('i', '<C-x>', '<c-o>x', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
+
+-- Faster way to do common symbols
+vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
+vim.keymap.set('i', '<C-f><C-j>', '.', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-f><C-k>', ';', { silent = true, noremap = true })
 
 -- Create a new project
 local function newProj()
