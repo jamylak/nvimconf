@@ -2,7 +2,11 @@ return {
   'folke/which-key.nvim',
   keys = { '<leader>', 'a', 'c', 'g', 'h', 'l', 'n', 'o', 'p', 'q', 'r', 's', 'u', 'v', 'x', 'y', 'z', ']', '[', '=' },
   config = function()
-    require('which-key').setup {}
+    require('which-key').setup {
+      triggers = {
+        { '<auto>', mode = 'nxso' },
+      },
+    }
     require('which-key').add {
       { '<leader>c', group = '[C]ode' },
       { '<leader>d', group = '[D]ocument' },
