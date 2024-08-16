@@ -178,7 +178,13 @@ local function openLazyGitFloating()
   vim.api.nvim_command 'term lazygit'
   vim.api.nvim_command 'startinsert'
 end
+local function cdOpenLazyGitFloating()
+  -- run cd
+  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('cd', true, true, true), 'n', true)
+  openLazyGitFloating()
+end
 vim.keymap.set('n', '<leader>gh', openLazyGitFloating, { noremap = true })
+vim.keymap.set('n', '<leader>gm', cdOpenLazyGitFloating, { noremap = true })
 
 -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -455,8 +461,13 @@ vim.keymap.set('i', '<C-x>', '<c-o>x', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
 
 -- Faster way to do common symbols
-vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
+-- vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
+vim.keymap.set('i', '<C-f>j', ',', { silent = true })
 vim.keymap.set('i', '<C-f><C-j>', '.', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-g>', '.', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-f><C-k>', ';', { silent = true, noremap = true })
 
 -- Create a new project
