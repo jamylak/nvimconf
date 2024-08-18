@@ -468,6 +468,7 @@ vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-g>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-->', ';', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-f><C-k>', ';', { silent = true, noremap = true })
 
 -- Create a new project
