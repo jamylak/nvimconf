@@ -58,6 +58,7 @@ vim.keymap.set('n', 'HO', ':tabn 6<CR>', {})
 
 for i = 1, 8 do
   vim.keymap.set('n', '<a-' .. i .. '>', ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
+  vim.keymap.set('n', '<leader>t' .. i, ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
 end
 -- 9 = last tab
 vim.keymap.set('n', '<a-9>', ':tabn $<cr>', { desc = 'Go to last tab' })
