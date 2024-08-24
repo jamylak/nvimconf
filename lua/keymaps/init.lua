@@ -37,7 +37,7 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   end
   vim.keymap.set(mode, 'gko', cmd .. ':tabn 1<CR>', {})
   vim.keymap.set(mode, 'gkp', cmd .. ':tabn 2<CR>', {})
-  vim.keymap.set(mode, 'gkl', cmd .. ':tabn 3<CR>', {})
+  vim.keymap.set(mode, 'gk[', cmd .. ':tabn 3<CR>', {})
   vim.keymap.set(mode, 'gkd', cmd .. ':tabn 4<CR>', {})
   vim.keymap.set(mode, 'gk;', cmd .. ':tabn 4<CR>', {})
   vim.keymap.set(mode, 'gke', cmd .. ':tabn 5<CR>', {})
