@@ -24,9 +24,8 @@ return {
       chars = {
         'i',
         'o',
-        'k',
-        'd', -- Or try l
-        -- 'l', -- Or try d
+        'p',
+        'd',
         'e',
         'f',
         'g',
