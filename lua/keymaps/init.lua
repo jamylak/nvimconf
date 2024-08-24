@@ -492,3 +492,7 @@ local function newProj()
 end
 
 vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })
+
+vim.api.nvim_create_user_command('NT', ':Neotree', {})
+vim.api.nvim_create_user_command('J', ':Neotree', {})
+vim.api.nvim_create_user_command('L', ':Neotree', {})
