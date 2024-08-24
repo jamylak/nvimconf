@@ -13,10 +13,26 @@ local function expandAllNeoTreeNodes()
   end
 end
 
+vim.keymap.set('n', '<leader><leader>T', function()
+  vim.cmd 'Neotree toggle'
+  vim.defer_fn(expandAllNeoTreeNodes, 50)
+  -- This will focus on neotree
+end, { desc = '[N]eotree - Toggle' })
+
+vim.keymap.set('n', '<leader>j', function()
+  vim.cmd 'Neotree toggle'
+  vim.defer_fn(expandAllNeoTreeNodes, 50)
+  -- Switch back to previous winow
+  vim.cmd 'wincmd p'
+end, { desc = '[N]eotree - Toggle' })
+
 vim.keymap.set('n', '<leader><leader>t', function()
   vim.cmd 'Neotree toggle'
   vim.defer_fn(expandAllNeoTreeNodes, 50)
+  -- Switch back to previous winow
+  vim.cmd 'wincmd p'
 end, { desc = '[N]eotree - Toggle' })
+
 vim.keymap.set('n', '<leader><leader>x', function()
   expandAllNeoTreeNodes()
 end, { desc = '[N]eotree - Toggle' })
