@@ -133,8 +133,8 @@ end
 vim.api.nvim_create_user_command('M', sendTerminalRepeat, {})
 vim.keymap.set('n', '<leader>n', sendTerminalRepeat, { desc = 'Send Repeart to terminal' })
 vim.keymap.set('n', '<leader>m', ':make<CR>', { silent = true, desc = 'Run [M]ake' })
-vim.keymap.set('n', '<leader>q', ':q<CR>', { silent = true })
-vim.keymap.set('n', 'Q', ':q<CR>', { silent = true })
+vim.keymap.set('n', '<leader>q', ':q!<CR>', { silent = true })
+vim.keymap.set('n', 'Q', ':q!<CR>', { silent = true })
 
 -- For letter in a-z make a keymapping
 -- gm<char> in normal mode to go to the upper case mark
