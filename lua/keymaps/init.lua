@@ -393,7 +393,18 @@ vim.keymap.set('n', 'gl', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'gp', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$h', { desc = 'End of line', silent = true })
-vim.keymap.set('v', '<c-p>', 'ygvvo<esc>pO<esc>j', { desc = 'Duplicate current selection below', silent = true })
+
+-- Easy duplication of lines
+vim.keymap.set('x', '<c-p>', function()
+  local cmd = ''
+  if vim.fn.mode() == 'V' then
+    cmd = "y'>vo<esc>pO<esc>j"
+  else
+    cmd = "y']o<esc>pO<esc>j"
+  end
+  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(cmd, true, true, true), 'n', true)
+end, { noremap = true })
+
 vim.keymap.set('n', 'qd', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'dq', 'dd', { desc = 'Delete line', silent = true })
 vim.keymap.set('n', 'qy', 'yy', { desc = 'Yank Line', silent = true })
