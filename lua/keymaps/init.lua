@@ -386,6 +386,7 @@ vim.keymap.set('n', 'qv', '<cmd>normal sfnb<CR>', { desc = 'Next surrounding bra
 vim.keymap.set('n', 'qo', '<cmd>normal vxov<CR>', { desc = 'Cursor to root TS node', silent = true })
 vim.keymap.set('n', 'sh', '<C-W>p', { desc = '[S]wap [W]indow', silent = true })
 vim.keymap.set('n', 'qk', '$', { desc = 'End of line', silent = true })
+vim.keymap.set('n', '<c-h>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
 vim.keymap.set('n', 'qg', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'gl', 'G', { desc = 'Go to end of file', silent = true })
