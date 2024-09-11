@@ -52,7 +52,10 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
         map('n', '<leader>hb', function()
           gitsigns.blame_line { full = true }
         end, { desc = 'Blame Line' })
-        map('n', '<leader>hB', '<cmd>Gitsigns blame<cr>', { desc = 'Blame' })
+        map('n', '<leader>hB', function()
+          vim.cmd 'Gitsigns blame'
+          vim.cmd 'wincmd p'
+        end, { desc = 'Blame' })
         -- map('n', '<leader>tb', gitsigns.toggle_current_line_blame, { desc = 'Toggle Blame' })
         map('n', '<leader>hd', gitsigns.diffthis, { desc = 'Diff This' })
         map('n', '<leader>hD', function()
