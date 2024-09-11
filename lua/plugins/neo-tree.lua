@@ -13,10 +13,10 @@ local function expandAllNeoTreeNodes()
   end
 end
 
-vim.keymap.set('n', '<leader>h', function()
-  vim.cmd 'Neotree reveal'
-  vim.cmd 'wincmd p'
-end, { desc = '[N]eotree - Reveal' })
+-- vim.keymap.set('n', '<leader>h', function()
+--   vim.cmd 'Neotree reveal'
+--   vim.cmd 'wincmd p'
+-- end, { desc = '[N]eotree - Reveal' })
 
 vim.keymap.set('n', '<leader><leader>T', function()
   vim.cmd 'Neotree toggle'
