@@ -11,6 +11,12 @@ end
 local function increaseFontSize()
   adjustFontSize(2)
 end
+
+local function terminalNewTab()
+  vim.cmd 'tabnew | term'
+  vim.cmd 'startinsert'
+end
+
 -- Neovide settings
 if vim.g.neovide then
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
@@ -54,7 +60,7 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-[>', '<C-w>W', { silent = true })
 
     -- Set D-T to open a new tab
-    vim.api.nvim_set_keymap(mode, '<D-t>', cmd .. ':tabnew<CR>', { noremap = true, silent = true })
+    vim.keymap.set(mode, '<D-t>', terminalNewTab, { noremap = true, silent = true })
     -- Set D-W to close the current tab
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
     -- Set D-Shift-W to close all tabs except the current one
