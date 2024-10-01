@@ -17,7 +17,7 @@ return {
         Visual = { bg = p.yellow, fg = p.black },
         StatusLineNC = { fg = p.white, bg = p.bg1, bold = true },
       },
-      transparent_background = false,
+      transparent_background = true,
       -- terminal_colors = false,
     }
     -- vim.g.terminal_color_0 =
