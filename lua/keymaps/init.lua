@@ -280,8 +280,7 @@ vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAs
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
 vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
 vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run vertical ' })
--- Leader Leader Y to yank whole file to clipboard
-vim.api.nvim_set_keymap('n', '<leader><leader>y', 'ggVG"+y', { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
+-- Leader Y to yank whole file to clipboard
 vim.api.nvim_set_keymap('n', '<leader>y', 'ggVG"+y', { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
 -- vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
@@ -506,6 +505,7 @@ local function newProj()
 end
 
 vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })
+vim.api.nvim_set_keymap('n', '<leader><leader>y', ':let @+ = expand("%:p")<CR>', { desc = 'Yank filename to clipboard', noremap = true, silent = true })
 
 vim.api.nvim_create_user_command('NT', ':Neotree', {})
 vim.api.nvim_create_user_command('J', ':Neotree', {})
