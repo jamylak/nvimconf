@@ -168,14 +168,16 @@ return {
             luasnip.expand_or_jump()
           else
             -- fallback()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>w', true, true, true), 'n', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
+            vim.cmd 'w'
           end
         end, { 'i', 's' }),
         ['<C-k>'] = cmp.mapping(function(fallback)
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>$', true, true, true), 'n', true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
+            vim.cmd 'w'
           end
         end, { 'i', 's' }),
       },
