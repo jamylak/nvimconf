@@ -176,8 +176,7 @@ return {
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
-            vim.cmd 'w'
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>lDA', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
       },
