@@ -447,7 +447,7 @@ end, {})
 vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
-local function cd_to_git_root()
+local function get_git_root()
   -- Execute the git command to find the root
   local handle = io.popen('git -C ' .. vim.fn.expand '%:p:h' .. ' rev-parse --show-toplevel')
   local result = handle:read '*a'
@@ -457,10 +457,20 @@ local function cd_to_git_root()
   result = string.gsub(result, '%s+$', '')
 
   if result == '' then
+    return ''
+  else
+    return vim.fn.fnameescape(result)
+  end
+end
+
+local function cd_to_git_root()
+  local result = get_git_root()
+
+  if result == '' then
     print 'Not a git repository or some other error occurred'
   else
     -- Change the directory
-    vim.cmd('cd ' .. vim.fn.fnameescape(result))
+    vim.cmd('cd ' .. result)
     print('Changed directory to ' .. result)
   end
 end
@@ -507,7 +517,24 @@ local function newProj()
 end
 
 vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })
+
+local function openCurrentFileInHelix()
+  local filename = vim.fn.expand '%:p'
+  local escaped_filename = "'" .. filename .. "'"
+  local helix_cmd = 'hx ' .. escaped_filename
+  local git_root = get_git_root()
+  if git_root ~= '' then
+    helix_cmd = helix_cmd .. ' --working-dir ' .. git_root
+  end
+  local cmd = 'kitty @ launch --type=tab fish -c "' .. helix_cmd .. '"'
+  print(cmd)
+  vim.fn.system(cmd)
+end
+
 vim.api.nvim_set_keymap('n', '<leader><leader>y', ':let @+ = expand("%:p")<CR>', { desc = 'Yank filename to clipboard', noremap = true, silent = true })
+vim.keymap.set('n', '<leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })
+vim.keymap.set('n', '<leader>H', openCurrentFileInHelix, { desc = 'Open current file in helix' })
+vim.keymap.set('n', '<leader><leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })
 
 vim.api.nvim_create_user_command('NT', ':Neotree', {})
 vim.api.nvim_create_user_command('J', ':Neotree', {})
