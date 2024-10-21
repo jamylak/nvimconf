@@ -560,7 +560,7 @@ end
 
 -- Set the key mapping for Ctrl-K in insert mode
 vim.keymap.set('i', '<C-k>', check_and_delete, { expr = true, noremap = true })
-
 vim.keymap.set('i', '<A-b>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<A-f>', '<c-o>w', { silent = true })
 vim.keymap.set('i', '<A-d>', '<c-o>dw', { silent = true })
+vim.keymap.set('i', '<C-/>', '<c-o>u', { silent = true })
