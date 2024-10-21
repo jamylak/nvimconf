@@ -114,8 +114,6 @@ return {
 
       -- For an understanding of why these mappings were
       -- chosen, you will need to read `:help ins-completion`
-      --
-      -- No, but seriously. Please read `:help ins-completion`, it is really good!
       mapping = cmp.mapping.preset.insert {
         ['<C-b>'] = cmp.mapping.scroll_docs(-4),
         ['<C-f>'] = cmp.mapping(function(fallback)
@@ -127,7 +125,19 @@ return {
             fallback()
           end
         end, { 'i', 's' }),
-        ['<C-e>'] = cmp.mapping.close(),
+        ['<C-e>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.close()
+          end
+          fallback()
+        end, { 'i', 's' }),
+        ['<C-d>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.scroll_docs(4)
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
         ['<C-n>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -136,12 +146,18 @@ return {
             -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>w', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
-        ['<C-p>'] = cmp.mapping.select_prev_item(),
+        ['<C-p>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          else
+            fallback()
+          end
+        end, { 'i', 's' }),
         ['<C-y>'] = cmp.mapping.confirm { select = true },
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
         --  completions whenever it has completion options available.
-        ['<C-a>'] = cmp.mapping.complete {},
+        ['<C-space>'] = cmp.mapping.complete {},
         ['<C-l>'] = cmp.mapping(function()
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
@@ -176,7 +192,7 @@ return {
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>lDA', true, true, true), 'n', true)
+            fallback()
           end
         end, { 'i', 's' }),
       },
