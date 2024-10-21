@@ -16,7 +16,7 @@ vim.api.nvim_set_keymap('n', '<c-9>', '[l', { desc = 'Next call', silent = true 
 
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  lazy = false,
+  lazy = true,
   dependencies = {
     'nvim-treesitter/playground',
     'nvim-treesitter/nvim-treesitter-textobjects',
