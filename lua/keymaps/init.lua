@@ -480,21 +480,18 @@ vim.keymap.set('n', '<leader>bc', cd_to_git_root, { noremap = true })
 
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
-vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
+-- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
 vim.keymap.set('i', '<C-x>', '<c-o>x', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
 
 -- Faster way to do common symbols
 -- vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
-vim.keymap.set('i', '<C-f>j', ',', { silent = true })
-vim.keymap.set('i', '<C-f><C-j>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-g>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-->', ';', { silent = true, noremap = true })
-vim.keymap.set('i', '<C-f><C-k>', ';', { silent = true, noremap = true })
 
 -- Create a new project
 local function newProj()
@@ -539,3 +536,31 @@ vim.keymap.set('n', '<leader><leader>Y', openCurrentFileInHelix, { desc = 'Open 
 vim.api.nvim_create_user_command('NT', ':Neotree', {})
 vim.api.nvim_create_user_command('J', ':Neotree', {})
 vim.api.nvim_create_user_command('L', ':Neotree', {})
+
+vim.keymap.set('i', '<C-f>', '<Right>', { silent = true })
+vim.keymap.set('i', '<C-a>', '<Home>', { silent = true })
+vim.keymap.set('i', '<C-e>', '<End>', { silent = true })
+vim.keymap.set('i', '<C-b>', '<Left>', { silent = true })
+vim.keymap.set('i', '<C-p>', '<Up>', { silent = true })
+vim.keymap.set('i', '<C-n>', '<Down>', { silent = true })
+vim.keymap.set('i', '<C-d>', '<Del>', { silent = true })
+-- vim.keymap.set('i', '<C-k>', '<c-o>D', { silent = true })
+-- Define the Lua function to handle the key mapping logic
+local function check_and_delete()
+  local col = vim.fn.col '.'
+  local line = vim.fn.getline '.'
+  if col <= #line then
+    -- If the cursor is not at the end of the line, delete the characters after the cursor
+    return '<C-o>D'
+  else
+    -- If the cursor is at the end of the line, join with the next line
+    return '<C-o>J'
+  end
+end
+
+-- Set the key mapping for Ctrl-K in insert mode
+vim.keymap.set('i', '<C-k>', check_and_delete, { expr = true, noremap = true })
+
+vim.keymap.set('i', '<A-b>', '<c-o>b', { silent = true })
+vim.keymap.set('i', '<A-f>', '<c-o>w', { silent = true })
+vim.keymap.set('i', '<A-d>', '<c-o>dw', { silent = true })
