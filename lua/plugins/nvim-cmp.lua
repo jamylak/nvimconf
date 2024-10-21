@@ -115,7 +115,15 @@ return {
       -- For an understanding of why these mappings were
       -- chosen, you will need to read `:help ins-completion`
       mapping = cmp.mapping.preset.insert {
-        ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-b>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            -- print 'Visible'
+            cmp.scroll_docs(-4)
+          else
+            -- print 'fallback'
+            fallback()
+          end
+        end, { 'i', 's' }),
         ['<C-f>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             -- print 'Visible'
@@ -130,13 +138,6 @@ return {
             cmp.close()
           end
           fallback()
-        end, { 'i', 's' }),
-        ['<C-d>'] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.scroll_docs(4)
-          else
-            fallback()
-          end
         end, { 'i', 's' }),
         ['<C-n>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
@@ -157,7 +158,13 @@ return {
         -- Manually trigger a completion from nvim-cmp.
         --  Generally you don't need this, because nvim-cmp will display
         --  completions whenever it has completion options available.
-        ['<C-space>'] = cmp.mapping.complete {},
+        ['<C-space>'] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.close()
+          else
+            cmp.complete()
+          end
+        end, { 'i', 's' }),
         ['<C-l>'] = cmp.mapping(function()
           if luasnip.expand_or_locally_jumpable() then
             luasnip.expand_or_jump()
