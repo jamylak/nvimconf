@@ -13,7 +13,7 @@ return {
         accept_line = false,
         next = '<M-S-]>',
         prev = '<M-S-[>',
-        dismiss = '<C-e>',
+        dismiss = '<C-space>',
       },
     },
   },
