@@ -16,6 +16,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>sc',
     '<leader>fC',
     '<leader>fw',
+    '<leader>fW',
     '<leader>gs',
     '<leader>fg',
     '<leader>gS',
