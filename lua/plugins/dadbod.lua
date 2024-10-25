@@ -1,13 +1,18 @@
+-- https://github.com/kristijanhusak/vim-dadbod-ui
 return {
-  {
-    'tpope/vim-dadbod',
-    cmd = { 'DBUI', 'DB', 'DBUIToggle', 'DBUIFindBuffer', 'DBUIRenameBuffer' },
-    dependencies = {
-      { 'kristijanhusak/vim-dadbod-completion', cmd = { 'DBUI', 'DBUIToggle', 'DBUIFindBuffer', 'DBUIRenameBuffer' } },
-      { 'kristijanhusak/vim-dadbod-ui', cmd = { 'DBUI', 'DBUIToggle', 'DBUIFindBuffer', 'DBUIRenameBuffer' } },
-    },
-    config = function()
-      -- Optional configuration can go here
-    end,
+  'kristijanhusak/vim-dadbod-ui',
+  dependencies = {
+    { 'tpope/vim-dadbod', lazy = true },
+    { 'kristijanhusak/vim-dadbod-completion', ft = { 'sql', 'mysql', 'plsql' }, lazy = true }, -- Optional
   },
+  cmd = {
+    'DBUI',
+    'DBUIToggle',
+    'DBUIAddConnection',
+    'DBUIFindBuffer',
+  },
+  init = function()
+    -- Your DBUI configuration
+    vim.g.db_ui_use_nerd_fonts = 1
+  end,
 }
