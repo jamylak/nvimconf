@@ -17,6 +17,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>fC',
     '<leader>fw',
     '<leader>fW',
+    '<leader>/',
     '<leader>gs',
     '<leader>fg',
     '<leader>gS',
@@ -245,6 +246,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
+    vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
     -- Git status
     vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
     vim.keymap.set('n', '<leader>fg', builtin.git_status, { desc = '[G]it [S]tatus' })
