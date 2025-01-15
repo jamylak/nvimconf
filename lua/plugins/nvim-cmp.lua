@@ -191,8 +191,7 @@ return {
             luasnip.expand_or_jump()
           else
             -- fallback()
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
-            vim.cmd 'w'
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<CR>', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
         ['<C-k>'] = cmp.mapping(function(fallback)
