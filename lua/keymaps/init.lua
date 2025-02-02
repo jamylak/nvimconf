@@ -277,6 +277,9 @@ vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Horizontal Spli
 vim.keymap.set('n', '<leader>|', function()
   vim.fn.system('kitty @ launch --location=vsplit fish -c "yazi ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Vertical Split' })
+vim.keymap.set('n', '<leader>I', function()
+  vim.fn.system('kitty @ launch --type=tab fish -c "yazi ' .. vim.fn.expand '%:p' .. '"')
+end, { silent = true, desc = 'Yazi - Tab' })
 vim.keymap.set('n', '<C-\\>', function()
   vim.cmd ':split | term'
   vim.cmd 'startinsert'
