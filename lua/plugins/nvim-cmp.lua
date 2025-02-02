@@ -174,8 +174,7 @@ return {
           if luasnip.locally_jumpable(-1) then
             luasnip.jump(-1)
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
-            vim.cmd 'w'
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<backspace>', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
         ['JH'] = superBack,
