@@ -97,7 +97,9 @@ function scroll_buffer_to_bottom(buf_id)
   end)
 end
 local function sendTerminalRepeat(initialCommand)
-  -- First find the open terminal buffer in the current tab
+  -- First send a write command to write current file
+  vim.cmd 'write'
+  -- Then find the open terminal buffer in the current tab
   local terminal_buffer = find_terminal_buffer_number()
   if terminal_buffer ~= nil then
     local chan = vim.api.nvim_buf_get_var(terminal_buffer, 'terminal_job_id')
