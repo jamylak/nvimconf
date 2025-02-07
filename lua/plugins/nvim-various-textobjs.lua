@@ -71,20 +71,25 @@ vim.keymap.set('n', 'gX', function()
       :find()
   end
 end, { desc = 'URL Opener' })
+
 return {
   'chrisgrieser/nvim-various-textobjs',
   event = 'BufReadPre',
   opts = {
-    useDefaultKeymaps = true,
-    lookForwardSmall = 10,
-    lookForwardBig = 25,
-    -- disable these cause they conflict with
-    -- ctrl-v replace. We could find a way to allow r but just
-    -- not in visual line mode. maybe extend disabled keymaps
-    -- to take a mode or just unamp this in visual mode
-    -- Also disabling n because i can't extend a highlight with /
-    -- but would be good to get it back
-    -- could do a custom binding based off docs
-    disabledKeymaps = { 'r', 'n' },
+    keymaps = {
+      useDefaults = true,
+      -- disable these cause they conflict with
+      -- ctrl-v replace. We could find a way to allow r but just
+      -- not in visual line mode. maybe extend disabled keymaps
+      -- to take a mode or just unamp this in visual mode
+      -- Also disabling n because i can't extend a highlight with /
+      -- but would be good to get it back
+      -- could do a custom binding based off docs
+      disabledDefaults = { 'r', 'n' },
+    },
+    forwardLooking = {
+      small = 10,
+      big = 25,
+    },
   },
 }
