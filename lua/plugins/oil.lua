@@ -47,6 +47,9 @@ end
 return {
   'stevearc/oil.nvim',
   lazy = false,
+  -- Keep to Nov 2024 release until resolving some issues
+  -- with a fish macro for neogit
+  commit = '50c4bd4ee216f08907f64d0295c0663a69e58ffb',
   cmd = { 'Oil' },
   dependencies = {
     'nvim-tree/nvim-web-devicons',
