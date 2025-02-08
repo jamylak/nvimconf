@@ -275,14 +275,14 @@ vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to p
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', function()
-  vim.fn.system('kitty @ launch --location=hsplit fish -c "yazi ' .. vim.fn.expand '%:p' .. '"')
+  vim.fn.system('fish -c "yazi_hsplit ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Vertical Split' })
 vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Horizontal Split' })
 vim.keymap.set('n', '<leader>|', function()
-  vim.fn.system('kitty @ launch --location=vsplit fish -c "yazi ' .. vim.fn.expand '%:p' .. '"')
+  vim.fn.system('fish -c "yazi_vsplit ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Vertical Split' })
 vim.keymap.set('n', '<leader>I', function()
-  vim.fn.system('kitty @ launch --type=tab fish -c "yazi ' .. vim.fn.expand '%:p' .. '"')
+  vim.fn.system('fish -c "yazi_new_tab ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Tab' })
 vim.keymap.set('n', '<C-\\>', function()
   vim.cmd ':split | term'
