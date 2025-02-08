@@ -7,6 +7,7 @@ return {
   commit = '75ee709d18625a94aef90d94ccac4e562c9a0046',
   keys = {
     { '<leader>gn', ':Neogit<CR>' },
+    { '<c-g>', ':Neogit<CR>' },
   },
   dependencies = {
     'nvim-lua/plenary.nvim', -- required
