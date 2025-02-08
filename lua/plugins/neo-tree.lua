@@ -13,10 +13,22 @@ local function expandAllNeoTreeNodes()
   end
 end
 
--- vim.keymap.set('n', '<leader>h', function()
---   vim.cmd 'Neotree reveal'
---   vim.cmd 'wincmd p'
--- end, { desc = '[N]eotree - Reveal' })
+vim.keymap.set('n', '<leader>i', function()
+  local manager = require 'neo-tree.sources.manager'
+  local renderer = require 'neo-tree.ui.renderer'
+
+  local state = manager.get_state 'filesystem'
+  local window_exists = renderer.window_exists(state)
+
+  local commands = require 'neo-tree.sources.filesystem.commands'
+  -- If Neotree is visible ex
+  if window_exists then
+    vim.cmd 'Neotree close'
+  else
+    vim.cmd 'Neotree reveal'
+    vim.cmd 'wincmd p'
+  end
+end, { desc = '[N]eotree - Reveal' })
 
 vim.keymap.set('n', '<leader><leader>T', function()
   vim.cmd 'Neotree toggle'
