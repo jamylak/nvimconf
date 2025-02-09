@@ -2,6 +2,9 @@
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
+-- Keymap to do search with <c-s> eg. same as / but with <c-s>
+vim.keymap.set('n', '<C-s>', '/', { silent = true })
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
@@ -343,7 +346,8 @@ local function terminalHorizontal()
   vim.cmd 'startinsert'
 end
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
-vim.keymap.set('n', '<a-t>', ':tabnew<CR>', { desc = 'New Tab' })
+
+vim.keymap.set('n', '<a-t>', ':split<CR><C-w>T', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
