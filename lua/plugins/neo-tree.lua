@@ -61,7 +61,7 @@ vim.keymap.set('n', '<leader><leader>x', function()
 end, { desc = '[N]eotree - Expand' })
 return {
   'nvim-neo-tree/neo-tree.nvim',
-  version = '*',
+  branch = 'v3.x',
   cmd = 'Neotree',
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -69,6 +69,13 @@ return {
     'MunifTanjim/nui.nvim',
   },
   opts = {
+    filesystem = {
+      follow_current_file = {
+        enabled = true, -- This will find and focus the file in the active buffer every time
+        --              -- the current file is changed while the tree is open.
+        -- leave_dirs_open = false, -- `false` closes auto expanded dirs, such as with `:Neotree reveal`
+      },
+    },
     window = {
       mappings = {
         ['z'] = 'close_all_nodes',
