@@ -1,3 +1,5 @@
+local utils = require 'utils'
+
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
@@ -468,42 +470,9 @@ end, {})
 vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
-local function get_git_root()
-  local path = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
-  if string.match(path, '^oil://') then
-    path = string.sub(path, 7)
-  else
-    path = vim.fn.expand '%:p:h'
-  end
-  -- Execute the git command to find the root
-  local handle = io.popen('git -C ' .. path .. ' rev-parse --show-toplevel')
-  local result = handle:read '*a'
-  handle:close()
-
-  -- Trim whitespace from the result
-  result = string.gsub(result, '%s+$', '')
-
-  if result == '' then
-    return ''
-  else
-    return vim.fn.fnameescape(result)
-  end
-end
-
-local function cd_to_git_root()
-  local path = get_git_root()
-
-  if path == '' then
-    print 'Not a git repository or some other error occurred'
-  else
-    -- Change the directory
-    vim.cmd('cd ' .. path)
-    print('Changed directory to ' .. path)
-  end
-end
-
-vim.keymap.set('n', '<leader>v', cd_to_git_root, { noremap = true })
-vim.keymap.set('n', '<leader>bc', cd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>v', utils.cd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<m-v>', utils.cd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>bc', utils.cd_to_git_root, { noremap = true })
 
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })

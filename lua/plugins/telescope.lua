@@ -98,21 +98,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- See `:help telescope` and `:help telescope.setup()`
     local function setCWDtoPicker()
       -- Set the current working directory to the picker
-      local prompt_bufnr = vim.api.nvim_get_current_buf()
-      local actions = require 'telescope.actions'
       local action_state = require 'telescope.actions.state'
-      local action_utils = require 'telescope.actions.utils'
-      local current_picker = action_state.get_current_picker(prompt_bufnr)
-
-      local finder = current_picker.finder
-      -- if finder is not nil
-      if finder.path then
-        -- If inside of telescope file browser get current path
-        vim.api.nvim_set_current_dir(finder.path)
-      else
-        -- Set the current working directory to the regular picker
-        vim.api.nvim_set_current_dir(current_picker.cwd)
-      end
+      local selection = action_state.get_selected_entry()
+      local path = selection.value
+      local utils = require 'utils'
+      utils.cd_to_git_root(path)
+      vim.cmd 'Telescope find_files'
     end
 
     local function openOil()
@@ -166,11 +157,37 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
             ['<c-j>'] = setCWDtoPicker,
+            ['<m-return>'] = setCWDtoPicker,
+            ['<m-u>'] = function()
+              vim.cmd 'Telescope live_grep'
+            end,
             ['<m-o>'] = function()
               vim.cmd 'Telescope oldfiles'
             end,
             ['<m-i>'] = function()
               vim.cmd 'Telescope find_files'
+            end,
+            ['<m-v>'] = function(prompt_bufnr)
+              -- Telescope is looking through wrong working dir, fix it..
+              --
+              -- Get the name of the current file, not the telescope modal
+              -- buffer, the file that is currently open behind telescope
+              local utils = require 'utils'
+              local path = vim.api.nvim_buf_get_name(vim.fn.winbufnr(vim.fn.winnr '#'))
+              -- Change to dir of the current file and now refresh telescope
+              utils.cd_to_git_root(path)
+              -- Now reload telescope
+              local action_state = require 'telescope.actions.state'
+              local current_picker = action_state.get_current_picker(prompt_bufnr)
+
+              -- hacky - hardcoded just to work with these 2 well for now
+              -- other pickers need to change
+              -- until figure out how to replace this with refresh()
+              if current_picker.prompt_title == 'Live Grep' then
+                vim.cmd 'Telescope live_grep'
+              else
+                vim.cmd 'Telescope find_files'
+              end
             end,
             -- vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
           },
@@ -253,6 +270,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
+    vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
     -- Git status
     vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
@@ -297,7 +315,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = 'Find words in all files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
-    vim.keymap.set('n', 'su', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+    vim.keymap.set('n', 'su', builtin.live_grep, { silent = true, desc = 'Live Grep' })
     vim.keymap.set('n', 'so', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', 'si', function()
