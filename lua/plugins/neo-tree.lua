@@ -69,6 +69,8 @@ return {
     'MunifTanjim/nui.nvim',
   },
   opts = {
+    -- enable_git_status = true,
+    enable_diagnostics = true,
     filesystem = {
       follow_current_file = {
         enabled = true, -- This will find and focus the file in the active buffer every time
