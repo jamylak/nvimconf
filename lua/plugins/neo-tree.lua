@@ -82,6 +82,7 @@ return {
       mappings = {
         ['z'] = 'close_all_nodes',
         ['Z'] = 'expand_all_nodes',
+        ['m'] = 'none',
       },
     },
   },
