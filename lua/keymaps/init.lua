@@ -469,8 +469,14 @@ vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
 local function get_git_root()
+  local path = vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf())
+  if string.match(path, '^oil://') then
+    path = string.sub(path, 7)
+  else
+    path = vim.fn.expand '%:p:h'
+  end
   -- Execute the git command to find the root
-  local handle = io.popen('git -C ' .. vim.fn.expand '%:p:h' .. ' rev-parse --show-toplevel')
+  local handle = io.popen('git -C ' .. path .. ' rev-parse --show-toplevel')
   local result = handle:read '*a'
   handle:close()
 
@@ -485,14 +491,14 @@ local function get_git_root()
 end
 
 local function cd_to_git_root()
-  local result = get_git_root()
+  local path = get_git_root()
 
-  if result == '' then
+  if path == '' then
     print 'Not a git repository or some other error occurred'
   else
     -- Change the directory
-    vim.cmd('cd ' .. result)
-    print('Changed directory to ' .. result)
+    vim.cmd('cd ' .. path)
+    print('Changed directory to ' .. path)
   end
 end
 
