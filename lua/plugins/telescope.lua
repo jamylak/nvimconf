@@ -166,6 +166,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
             ['<c-j>'] = setCWDtoPicker,
+            ['<m-o>'] = function()
+              vim.cmd 'Telescope oldfiles'
+            end,
+            ['<m-i>'] = function()
+              vim.cmd 'Telescope find_files'
+            end,
+            -- vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
           },
           n = {
             ['o'] = openOil,
@@ -292,7 +299,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', 'su', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', 'so', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+    vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', 'si', function()
+      builtin.find_files { silent = true, no_ignore = false }
+    end, { desc = '[F]ind [F]iles' })
+    vim.keymap.set('n', '<m-i>', function()
       builtin.find_files { silent = true, no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
     vim.keymap.set('n', '<leader>j', function()

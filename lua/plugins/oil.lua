@@ -101,6 +101,12 @@ return {
       'mtime',
     },
     keymaps = {
+      ['<m-o>'] = function()
+        vim.cmd 'Telescope oldfiles'
+      end,
+      ['<m-i>'] = function()
+        vim.cmd 'Telescope find_files'
+      end,
       ['cd'] = 'actions.cd',
       ['<leader>lc'] = {
         callback = windowChangeDirectory,
