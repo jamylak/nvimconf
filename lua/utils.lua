@@ -38,4 +38,12 @@ function M.cd_to_git_root(path)
   end
 end
 
+function M.CloseTabOrQuit()
+  if #vim.api.nvim_list_tabpages() > 1 then
+    vim.cmd 'tabclose'
+  else
+    vim.cmd 'qa!'
+  end
+end
+
 return M
