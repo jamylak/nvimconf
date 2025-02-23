@@ -76,8 +76,9 @@ vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', si
 vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
 vim.keymap.set('n', '<a-s-x>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
 vim.keymap.set('n', '<a-s-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
-vim.keymap.set('n', '<a-q>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
-vim.keymap.set('n', '<a-w>', ':tabclose<cr>', { desc = 'Close tab', silent = true })
+
+vim.keymap.set('n', '<a-w>', utils.CloseTabOrQuit, { desc = 'Close tab', silent = true })
+vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
 
 local function find_terminal_buffer_number()
   -- Get the current tabpage
