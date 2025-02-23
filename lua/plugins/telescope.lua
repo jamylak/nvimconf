@@ -36,6 +36,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'su',
     'so',
     'si',
+    '<m-o>',
+    '<m-i>',
+    '<m-u>',
     '<leader>j',
     '<leader>k',
     '<leader>fj',
@@ -96,14 +99,26 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
     -- [[ Configure Telescope ]]
     -- See `:help telescope` and `:help telescope.setup()`
-    local function setCWDtoPicker()
+    local function setCWDToPicker(prompt_bufnr, openFile)
       -- Set the current working directory to the picker
       local action_state = require 'telescope.actions.state'
       local selection = action_state.get_selected_entry()
       local path = selection.value
       local utils = require 'utils'
       utils.cd_to_git_root(path)
+      if openFile then
+        -- Finish the picker and open the file
+        require('telescope.actions').select_default(prompt_bufnr)
+      end
+    end
+
+    local function setCWDToPickerAndFindFiles(prompt_bufnr)
+      setCWDToPicker(prompt_bufnr)
       vim.cmd 'Telescope find_files'
+    end
+
+    local function setCWDToPickerAndOpen(prompt_bufnr)
+      setCWDToPicker(prompt_bufnr, true)
     end
 
     local function openOil()
@@ -156,8 +171,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<c-o>'] = openOil,
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
-            ['<c-j>'] = setCWDtoPicker,
-            ['<m-return>'] = setCWDtoPicker,
+            ['<c-j>'] = setCWDToPickerAndFindFiles,
+            ['<m-w>'] = function()
+              local utils = require 'utils'
+              utils.CloseTabOrQuit()
+            end,
+            ['<m-return>'] = setCWDToPickerAndOpen,
             ['<m-u>'] = function()
               vim.cmd 'Telescope live_grep'
             end,
@@ -167,6 +186,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<m-i>'] = function()
               vim.cmd 'Telescope find_files'
             end,
+
             ['<m-v>'] = function(prompt_bufnr)
               -- Telescope is looking through wrong working dir, fix it..
               --
@@ -205,7 +225,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
               -- Enter normal mode again by doing escape
               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
             end,
-            ['cd'] = setCWDtoPicker,
+            ['cd'] = setCWDToPicker,
           },
         },
       },
