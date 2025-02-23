@@ -36,6 +36,22 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
             gitsigns.nav_hunk 'prev'
           end
         end, { desc = 'Previous Hunk' })
+
+        map('n', ']g', function()
+          if vim.wo.diff then
+            vim.cmd.normal { ']c', bang = true }
+          else
+            gitsigns.nav_hunk 'next'
+          end
+        end, { desc = 'Next Hunk' })
+
+        map('n', '[g', function()
+          if vim.wo.diff then
+            vim.cmd.normal { '[c', bang = true }
+          else
+            gitsigns.nav_hunk 'prev'
+          end
+        end, { desc = 'Previous Hunk' })
         -- Actions
         map('n', '<leader>hs', gitsigns.stage_hunk, { desc = 'Stage Hunk' })
         map('n', '<leader>hr', gitsigns.reset_hunk, { desc = 'Reset Hunk' })
