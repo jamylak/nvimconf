@@ -268,6 +268,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = '[F]ind [H]elp' })
     vim.keymap.set('n', '<leader>fm', builtin.man_pages, { desc = '[F]ind [M]an' })
     vim.keymap.set('n', '<leader>fk', builtin.keymaps, { desc = '[F]ind [K]eymaps' })
+    vim.keymap.set('n', '<leader>.', function()
+      builtin.find_files { no_ignore = false, cwd = getCWD(), prompt_title = 'Find files (cwd)' }
+    end, { desc = '[F]ind [F]iles (cwd)' })
     vim.keymap.set('n', '<leader>ff', function()
       builtin.find_files { no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
