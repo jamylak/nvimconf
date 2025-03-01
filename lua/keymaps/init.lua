@@ -575,6 +575,8 @@ vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
 vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
 
 function GitHubURL()
+  local utils = require 'utils'
+  utils.cd_to_git_root()
   local file = vim.fn.expand '%'
   local line = vim.fn.line '.'
   local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
@@ -596,10 +598,11 @@ function CopyGitHubURLToClipboard()
   local url = GitHubURL()
   vim.fn.setreg('+', url) -- Copies URL to clipboard
   print('GitHub URL copied: ' .. url)
+  return url
 end
 
 function launchGitHubUrl()
-  local url = GitHubURL()
+  local url = CopyGitHubURLToClipboard()
   vim.fn.system('open ' .. url)
 end
 
