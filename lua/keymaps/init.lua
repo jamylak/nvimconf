@@ -475,6 +475,11 @@ vim.keymap.set('n', '<leader>v', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<m-v>', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader>bc', utils.cd_to_git_root, { noremap = true })
 
+-- user command to cd_to_git_root
+vim.api.nvim_create_user_command('CD', function()
+  utils.cd_to_git_root()
+end, {})
+
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
