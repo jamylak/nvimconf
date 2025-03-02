@@ -34,7 +34,7 @@ function M.cd_to_git_root(path)
   else
     -- Change the directory
     vim.cmd('cd ' .. path)
-    print('Changed directory to ' .. path)
+    -- print('Changed directory to ' .. path)
   end
 end
 
