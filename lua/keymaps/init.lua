@@ -607,5 +607,5 @@ function launchGitHubUrl()
   vim.fn.system('open ' .. url)
 end
 
-vim.keymap.set('n', '<leader><leader>g', CopyGitHubURLToClipboard, { desc = 'Copy GitHub URL' })
-vim.keymap.set('n', '<leader><leader>G', launchGitHubUrl, { desc = 'Launch GitHub URL' })
+vim.keymap.set('n', '<leader><leader>G', CopyGitHubURLToClipboard, { desc = 'Copy GitHub URL' })
+vim.keymap.set('n', '<leader><leader>g', launchGitHubUrl, { desc = 'Launch GitHub URL' })
