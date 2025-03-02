@@ -33,6 +33,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>fr',
     '<leader>fd',
     '<leader>f<CR>',
+    '<leader><CR>',
     'su',
     'so',
     'si',
@@ -170,6 +171,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
         },
       },
       defaults = {
+        layout_strategy = 'horizontal',
+        layout_config = {
+          height = 0.95,
+          width = 0.92,
+          preview_width = 0.45,
+        },
         mappings = {
           i = {
             ['<c-o>'] = openOil,
@@ -190,7 +197,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<m-i>'] = function()
               vim.cmd 'Telescope find_files'
             end,
-
             ['<m-v>'] = function(prompt_bufnr)
               -- Telescope is looking through wrong working dir, fix it..
               --
@@ -213,6 +219,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
                 vim.cmd 'Telescope find_files'
               end
             end,
+            ['<m-n>'] = require('telescope.actions.layout').cycle_layout_next,
             -- vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
           },
           n = {
@@ -295,7 +302,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>sc', function()
       builtin.grep_string { cwd = getCWD(), prompt_title = 'Find current word (cwd)' }
     end, { desc = '[F]ind current [W]ord (cwd)' })
-    vim.keymap.set('n', '<leader>fC', builtin.commands, { desc = '[F]ind [C]ommands' })
+    vim.keymap.set('n', '<leader>fC', builtin.command_history, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
@@ -342,6 +349,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = 'Find words in all files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
+    vim.keymap.set('n', '<leader><CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', 'su', builtin.live_grep, { silent = true, desc = 'Live Grep' })
     vim.keymap.set('n', 'so', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
     vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
