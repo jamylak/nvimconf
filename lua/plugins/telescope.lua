@@ -102,8 +102,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
     local function setCWDToPicker(prompt_bufnr, openFile)
       -- Set the current working directory to the picker
       local action_state = require 'telescope.actions.state'
+      local pickerCWD = action_state.get_current_picker(prompt_bufnr).cwd
       local selection = action_state.get_selected_entry()
       local path = selection.value
+      if pickerCWD then
+        path = pickerCWD .. '/' .. path
+      end
       local utils = require 'utils'
       utils.cd_to_git_root(path)
       if openFile then
