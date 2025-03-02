@@ -58,5 +58,4 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
--- Set colorscheme to "quiet"
--- vim.cmd 'colorscheme quiet'
+vim.opt.shada = "'500,s100,:1000,/500,@100,<200,f100"
