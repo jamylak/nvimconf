@@ -70,10 +70,17 @@ if vim.g.neovide then
   -- Open telescope old files
   vim.defer_fn(function()
     local bufname = vim.api.nvim_buf_get_name(0)
+    local utils = require 'utils'
     if bufname == '' then
       -- It's the empty buffer, so we didn't open neovide
       -- with a file, so show old files selector
       vim.cmd 'Telescope oldfiles'
+    elseif string.find(bufname, 'oil') then
+      utils.cd_to_git_root()
+      vim.cmd 'Telescope find_files'
+    else
+      -- Should be a regular file, so cd to git root
+      utils.cd_to_git_root()
     end
   end, 200)
 end
