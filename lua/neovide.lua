@@ -68,10 +68,6 @@ if vim.g.neovide then
   end
 
   -- Open telescope old files
-    vim.defer_fn(function()
-      vim.cmd("Telescope oldfiles")
-    end, 10)
-
   vim.defer_fn(function()
     local bufname = vim.api.nvim_buf_get_name(0)
     if bufname == '' then
