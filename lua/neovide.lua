@@ -1,17 +1,3 @@
-local function adjustFontSize(inc)
-  local font = vim.o.guifont
-  local size = tonumber(font:match '%d+')
-  size = size + inc
-  -- print("New Size: " .. size)
-  vim.o.guifont = font:gsub('%d+', size)
-end
-local function decreaseFontSize()
-  adjustFontSize(-2)
-end
-local function increaseFontSize()
-  adjustFontSize(2)
-end
-
 local function terminalNewTab()
   vim.cmd 'tabnew | term'
   vim.cmd 'startinsert'
@@ -68,8 +54,17 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':only<CR>', { noremap = true, silent = true })
     -- Set D-F to run keybinding 'su' which is find on recent files
     vim.api.nvim_set_keymap(mode, '<D-f>', 'su', { silent = true })
-    vim.keymap.set(mode, '<D-=>', increaseFontSize, { silent = true })
-    vim.keymap.set(mode, '<D-->', decreaseFontSize, { silent = true })
+
+    vim.g.neovide_scale_factor = 1.0
+    local change_scale_factor = function(delta)
+      vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
+    end
+    vim.keymap.set(mode, "<D-=>", function()
+      change_scale_factor(1.25)
+    end, {silent = true})
+    vim.keymap.set(mode, "<D-->", function()
+      change_scale_factor(1/1.25)
+    end, {silent = true})
   end
 
   -- Open telescope old files
