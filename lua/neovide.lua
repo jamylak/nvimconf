@@ -20,8 +20,7 @@ end
 -- Neovide settings
 if vim.g.neovide then
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
-  vim.o.guifont = 'Fira Code Medium:h16'
-  -- vim.o.guifont = 'MesloLGS NF:h14'
+  vim.o.guifont = 'Fira Code Medium:h18'
   -- Set current working directory to the project directory env var
   local projects_dir = os.getenv 'PROJECTS_DIR'
   vim.cmd('cd ' .. projects_dir)
@@ -31,7 +30,7 @@ if vim.g.neovide then
   vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
   vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
-  vim.g.neovide_input_macos_alt_is_meta = true
+  vim.g.neovide_input_macos_option_key_is_meta = 'both'
   vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
   -- Set ENV var SHELL to fish
   vim.o.shell = '/opt/homebrew/bin/fish'
@@ -72,6 +71,12 @@ if vim.g.neovide then
     vim.keymap.set(mode, '<D-=>', increaseFontSize, { silent = true })
     vim.keymap.set(mode, '<D-->', decreaseFontSize, { silent = true })
   end
+
+  -- Open telescope old files
+    vim.defer_fn(function()
+      vim.cmd("Telescope oldfiles")
+    end, 10)
+
 end
 vim.g.neovide_scroll_animation_length = 0.05
 vim.g.neovide_transparency = 0.7
