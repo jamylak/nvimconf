@@ -56,4 +56,19 @@ function M.CloseTabOrQuit()
   end
 end
 
+function M.terminalNewTab()
+  vim.cmd 'tabnew | term'
+  vim.cmd 'startinsert'
+end
+
+function M.terminalVSplit()
+  vim.cmd 'vsplit | term'
+  vim.cmd 'startinsert'
+end
+
+function M.terminalHSplit()
+  vim.cmd 'split | term'
+  vim.cmd 'startinsert'
+end
+
 return M
