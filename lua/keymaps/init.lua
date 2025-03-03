@@ -473,6 +473,7 @@ vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
 vim.keymap.set('n', '<leader>v', utils.cd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>V', utils.tcd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<m-v>', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader>bc', utils.cd_to_git_root, { noremap = true })
 
