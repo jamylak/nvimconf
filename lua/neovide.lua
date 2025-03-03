@@ -59,12 +59,12 @@ if vim.g.neovide then
     local change_scale_factor = function(delta)
       vim.g.neovide_scale_factor = vim.g.neovide_scale_factor * delta
     end
-    vim.keymap.set(mode, "<D-=>", function()
+    vim.keymap.set(mode, '<D-=>', function()
       change_scale_factor(1.25)
-    end, {silent = true})
-    vim.keymap.set(mode, "<D-->", function()
-      change_scale_factor(1/1.25)
-    end, {silent = true})
+    end, { silent = true })
+    vim.keymap.set(mode, '<D-->', function()
+      change_scale_factor(1 / 1.25)
+    end, { silent = true })
   end
 
   -- Open telescope old files
