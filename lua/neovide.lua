@@ -72,6 +72,14 @@ if vim.g.neovide then
       vim.cmd("Telescope oldfiles")
     end, 10)
 
+  vim.defer_fn(function()
+    local bufname = vim.api.nvim_buf_get_name(0)
+    if bufname == '' then
+      -- It's the empty buffer, so we didn't open neovide
+      -- with a file, so show old files selector
+      vim.cmd 'Telescope oldfiles'
+    end
+  end, 300)
 end
 vim.g.neovide_scroll_animation_length = 0.05
 vim.g.neovide_transparency = 0.7
