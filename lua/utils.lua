@@ -38,6 +38,16 @@ function M.cd_to_git_root(path)
   end
 end
 
+function M.tcd_to_git_root(path)
+  path = M.get_git_root(path)
+  if path == '' then
+    print 'Not a git repository or some other error occurred'
+  else
+    -- Change the tab directory
+    vim.cmd('tcd ' .. path)
+  end
+end
+
 function M.CloseTabOrQuit()
   if #vim.api.nvim_list_tabpages() > 1 then
     vim.cmd 'tabclose'
