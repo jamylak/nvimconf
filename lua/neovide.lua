@@ -1,8 +1,3 @@
-local function terminalNewTab()
-  vim.cmd 'tabnew | term'
-  vim.cmd 'startinsert'
-end
-
 -- Neovide settings
 if vim.g.neovide then
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
@@ -44,8 +39,11 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-]>', '<C-w>w', { silent = true })
     vim.api.nvim_set_keymap(mode, '<D-[>', '<C-w>W', { silent = true })
 
+    local utils = require 'utils'
     -- Set D-T to open a new tab
-    vim.keymap.set(mode, '<D-t>', terminalNewTab, { noremap = true, silent = true })
+    vim.keymap.set(mode, '<D-t>', utils.terminalNewTab, { noremap = true, silent = true })
+    vim.keymap.set(mode, '<D-\\>', utils.terminalVSplit, { noremap = true, silent = true })
+    vim.keymap.set(mode, '<D-CR>', utils.terminalHSplit, { noremap = true, silent = true })
     -- Set D-W to close the current tab
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
     -- Set D-Shift-W to close all tabs except the current one
@@ -84,6 +82,7 @@ if vim.g.neovide then
     end
   end, 200)
 end
+
 vim.g.neovide_scroll_animation_length = 0.05
 vim.g.neovide_transparency = 0.7
 vim.g.neovide_window_blurred = true
