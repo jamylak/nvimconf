@@ -75,7 +75,7 @@ if vim.g.neovide then
       -- with a file, so show old files selector
       vim.cmd 'Telescope oldfiles'
     end
-  end, 300)
+  end, 200)
 end
 vim.g.neovide_scroll_animation_length = 0.05
 vim.g.neovide_transparency = 0.7
