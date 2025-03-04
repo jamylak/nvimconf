@@ -303,6 +303,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.grep_string { cwd = getCWD(), prompt_title = 'Find current word (cwd)' }
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.command_history, { desc = '[F]ind [C]ommands' })
+    vim.keymap.set('n', '<leader>fj', builtin.command_history, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
@@ -370,7 +371,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
         end,
       }
     end, { desc = 'Find words in all files (cwd)' })
-    vim.keymap.set('n', '<leader>fj', builtin.oldfiles, { desc = '[F]ind Recent' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
 
     local function deleteBuffer(prompt_bufnr)
@@ -410,14 +410,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
       }
     end, { desc = '[ ] Find projects' })
     vim.keymap.set('n', '<leader>`', builtin.marks, { desc = 'Find marks' })
-    -- Slightly advanced example of overriding default behavior and theme
-    vim.keymap.set('n', '<leader>fj', function()
-      -- You can pass additional configuration to telescope to change theme, layout, etc.
-      builtin.current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-        -- winblend = 10,
-        previewer = true,
-      })
-    end, { desc = '[/] Fuzzily search in current buffer' })
 
     -- Also possible to pass additional configuration options.
     --  See `:help telescope.builtin.live_grep()` for information about particular keys
