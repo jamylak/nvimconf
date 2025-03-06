@@ -518,13 +518,9 @@ vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })
 
 local function openCurrentFileInHelix()
   local filename = vim.fn.expand '%:p'
+  local line_number = vim.fn.line '.'
   local escaped_filename = "'" .. filename .. "'"
-  local helix_cmd = 'hx_new_tab ' .. escaped_filename
-  -- local git_root = utils.get_git_root()
-  -- if git_root ~= '' then
-  --   -- helix_cmd = helix_cmd .. ' --working-dir ' .. git_root
-  --   helix_cmd = helix_cmd
-  -- end
+  local helix_cmd = 'hx_new_tab ' .. escaped_filename .. ' ' .. line_number
   local cmd = 'fish -c "' .. helix_cmd .. '"'
   print(cmd)
   vim.fn.system(cmd)
