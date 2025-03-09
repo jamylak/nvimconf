@@ -47,12 +47,11 @@ if vim.g.neovide then
     vim.keymap.set(mode, '<D-t>', utils.terminalNewTab, { noremap = true, silent = true })
     vim.keymap.set(mode, '<D-\\>', utils.terminalVSplit, { noremap = true, silent = true })
     vim.keymap.set(mode, '<D-CR>', utils.terminalHSplit, { noremap = true, silent = true })
-    -- Set D-W to close the current tab
+
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
-    -- Set D-Shift-W to close all tabs except the current one
-    vim.api.nvim_set_keymap(mode, '<D-W>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
-    -- Set D-O to close other windows except current
-    vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':only<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
+    -- vim.api.nvim_set_keymap(mode, '<D-O>', cmd .. ':only<CR>', { noremap = true, silent = true })
+
     -- Set D-F to run keybinding 'su' which is find on recent files
     vim.api.nvim_set_keymap(mode, '<D-f>', 'su', { silent = true })
 
