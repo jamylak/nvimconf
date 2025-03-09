@@ -164,10 +164,11 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagn
 vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>gg', function()
   vim.cmd '-tabnew | term lazygit'
-  -- Fix for slow j scrolling because of jk escape
-  -- Just now i can't type capital J or K :P
-  vim.cmd "lua vim.keymap.set('t', 'J', 'j', {buffer = true})"
-  vim.cmd "lua vim.keymap.set('t', 'K', 'k', {buffer = true})"
+  vim.cmd 'startinsert'
+end, { noremap = true })
+
+vim.keymap.set('n', '<m-g>', function()
+  vim.cmd '-tabnew | term lazygit'
   vim.cmd 'startinsert'
 end, { noremap = true })
 
