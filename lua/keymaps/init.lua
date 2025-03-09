@@ -161,7 +161,7 @@ for ch = 97, 122 do
 end
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader>dq', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic [Q]uickfix list' })
+vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>gg', function()
   vim.cmd '-tabnew | term lazygit'
   -- Fix for slow j scrolling because of jk escape
