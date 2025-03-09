@@ -67,6 +67,9 @@ if vim.g.neovide then
     end, { silent = true })
   end
 
+  -- Test
+  -- vim.api.nvim_set_keymap('t', '<D-k>', '<C-\\><C-n>gf:CD<CR>', { noremap = true, silent = true })
+
   -- Open telescope old files
   vim.defer_fn(function()
     local bufname = vim.api.nvim_buf_get_name(0)
