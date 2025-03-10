@@ -634,7 +634,8 @@ vim.keymap.set('n', '<A-y>', function()
         -- Without defer, LSP doesn't load
         vim.defer_fn(function()
           vim.cmd('edit ' .. path)
-        end, 10)
+          vim.cmd 'CD'
+        end, 20)
       end
       vim.cmd 'redraw'
     end,
