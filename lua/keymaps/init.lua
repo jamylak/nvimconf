@@ -627,10 +627,9 @@ vim.keymap.set('n', '<A-y>', function()
   vim.api.nvim_create_autocmd('TermClose', {
     buffer = term_buf,
     callback = function()
-      -- Close the term
-      vim.api.nvim_input '<CR>'
+      -- vim.api.nvim_input '<CR>'
       local path = vim.fn.readfile('/tmp/yazi-nvim-path')[1] or ''
-      vim.cmd 'tabclose'
+      -- vim.cmd 'tabclose'
       -- vim.api.nvim_buf_delete(term_buf, { force = true })
       if path ~= '' then
         -- Without defer, LSP doesn't load
