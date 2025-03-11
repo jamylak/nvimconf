@@ -627,7 +627,9 @@ vim.keymap.set('n', '<A-y>', function()
   vim.api.nvim_create_autocmd('TermClose', {
     buffer = term_buf,
     callback = function()
-      -- vim.api.nvim_input '<CR>'
+      -- If the terminal is still waiting for input..
+      -- eg. we pressed 'q' in yazi, Send a newline to close it
+      vim.api.nvim_input '<CR>'
       local path = vim.fn.readfile('/tmp/yazi-nvim-path')[1] or ''
       -- vim.cmd 'tabclose'
       -- vim.api.nvim_buf_delete(term_buf, { force = true })
