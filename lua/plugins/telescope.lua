@@ -40,6 +40,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<m-o>',
     '<m-i>',
     '<m-u>',
+    '<m-b>',
     '<leader>j',
     '<leader>k',
     '<leader>fj',
@@ -391,7 +392,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       end
     end
 
-    vim.keymap.set('n', '<a-b>', function()
+    vim.keymap.set('n', '<m-b>', function()
       -- Like normal search buffers but also with option to delete
       builtin.buffers {
         attach_mappings = function(_, map)
