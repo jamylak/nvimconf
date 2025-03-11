@@ -391,6 +391,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
       end
     end
 
+    vim.keymap.set('n', '<a-b>', function()
+      -- Like normal search buffers but also with option to delete
+      builtin.buffers {
+        attach_mappings = function(_, map)
+          map('i', '<c-r>', deleteBuffer)
+          map('n', 'D', deleteBuffer)
+          return true
+        end,
+      }
+    end, { desc = '[S]earch [B]uffers' })
+
     vim.keymap.set('n', '<leader>sb', function()
       -- Like normal search buffers but also with option to delete
       builtin.buffers {
