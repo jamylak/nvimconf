@@ -180,6 +180,21 @@ return { -- Fuzzy Finder (files, lsp, etc)
         },
         mappings = {
           i = {
+            ['<S-Enter>'] = function(prompt_bufnr)
+              -- Create new file
+              local action_state = require 'telescope.actions.state'
+              local actions = require 'telescope.actions'
+              local input = action_state.get_current_line()
+              if input and input ~= '' then
+                actions.close(prompt_bufnr)
+                vim.schedule(function()
+                  vim.cmd('edit ' .. input)
+                  vim.cmd 'write'
+                  -- hack to fix issue with LSP not startin
+                  vim.cmd 'edit!'
+                end)
+              end
+            end,
             ['<c-o>'] = openOil,
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
