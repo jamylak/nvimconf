@@ -89,7 +89,7 @@ if vim.g.neovide then
 end
 
 vim.g.neovide_scroll_animation_length = 0.05
-vim.g.neovide_transparency = 0.7
+vim.g.neovide_opacity = 0.7
 vim.g.neovide_window_blurred = true
 vim.g.neovide_show_border = true -- Doesn't seem to do anything
 vim.g.neovide_hide_mouse_when_typing = true
@@ -110,6 +110,6 @@ vim.g.neovide_cursor_unfocused_outline_width = 0.18
 -- Pixiedust
 vim.g.neovide_cursor_vfx_mode = 'pixiedust'
 vim.g.neovide_cursor_vfx_opacity = 1000.0
-vim.g.neovide_cursor_vfx_particle_lifetime = 0.7
-vim.g.neovide_cursor_vfx_particle_density = 125.0
+vim.g.neovide_cursor_vfx_particle_lifetime = 0.5
+vim.g.neovide_cursor_vfx_particle_density = 100.0
 vim.g.neovide_cursor_vfx_particle_speed = 10.0
