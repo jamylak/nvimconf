@@ -41,6 +41,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<m-i>',
     '<m-u>',
     '<m-b>',
+    '<m-CR>',
     '<leader>j',
     '<leader>k',
     '<leader>fj',
@@ -366,6 +367,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end, { desc = 'Find words in all files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
+    vim.keymap.set('n', '<m-CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', '<leader><CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', 'su', builtin.live_grep, { silent = true, desc = 'Live Grep' })
     vim.keymap.set('n', 'so', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
