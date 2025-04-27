@@ -617,32 +617,6 @@ vim.keymap.set('n', '<leader><leader>g', launchGitHubUrl, { desc = 'Launch GitHu
 -- Yazi
 -- Based off this https://www.reddit.com/r/HelixEditor/comments/1j72tmr/use_yazi_file_manager_directly_in_helix_without/
 vim.keymap.set('n', '<A-y>', function()
-  -- Remove old path file
-  vim.fn.system 'rm -f /tmp/yazi-nvim-path'
-
-  -- Open Yazi in a floating terminal and capture the buffer ID
-  vim.cmd('tabnew | term yazi ' .. vim.fn.bufname '%' .. ' --chooser-file=/tmp/yazi-nvim-path')
-  vim.cmd 'startinsert'
-  local term_buf = vim.api.nvim_get_current_buf()
-
-  -- Scoped TermClose for that terminal buffer only
-  vim.api.nvim_create_autocmd('TermClose', {
-    buffer = term_buf,
-    callback = function()
-      -- If the terminal is still waiting for input..
-      -- eg. we pressed 'q' in yazi, Send a newline to close it
-      vim.api.nvim_input '<CR>'
-      local path = vim.fn.readfile('/tmp/yazi-nvim-path')[1] or ''
-      -- vim.cmd 'tabclose'
-      -- vim.api.nvim_buf_delete(term_buf, { force = true })
-      if path ~= '' then
-        -- Without defer, LSP doesn't load
-        vim.defer_fn(function()
-          vim.cmd('edit ' .. path)
-          vim.cmd 'CD'
-        end, 20)
-      end
-      vim.cmd 'redraw'
-    end,
-  })
+  local utils = require 'utils'
+  utils.yazi()
 end, { noremap = true, silent = true })

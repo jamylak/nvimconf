@@ -238,6 +238,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
             end,
             ['<m-n>'] = require('telescope.actions.layout').cycle_layout_next,
             -- vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
+            ['<m-y>'] = function()
+              local utils = require 'utils'
+              utils.yazi()
+            end,
           },
           n = {
             ['o'] = openOil,
