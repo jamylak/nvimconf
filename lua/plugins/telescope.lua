@@ -156,22 +156,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     end
 
     require('telescope').setup {
-      extensions = {
-        file_browser = {
-          mappings = {
-            -- Backspace in normal mode goes up a directory
-            ['n'] = {
-              ['<BS>'] = function(prompt_bufnr, bypass)
-                local fb_actions = require('telescope').extensions.file_browser.actions
-                print 'Got called'
-                fb_actions.goto_parent_dir(prompt_bufnr, bypass)
-              end,
-            },
-          },
-          hidden = false,
-          show_hidden = false,
-        },
-      },
+      extensions = {},
       defaults = {
         layout_strategy = 'horizontal',
         layout_config = {
