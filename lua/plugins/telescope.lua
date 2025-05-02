@@ -227,6 +227,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local utils = require 'utils'
               utils.yazi()
             end,
+
+            ['<m-g>'] = function()
+              local utils = require 'utils'
+              utils.lazygit()
+            end,
           },
           n = {
             ['o'] = openOil,
