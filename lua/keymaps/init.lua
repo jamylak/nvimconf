@@ -128,6 +128,11 @@ local function sendTerminalRepeat(initialCommand)
     local bufname = vim.api.nvim_buf_get_name(0)
     local cmd = nil
     vim.cmd 'split | term'
+
+    -- We can't run
+    --      vim.cmd('split | term fish -c "' .. cmd .. '"; exec fish')
+    --  cmd = 'python3 ' .. bufname
+    -- Cause then it won't easily repeat the last command
     if bufname:match '%.py$' then
       -- Switch back to the original window
       vim.cmd 'wincmd p'
