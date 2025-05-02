@@ -82,7 +82,7 @@ if vim.g.neovide then
     if bufname == '' then
       -- It's the empty buffer, so we didn't open neovide
       -- with a file, so show old files selector
-      vim.cmd 'Telescope oldfiles'
+      utils.fzfDir()
     elseif string.find(bufname, 'oil') then
       utils.tcd_to_git_root()
       vim.cmd 'Telescope find_files'
