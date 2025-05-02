@@ -142,7 +142,7 @@ local function sendTerminalRepeat(initialCommand)
       -- doesn't run
       vim.defer_fn(function()
         sendTerminalRepeat(cmd)
-      end, 100)
+      end, 220)
     else
       vim.cmd 'startinsert'
     end
