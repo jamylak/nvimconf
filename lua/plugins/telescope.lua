@@ -112,7 +112,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         path = pickerCWD .. '/' .. path
       end
       local utils = require 'utils'
-      utils.cd_to_git_root(path)
+      utils.tcd_to_git_root(path)
       if openFile then
         -- Finish the picker and open the file
         require('telescope.actions').select_default(prompt_bufnr)
