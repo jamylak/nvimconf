@@ -107,7 +107,11 @@ return {
       ['<m-i>'] = function()
         vim.cmd 'Telescope find_files'
       end,
-      ['cd'] = 'actions.cd',
+      ['cd'] = {
+        callback = tabChangeDirectory,
+        desc = 'Tab [C]hange [D]irectory',
+        mode = 'n',
+      },
       ['<leader>lc'] = {
         callback = windowChangeDirectory,
         desc = '[T]ab [C]hange [D]irectory',
