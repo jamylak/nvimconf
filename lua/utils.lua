@@ -97,7 +97,7 @@ function M.yazi()
         -- Without defer, LSP doesn't load
         vim.defer_fn(function()
           vim.cmd('edit ' .. path)
-          vim.cmd 'CD'
+          vim.cmd 'TCD'
         end, 20)
       end
       vim.cmd 'redraw'
