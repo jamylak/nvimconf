@@ -58,7 +58,10 @@ end
 
 function M.terminalNewTab()
   vim.cmd 'tabnew | term'
-  vim.cmd 'startinsert'
+  -- delay
+  vim.defer_fn(function()
+    vim.cmd 'startinsert'
+  end, 50)
 end
 
 function M.terminalVSplit()
