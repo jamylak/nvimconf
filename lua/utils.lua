@@ -105,4 +105,34 @@ function M.yazi()
   })
 end
 
+function M.fzfDir()
+  -- TODO: /tmp and then it will do CD instead of git root?
+  local dirs = vim.fn.split(vim.fn.system [[ls -d /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]], '\n')
+
+  require('telescope.pickers')
+    .new({}, {
+      prompt_title = 'Select Project',
+      finder = require('telescope.finders').new_table {
+        results = dirs,
+      },
+      sorter = require('telescope.config').values.generic_sorter {},
+      attach_mappings = function(_, map)
+        map('i', '<CR>', function(prompt_bufnr)
+          local selection = require('telescope.actions.state').get_selected_entry()
+          require('telescope.actions').close(prompt_bufnr)
+          local path = selection[1]
+          if path and path ~= '' then
+            if HasNonTelescopeBuf() then
+              vim.cmd 'tabnew'
+            end
+            vim.cmd('tcd ' .. path)
+            vim.cmd 'Telescope find_files'
+          end
+        end)
+        return true
+      end,
+    })
+    :find()
+end
+
 return M
