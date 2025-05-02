@@ -232,6 +232,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local utils = require 'utils'
               utils.lazygit()
             end,
+            ['<m-t>'] = function()
+              local selection = require('telescope.actions.state').get_selected_entry()
+              vim.cmd('tabnew ' .. selection.value)
+              local utils = require 'utils'
+              utils.tcd_to_git_root(selection.value)
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<esc>', true, true, true), 'n', true)
+            end,
           },
           n = {
             ['o'] = openOil,
