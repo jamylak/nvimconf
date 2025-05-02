@@ -58,7 +58,7 @@ if vim.g.neovide then
     -- vim.api.nvim_set_keymap(mode, '<D-O>', cmd .. ':only<CR>', { noremap = true, silent = true })
 
     -- Set D-F to run keybinding 'su' which is find on recent files
-    vim.api.nvim_set_keymap(mode, '<D-f>', 'su', { silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-f>', cmd .. 'su', { silent = true })
 
     vim.g.neovide_scale_factor = 1.0
     local change_scale_factor = function(delta)
