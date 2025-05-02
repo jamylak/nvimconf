@@ -47,6 +47,11 @@ if vim.g.neovide then
     vim.keymap.set(mode, '<D-t>', utils.terminalNewTab, { noremap = true, silent = true })
     vim.keymap.set(mode, '<D-\\>', utils.terminalVSplit, { noremap = true, silent = true })
     vim.keymap.set(mode, '<D-CR>', utils.terminalHSplit, { noremap = true, silent = true })
+    vim.keymap.set(mode, '<D-g>', function()
+      vim.api.nvim_feedkeys(cmd, 'n', false)
+      vim.cmd '-tabnew | term lazygit'
+      vim.cmd 'startinsert'
+    end, { noremap = true })
 
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
