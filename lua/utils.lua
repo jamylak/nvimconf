@@ -135,4 +135,9 @@ function M.fzfDir()
     :find()
 end
 
+function M.lazygit()
+  vim.cmd '-tabnew | term lazygit'
+  vim.cmd 'startinsert'
+end
+
 return M
