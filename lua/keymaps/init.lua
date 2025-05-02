@@ -168,13 +168,13 @@ end
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>gg', function()
-  vim.cmd '-tabnew | term lazygit'
-  vim.cmd 'startinsert'
+  local utils = require 'utils'
+  utils.lazygit()
 end, { noremap = true })
 
 vim.keymap.set('n', '<m-g>', function()
-  vim.cmd '-tabnew | term lazygit'
-  vim.cmd 'startinsert'
+  local utils = require 'utils'
+  utils.lazygit()
 end, { noremap = true })
 
 local function openLazyGitFloating()
