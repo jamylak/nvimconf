@@ -79,11 +79,11 @@ if vim.g.neovide then
       -- with a file, so show old files selector
       vim.cmd 'Telescope oldfiles'
     elseif string.find(bufname, 'oil') then
-      utils.cd_to_git_root()
+      utils.tcd_to_git_root()
       vim.cmd 'Telescope find_files'
     else
       -- Should be a regular file, so cd to git root
-      utils.cd_to_git_root()
+      utils.tcd_to_git_root()
     end
   end, 200)
 end
