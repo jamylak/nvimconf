@@ -434,6 +434,7 @@ vim.keymap.set('n', 'gp', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('n', '<c-p>', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$h', { desc = 'End of line', silent = true })
+vim.keymap.set('n', '<m-x>', ':', { desc = 'Command', silent = true })
 
 -- Easy duplication of lines
 vim.keymap.set('x', '<c-p>', function()
