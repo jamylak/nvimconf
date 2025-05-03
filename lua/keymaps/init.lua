@@ -632,3 +632,11 @@ vim.keymap.set('n', '<A-y>', function()
   local utils = require 'utils'
   utils.yazi()
 end, { noremap = true, silent = true })
+
+vim.keymap.set('n', '<C-y>', function()
+  -- TODO: Maybe just run the fzf and get the output from it
+  -- then open new tab, directly CD there, set the TCD...
+  vim.cmd 'tabnew'
+  local utils = require 'utils'
+  utils.yazi()
+end, { noremap = true, silent = true })
