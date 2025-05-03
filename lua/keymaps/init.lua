@@ -502,6 +502,11 @@ vim.api.nvim_create_user_command('TCD', function()
   utils.tcd_to_git_root()
 end, {})
 
+-- not yet going straight to insert mode
+vim.api.nvim_create_user_command('TERM', function()
+  utils.terminalNewTab()
+end, {})
+
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
