@@ -640,3 +640,13 @@ vim.keymap.set('n', '<C-y>', function()
   local utils = require 'utils'
   utils.yazi()
 end, { noremap = true, silent = true })
+
+function HasNonTelescopeBuf()
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    local name = vim.api.nvim_buf_get_name(buf)
+    if name ~= '' and not name:match 'TelescopePrompt' then
+      return true
+    end
+  end
+  return false
+end
