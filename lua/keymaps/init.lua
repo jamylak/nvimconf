@@ -287,7 +287,18 @@ local changeDir = function()
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
   vim.api.nvim_set_current_dir(dir_path)
 end
-vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+local changeDirWindow = function()
+  local file_path = vim.fn.expand '%:p'
+  local dir_path = vim.fn.fnamemodify(file_path, ':h')
+  vim.cmd('lcd ' .. dir_path)
+end
+local changeDirTab = function()
+  local file_path = vim.fn.expand '%:p'
+  local dir_path = vim.fn.fnamemodify(file_path, ':h')
+  vim.cmd('tcd ' .. dir_path)
+end
+-- vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
+vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Vertical Split' })
