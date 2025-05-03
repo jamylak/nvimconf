@@ -656,3 +656,7 @@ function HasNonTelescopeBuf()
   end
   return false
 end
+
+vim.keymap.set('n', '<m-n>', utils.fzfDir)
+vim.keymap.set('i', '<m-n>', utils.fzfDir)
+vim.api.nvim_create_user_command('F', utils.fzfDir, {})
