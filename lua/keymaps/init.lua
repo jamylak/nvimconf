@@ -385,16 +385,6 @@ vim.keymap.set('n', '<leader>tl', ':tablast<CR>', { desc = 'Tab Last' })
 vim.keymap.set('n', '<leader>tf', ':tabfirst<CR>', { desc = 'Tab First' })
 vim.keymap.set('n', '<leader>to', ':tabonly <CR>', { desc = 'Tab Only' })
 vim.keymap.set('n', '<leader>tb', '<C-W>T', { desc = 'Move window into tab' })
-local changeDirWindow = function()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.cmd('lcd ' .. dir_path)
-end
-local changeDirTab = function()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.cmd('tcd ' .. dir_path)
-end
 vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
 vim.keymap.set('n', '<t', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
 vim.keymap.set('n', '>t', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
