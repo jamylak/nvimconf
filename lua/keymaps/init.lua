@@ -487,14 +487,18 @@ end, {})
 vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
-vim.keymap.set('n', '<leader>v', utils.cd_to_git_root, { noremap = true })
-vim.keymap.set('n', '<leader>V', utils.tcd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>v', utils.tcd_to_git_root, { noremap = true })
+vim.keymap.set('n', '<leader>V', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<m-v>', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader>bc', utils.cd_to_git_root, { noremap = true })
 
 -- user command to cd_to_git_root
 vim.api.nvim_create_user_command('CD', function()
   utils.cd_to_git_root()
+end, {})
+
+vim.api.nvim_create_user_command('TCD', function()
+  utils.tcd_to_git_root()
 end, {})
 
 -- Ctrl Insert key combos
