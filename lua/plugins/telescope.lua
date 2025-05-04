@@ -56,6 +56,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'sn',
     '<leader>f.',
     '<leader>f,',
+    '<c-g>',
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -184,6 +185,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<c-h>'] = require('telescope.actions').select_horizontal,
             ['<c-enter>'] = 'to_fuzzy_refine',
             ['<c-j>'] = setCWDToPickerAndFindFiles,
+            ['<c-g>'] = function()
+              vim.cmd 'stopinsert'
+              require('neogit').open()
+            end,
             ['<m-w>'] = function()
               local utils = require 'utils'
               utils.CloseTabOrQuit()
