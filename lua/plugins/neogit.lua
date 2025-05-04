@@ -9,9 +9,11 @@ return {
     { '<leader>gn', ':Neogit<CR>' },
     {
       '<c-g>',
+      mode = { 'n', 'i' },
       function()
         local utils = require 'utils'
-        utils.cd_to_git_root()
+        utils.tcd_to_git_root()
+        vim.cmd 'stopinsert'
         require('neogit').open()
       end,
     },
