@@ -27,9 +27,8 @@ if vim.g.neovide then
     elseif mode == 'i' then
       cmd = '<ESC>'
     end
-    -- Set some escape shortcuts
-    vim.api.nvim_set_keymap(mode, '<D-j>', cmd, { noremap = true, silent = true })
-    vim.api.nvim_set_keymap(mode, '<D-d>', cmd, { noremap = true, silent = true })
+    -- Terminal shortcut
+    vim.api.nvim_set_keymap(mode, '<D-j>', cmd .. ' te', { silent = true })
     -- Set D-0 to D-9 to escape then switch to the corresponding tab
     for i = 0, 9 do
       vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>', { noremap = true, silent = true })
