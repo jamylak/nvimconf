@@ -56,7 +56,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'sn',
     '<leader>f.',
     '<leader>f,',
-    '<c-g>',
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
