@@ -437,7 +437,6 @@ vim.keymap.set('n', 'gp', 'G', { desc = 'Go to end of file', silent = true })
 vim.keymap.set('n', 'qp', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('n', '<c-p>', 'yyp', { desc = 'Yank and paste current line', silent = true })
 vim.keymap.set('v', 'q', '$h', { desc = 'End of line', silent = true })
-vim.keymap.set('n', '<m-x>', ':', { desc = 'Command', silent = true })
 
 -- Easy duplication of lines
 vim.keymap.set('x', '<c-p>', function()
@@ -513,14 +512,12 @@ end, {})
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
-vim.keymap.set('i', '<C-x>', '<c-o>x', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
 
 -- Faster way to do common symbols
 -- vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
 vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
-vim.keymap.set('i', '<C-g>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-->', ';', { silent = true, noremap = true })
 
