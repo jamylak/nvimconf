@@ -5,7 +5,10 @@ vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
 -- Keymap to do search with <c-s> eg. same as / but with <c-s>
-vim.keymap.set('n', '<C-s>', '/', { silent = true })
+-- vim.keymap.set('n', '<C-s>', '/', { silent = true })
+vim.keymap.set('n', '<C-s>', function()
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
+end, { silent = true, noremap = true })
 
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
@@ -71,6 +74,7 @@ for i = 1, 8 do
   vim.keymap.set('n', '<leader>t' .. i, ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
 end
 -- 9 = last tab
+vim.keymap.set('n', '<a-0>', ':tabn 1<cr>', { desc = 'Go to last tab' })
 vim.keymap.set('n', '<a-9>', ':tabn $<cr>', { desc = 'Go to last tab' })
 vim.keymap.set('n', '<a-s-[>', ':tabprev<cr>', { desc = 'Go to previous tab', silent = true })
 vim.keymap.set('n', '<a-s-]>', ':tabnext<cr>', { desc = 'Go to next tab', silent = true })
