@@ -361,7 +361,7 @@ function ExecuteVisualSelectionAsLua()
   vim.api.nvim_win_set_cursor(0, save_cursor)
 end
 local function terminal()
-  vim.cmd 'term'
+  vim.cmd 'term!'
   vim.cmd 'startinsert'
 end
 local function terminalNewTab()
