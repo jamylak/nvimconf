@@ -59,6 +59,7 @@ if vim.g.neovide then
 
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-n>', cmd .. '<m-n>', { silent = true })
     -- vim.api.nvim_set_keymap(mode, '<D-O>', cmd .. ':only<CR>', { noremap = true, silent = true })
 
     -- Set D-F to run keybinding 'su' which is find on recent files
