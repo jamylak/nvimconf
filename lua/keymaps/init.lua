@@ -149,6 +149,8 @@ local function sendTerminalRepeat(initialCommand)
   end
 end
 vim.api.nvim_create_user_command('M', sendTerminalRepeat, {})
+-- TODO: Something where it will launch a Watach and Run below?
+-- vim.api.nvim_create_user_command('WatchAndRun', sendTerminalRepeat, {})
 vim.keymap.set('n', '<leader>n', sendTerminalRepeat, { desc = 'Send Repeart to terminal' })
 vim.keymap.set('n', '<leader>m', ':make<CR>', { silent = true, desc = 'Run [M]ake' })
 vim.keymap.set('n', '<leader>q', ':q!<CR>', { silent = true })
