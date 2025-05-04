@@ -55,7 +55,7 @@ if vim.g.neovide then
     -- quick test: replicate <leader>i which does neotree reveal
     vim.api.nvim_set_keymap(mode, '<D-i>', cmd .. ' i', { silent = true })
     -- quick test to open up IDE style diagnostics and symbols
-    vim.api.nvim_set_keymap(mode, '<D-k>', cmd .. ' i xs xX', { silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-k>', cmd .. ' b', { silent = true })
 
     vim.api.nvim_set_keymap(mode, '<D-w>', cmd .. ':tabclose<CR>', { noremap = true, silent = true })
     vim.api.nvim_set_keymap(mode, '<D-o>', cmd .. ':tabonly<CR>', { noremap = true, silent = true })
