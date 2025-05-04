@@ -7,6 +7,7 @@ return {
     { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'i' },
   },
   config = function()
+    -- TODO: Override C-j to do <enter>
     require('telescope').load_extension 'cmdline'
     require('telescope._extensions.cmdline').setup {
       picker = {
