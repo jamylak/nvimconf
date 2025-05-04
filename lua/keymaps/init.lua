@@ -137,7 +137,7 @@ local function sendTerminalRepeat(initialCommand)
       -- Switch back to the original window
       vim.cmd 'wincmd p'
       cmd = 'python3 ' .. bufname .. ' \r'
-      print('Initial Command set to: ' .. cmd)
+      -- print('Initial Command set to: ' .. cmd)
       -- If we don't wait 100 ms then it sends the command but it
       -- doesn't run
       vim.defer_fn(function()
