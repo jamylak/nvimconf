@@ -11,7 +11,12 @@ return {
       -- mode = { 'n', 'i' },
       '<c-g>',
       function()
-        require('neogit').open()
+        -- Open neogit in a new tab
+        -- but behind current tab so when it is
+        -- closed it goes back to the previous tab
+        vim.cmd 'tabnew'
+        vim.cmd 'tabmove -1'
+        require('neogit').open { kind = 'replace' }
       end,
     },
   },
