@@ -79,7 +79,7 @@ function M.yazi()
   vim.fn.system 'rm -f /tmp/yazi-nvim-path'
 
   -- Open Yazi in a floating terminal and capture the buffer ID
-  vim.cmd('tabnew | term yazi ' .. vim.fn.bufname '%' .. ' --chooser-file=/tmp/yazi-nvim-path')
+  vim.cmd('-tabnew | term yazi ' .. vim.fn.bufname '%' .. ' --chooser-file=/tmp/yazi-nvim-path')
   vim.cmd 'startinsert'
   local term_buf = vim.api.nvim_get_current_buf()
 

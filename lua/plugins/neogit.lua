@@ -29,8 +29,7 @@ return {
         -- Open neogit in a new tab
         -- but behind current tab so when it is
         -- closed it goes back to the previous tab
-        vim.cmd 'tabnew'
-        vim.cmd 'tabmove -1'
+        vim.cmd '-tabnew'
         require('neogit').open { kind = 'replace' }
       end,
     },

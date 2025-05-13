@@ -186,8 +186,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<c-j>'] = setCWDToPickerAndFindFiles,
             ['<c-g>'] = function(prompt_bufnr)
               require('telescope.actions').close(prompt_bufnr)
-              vim.cmd 'tabnew'
-              vim.cmd 'tabmove -1'
+              vim.cmd '-tabnew'
               require('neogit').open { kind = 'replace' }
             end,
             ['<m-w>'] = function()
