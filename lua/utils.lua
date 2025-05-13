@@ -143,6 +143,17 @@ function M.fzfDir()
             end
           end
         end)
+        map('i', '<C-j>', function(prompt_bufnr)
+          local selection = require('telescope.actions.state').get_selected_entry()
+          require('telescope.actions').close(prompt_bufnr)
+          local path = selection[1]
+          if path and path ~= '' then
+            local utils = require 'utils'
+            if not utils.switchToTabWithFile(path) then
+              projTabFindFiles(path)
+            end
+          end
+        end)
         map('i', '<S-CR>', function(prompt_bufnr)
           local action_state = require 'telescope.actions.state'
           local actions = require 'telescope.actions'
