@@ -353,6 +353,7 @@ local function terminal()
 end
 local function terminalNewTab()
   vim.cmd 'tabnew | term'
+  vim.cmd 'tabmove -1'
   vim.cmd 'startinsert'
 end
 local function terminalVertical()
