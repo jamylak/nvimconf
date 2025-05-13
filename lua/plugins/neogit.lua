@@ -8,7 +8,6 @@ return {
   keys = {
     { '<leader>gn', ':Neogit<CR>' },
     {
-      -- mode = { 'n', 'i' },
       '<c-g>',
       function()
         -- Open neogit in a new tab
@@ -17,6 +16,12 @@ return {
         vim.cmd 'tabnew'
         vim.cmd 'tabmove -1'
         require('neogit').open { kind = 'replace' }
+      end,
+    },
+    {
+      '<leader>gv',
+      function()
+        require('neogit').open { kind = 'vsplit' }
       end,
     },
   },
