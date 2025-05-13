@@ -117,16 +117,44 @@ function M.fzfDir()
       },
       sorter = require('telescope.config').values.generic_sorter {},
       attach_mappings = function(_, map)
-        map('i', '<CR>', function(prompt_bufnr)
-          local selection = require('telescope.actions.state').get_selected_entry()
-          require('telescope.actions').close(prompt_bufnr)
-          local path = selection[1]
+        local function projTabFindFiles(path)
           if path and path ~= '' then
             if HasNonTelescopeBuf() then
               vim.cmd 'tabnew'
             end
             vim.cmd('tcd ' .. path)
             vim.cmd 'Telescope find_files'
+          end
+        end
+        map('i', '<CR>', function(prompt_bufnr)
+          local selection = require('telescope.actions.state').get_selected_entry()
+          require('telescope.actions').close(prompt_bufnr)
+          local path = selection[1]
+          projTabFindFiles(path)
+        end)
+        map('i', '<C-CR>', function(prompt_bufnr)
+          local selection = require('telescope.actions.state').get_selected_entry()
+          require('telescope.actions').close(prompt_bufnr)
+          local path = selection[1]
+          if path and path ~= '' then
+            local utils = require 'utils'
+            if not utils.switchToTabWithFile(path) then
+              projTabFindFiles(path)
+            end
+          end
+        end)
+        map('i', '<S-CR>', function(prompt_bufnr)
+          local action_state = require 'telescope.actions.state'
+          local actions = require 'telescope.actions'
+          local input = action_state.get_current_line()
+          if input and input ~= '' then
+            local dir = vim.fn.expand('~/bar/' .. input)
+            actions.close(prompt_bufnr)
+            -- vim.schedule(function()
+            vim.fn.mkdir(dir, 'p')
+            vim.cmd('tcd ' .. dir)
+            vim.cmd 'Telescope find_files'
+            -- end)
           end
         end)
         return true
