@@ -156,4 +156,18 @@ function M.neotreeToggle()
   end
 end
 
+function M.switchToTabWithFile(filepath)
+  for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+      local buf = vim.api.nvim_win_get_buf(win)
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name:find(filepath, 1, true) then
+        vim.api.nvim_set_current_tabpage(tab)
+        return true
+      end
+    end
+  end
+  return false
+end
+
 return M
