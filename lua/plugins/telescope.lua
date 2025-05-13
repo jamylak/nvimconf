@@ -25,7 +25,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>fy',
     '<leader>gb',
     '<leader>gc',
-    '<leader>gj',
+    -- '<leader>gj',
     '<leader>gk',
     '<leader>sk',
     '<leader>sw',
@@ -340,7 +340,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Git branches
     vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' }) -- Git commits
     vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
-    vim.keymap.set('n', '<leader>gj', builtin.git_files, { desc = '[G]it [F]iles' })
+    -- vim.keymap.set('n', '<leader>gj', builtin.git_files, { desc = '[G]it [F]iles' })
     vim.keymap.set('n', '<leader>gk', builtin.git_commits, { desc = '[G]it Commits' })
 
     vim.keymap.set('n', '<leader>sk', function()

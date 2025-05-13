@@ -11,7 +11,18 @@ return {
   -- now it takes like 3 clicks to get there
   commit = '75ee709d18625a94aef90d94ccac4e562c9a0046',
   keys = {
-    { '<leader>gn', ':Neogit<CR>' },
+    {
+      '<leader>gn',
+      function()
+        require('neogit').open { kind = 'vsplit' }
+      end,
+    },
+    {
+      '<leader>gj',
+      function()
+        require('neogit').open { kind = 'vsplit' }
+      end,
+    },
     {
       '<c-g>',
       function()
