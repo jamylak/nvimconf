@@ -1,6 +1,11 @@
 return {
   'NeogitOrg/neogit',
   cmd = 'Neogit',
+  opts = {
+    commit_editor = {
+      kind = 'floating',
+    },
+  },
   -- I don't like how they changed the "dr"
   -- to not show the suggestion of eg. main..HEAD
   -- now it takes like 3 clicks to get there
