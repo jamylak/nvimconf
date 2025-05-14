@@ -610,7 +610,7 @@ end
 function CopyGitHubURLToClipboard()
   local url = GitHubURL()
   vim.fn.setreg('+', url) -- Copies URL to clipboard
-  print('GitHub URL copied: ' .. url)
+  print 'GH URL copied'
   return url
 end
 
