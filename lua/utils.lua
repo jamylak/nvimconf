@@ -138,7 +138,7 @@ function M.fzfDir()
           local path = selection[1]
           if path and path ~= '' then
             local utils = require 'utils'
-            if not utils.switchToTabWithFile(path) then
+            if not utils.switchToTabWithFile(path .. '/') then
               projTabFindFiles(path)
             end
           end
@@ -149,7 +149,7 @@ function M.fzfDir()
           local path = selection[1]
           if path and path ~= '' then
             local utils = require 'utils'
-            if not utils.switchToTabWithFile(path) then
+            if not utils.switchToTabWithFile(path .. '/') then
               projTabFindFiles(path)
             end
           end
