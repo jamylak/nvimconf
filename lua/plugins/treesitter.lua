@@ -6,16 +6,29 @@ vim.api.nvim_set_keymap('n', '<c-]>', ']a', { silent = true })
 -- and back 1 function
 -- NOTE: Could we make these only activate if treesitter
 -- is able to navigate functions in this file?
-vim.api.nvim_set_keymap('n', '<c-f>', ']f', { silent = true })
-vim.api.nvim_set_keymap('n', '<c-b>', '[f', { silent = true })
-vim.api.nvim_set_keymap('v', '<c-f>', ']f', { silent = true })
-vim.api.nvim_set_keymap('v', '<c-b>', '[f', { silent = true })
-
 vim.api.nvim_set_keymap('n', '<c-0>', ']l', { desc = 'Next call', silent = true })
 vim.api.nvim_set_keymap('n', '<c-9>', '[l', { desc = 'Next call', silent = true })
 
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
+  keys = {
+    {
+      '<c-f>',
+      function()
+        require('nvim-treesitter.textobjects.move').goto_next_start '@function.outer'
+      end,
+      desc = 'Next function',
+      mode = { 'n', 'v' },
+    },
+    {
+      '<c-b>',
+      function()
+        require('nvim-treesitter.textobjects.move').goto_previous_start '@function.outer'
+      end,
+      desc = 'Previous function',
+      mode = { 'n', 'v' },
+    },
+  },
   lazy = true,
   dependencies = {
     'nvim-treesitter/playground',
