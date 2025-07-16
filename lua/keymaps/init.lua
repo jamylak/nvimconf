@@ -647,6 +647,12 @@ function HasNonTelescopeBuf()
   return false
 end
 
+function IsNonEmptyBuffer()
+  local buf = vim.api.nvim_get_current_buf()
+  local name = vim.api.nvim_buf_get_name(buf)
+  return name ~= ''
+end
+
 vim.keymap.set('n', '<m-n>', utils.fzfDir)
 vim.keymap.set('i', '<m-n>', utils.fzfDir)
 vim.api.nvim_create_user_command('F', utils.fzfDir, {})
