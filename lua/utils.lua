@@ -119,7 +119,7 @@ function M.fzfDir()
       attach_mappings = function(_, map)
         local function projTabFindFiles(path)
           if path and path ~= '' then
-            if HasNonTelescopeBuf() then
+            if IsNonEmptyBuffer() then
               vim.cmd 'tabnew'
             end
             vim.cmd('tcd ' .. path)
