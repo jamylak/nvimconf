@@ -163,6 +163,9 @@ function M.fzfDir()
             actions.close(prompt_bufnr)
             -- vim.schedule(function()
             vim.fn.mkdir(dir, 'p')
+            if IsNonEmptyBuffer() then
+              vim.cmd 'tabnew'
+            end
             vim.cmd('tcd ' .. dir)
             vim.cmd 'Telescope find_files'
             -- end)
