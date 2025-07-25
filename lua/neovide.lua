@@ -8,6 +8,16 @@ if vim.g.neovide then
   -- vim.api.nvim_set_keymap('i', '<D-v>', '<cmd><ESC> "*P<cr>', { noremap = true })
   vim.keymap.set('i', '<D-v>', '<C-r>*') -- Paste insert mode
   vim.keymap.set('t', '<D-v>', '<C-\\><C-n>l"+Pli') -- Paste insert mode
+
+  local function paste_in_terminal()
+    -- Get the clipboard content
+    local clipboard_content = vim.fn.getreg '+'
+    -- Send the clipboard content directly to the terminal
+    local current_buf = vim.api.nvim_get_current_buf()
+    vim.api.nvim_chan_send(vim.b[current_buf].terminal_job_id, clipboard_content)
+  end
+
+  vim.keymap.set('t', '<D-v>', paste_in_terminal)
   vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
   vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
