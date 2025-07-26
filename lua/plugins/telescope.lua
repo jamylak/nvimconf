@@ -43,6 +43,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<m-b>',
     '<m-CR>',
     '<leader>j',
+    '<leader>J',
     '<leader>fj',
     '<leader>sm',
     '<leader>sb',
@@ -313,7 +314,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.find_files { no_ignore = false, cwd = getCWD(), prompt_title = 'Find files (cwd)' }
     end, { desc = '[F]ind [F]iles (cwd)' })
     vim.keymap.set('n', '<leader>fF', function()
-      builtin.find_files { no_ignore = true, hidden = true }
+      builtin.find_files { no_ignore = true, hidden = true, prompt_title = 'Find All Files' }
     end, { desc = '[F]ind All [F]iles' })
     vim.keymap.set('n', '<leader>sF', function()
       builtin.find_files { no_ignore = true, hidden = true, prompt_title = 'Find files (cwd)', cwd = getCWD() }
@@ -385,6 +386,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>j', function()
       builtin.find_files { silent = true, no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
+    vim.keymap.set('n', '<leader>J', function()
+      builtin.find_files { no_ignore = true, hidden = true, prompt_title = 'Find All Files' }
+    end, { desc = '[F]ind All Files' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
 
     local function deleteBuffer(prompt_bufnr)
