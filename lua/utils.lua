@@ -1,5 +1,117 @@
 local M = {}
 
+M.sourceFileTypes = {
+  -- Programming languages
+  'c',
+  'cpp',
+  'objc',
+  'java',
+  'cs',
+  'go',
+  'rust',
+  'zig',
+  'lua',
+  'python',
+  'ruby',
+  'perl',
+  'php',
+  'r',
+  'scala',
+  'kotlin',
+  'haskell',
+  'fsharp',
+  'javascript',
+  'typescript',
+  'tsx',
+  'jsx',
+  'dart',
+  'elixir',
+  'erlang',
+  'clojure',
+  'julia',
+  'nim',
+  'ocaml',
+  'coq',
+  'swift',
+  'glsl',
+  'hlsl',
+  'frag',
+  'vert',
+
+  -- Web / frontend
+  'html',
+  'css',
+  'scss',
+  'sass',
+  'less',
+  'vue',
+  'svelte',
+
+  -- Shell / scripts
+  'sh',
+  'bash',
+  'zsh',
+  'fish',
+  'powershell',
+  'ps1',
+  'cmd',
+  'bat',
+
+  -- Config / infra / DSLs
+  'json',
+  'yaml',
+  'toml',
+  'ini',
+  'dotenv',
+  'dockerfile',
+  'make',
+  'cmake',
+  'ninja',
+  'terraform',
+  'hcl',
+  'cue',
+  'nix',
+  'meson',
+
+  -- Markdown / text / doc formats
+  'markdown',
+  'md',
+  'rst',
+  'asciidoc',
+  'org',
+  'txt',
+
+  -- Documentation / code-related
+  'vimdoc',
+  'help',
+  'snippets',
+  'jsonc',
+
+  -- Data / notebooks
+  'csv',
+  'tsv',
+  'parquet',
+  'toml',
+  'yaml',
+  'json',
+  'ipynb', -- Jupyter notebooks (if using nvim plugins for that)
+
+  -- Literate programming
+  'quarto',
+  'rmarkdown',
+  'pandoc',
+  'noweb',
+  'latex',
+  'tex',
+
+  -- Git and diffs
+  'gitcommit',
+  'gitrebase',
+  'gitsendemail',
+  'diff',
+  'log',
+}
+
 function M.get_git_root(path)
   -- If we pass in a path, use that to get the git root
   -- from, otherwise get the current buffer
