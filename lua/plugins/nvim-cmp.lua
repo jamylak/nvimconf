@@ -1,7 +1,9 @@
+local utils = require 'utils'
 return {
   'hrsh7th/nvim-cmp',
   -- event = { 'InsertEnter', 'CmdlineEnter' },
-  event = 'InsertEnter',
+  -- event = 'InsertEnter',
+  ft = utils.sourceFileTypes,
   dependencies = {
     -- Snippet Engine & its associated nvim-cmp source
     {

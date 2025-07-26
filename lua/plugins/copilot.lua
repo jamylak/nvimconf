@@ -1,6 +1,8 @@
+local utils = require 'utils'
 return {
   'zbirenbaum/copilot.lua',
-  event = 'InsertCharPre',
+  ft = utils.sourceFileTypes,
+  -- ft = { 'lua' },
   cmd = 'Copilot',
   opts = {
     suggestion = {

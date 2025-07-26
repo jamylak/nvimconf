@@ -1,2 +1,3 @@
 -- Detect tabstop and shiftwidth automatically
-return { 'tpope/vim-sleuth', lazy = false }
+local utils = require 'utils'
+return { 'tpope/vim-sleuth', ft = utils.sourceFileTypes }
