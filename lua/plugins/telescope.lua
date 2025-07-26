@@ -44,6 +44,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<m-CR>',
     '<leader>j',
     '<leader>J',
+    '<leader><c-j>',
+    '<leader><m-j>',
     '<leader>fj',
     '<leader>sm',
     '<leader>sb',
@@ -389,6 +391,15 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>J', function()
       builtin.find_files { no_ignore = true, hidden = true, prompt_title = 'Find All Files' }
     end, { desc = '[F]ind All Files' })
+    vim.keymap.set('n', '<leader><c-j>', builtin.live_grep, { desc = '[F]ind [W]ord' })
+    vim.keymap.set('n', '<leader><m-j>', function()
+      builtin.live_grep {
+        prompt_title = 'Find words in all files',
+        additional_args = function(opts)
+          return { '--hidden', '--no-ignore' }
+        end,
+      }
+    end, { desc = 'Find words in all files (cwd)' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
 
     local function deleteBuffer(prompt_bufnr)
