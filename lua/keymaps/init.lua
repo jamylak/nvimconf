@@ -294,7 +294,10 @@ end
 vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irectory to parent of curfile' })
 
 -- Useful keymaps
-vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Vertical Split' })
+vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
+
+vim.keymap.set('n', '<leader>k', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
+vim.keymap.set('n', '<leader>K', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', function()
   vim.fn.system('fish -c "yazi_hsplit ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Vertical Split' })

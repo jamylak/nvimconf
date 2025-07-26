@@ -27,7 +27,6 @@ return {
         ' ',
         'g',
         'j',
-        'u',
         'd',
         'e',
         'f',
@@ -38,6 +37,7 @@ return {
         'q',
         'r',
         't',
+        'u',
         'v',
         'w',
         'x',
@@ -45,7 +45,7 @@ return {
         'z',
       },
       disable_hint = false,
-      disable_hint_if_less_than_n_windows = 2,
+      disable_hint_if_less_than_n_windows = 3,
     }
   end,
 }
