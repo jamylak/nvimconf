@@ -10,9 +10,36 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
-require('lazy').setup {
+require('lazy').setup({
   { import = 'plugins' },
-}
+}, {
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    reset_packpath = true, -- reset the package path to improve startup time
+    rtp = {
+      reset = true, -- reset the runtime path to $VIMRUNTIME and your config directory
+      paths = {}, -- add any custom paths here that you want to includes in the rtp
+      disabled_plugins = {
+        'gzip',
+        'matchit',
+        'matchparen',
+        -- 'netrwPlugin',
+        'tarPlugin',
+        'tohtml',
+        'tutor',
+        'zipPlugin',
+        'editorconfig',
+        'man',
+        'osc52',
+        'rplugin',
+        'shada',
+        'spellfile',
+      },
+    },
+  },
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
