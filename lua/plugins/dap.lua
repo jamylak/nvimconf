@@ -34,5 +34,7 @@ return {
     dap.configurations.c = dap.configurations.cpp
     dap.configurations.rust = dap.configurations.cpp
   end,
-  ft = { 'cpp', 'c', 'rust' }, -- Only load for these filetypes
+  lazy = true,
+  -- event = 'VeryLazy',
+  -- ft = { 'cpp', 'c', 'rust' }, -- Only load for these filetypes
 }

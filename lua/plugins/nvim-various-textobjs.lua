@@ -74,7 +74,7 @@ end, { desc = 'URL Opener' })
 
 return {
   'chrisgrieser/nvim-various-textobjs',
-  event = 'BufReadPre',
+  event = 'VeryLazy',
   opts = {
     keymaps = {
       useDefaults = true,

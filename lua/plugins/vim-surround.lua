@@ -3,5 +3,5 @@
 vim.g.surround_no_insert_mappings = 1
 return {
   'tpope/vim-surround',
-  event = 'BufReadPost',
+  event = 'VeryLazy',
 }
