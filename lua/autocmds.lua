@@ -58,7 +58,12 @@ vim.api.nvim_create_autocmd('VimEnter', {
       local path = vim.fn.fnamemodify(file, ':p:h')
 
       -- print('Auto-cd to git root for path: ' .. path)
-      utils.tcd_to_git_root(path)
+      local ok = utils.tcd_to_git_root(path)
+      if not ok and vim.fn.isdirectory(path) == 1 then
+        -- If not a git root, but a directory, change to that directory
+        -- eg. nvim /tmp
+        vim.cmd('tcd ' .. vim.fn.fnameescape(path))
+      end
     end
   end,
 })
