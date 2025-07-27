@@ -1,8 +1,6 @@
-local utils = require 'utils'
 return {
   'zbirenbaum/copilot.lua',
-  ft = utils.sourceFileTypes,
-  -- ft = { 'lua' },
+  event = 'BufReadPost',
   cmd = 'Copilot',
   opts = {
     suggestion = {

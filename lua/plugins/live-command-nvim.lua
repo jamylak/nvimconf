@@ -1,7 +1,6 @@
-local utils = require 'utils'
 return {
   'smjonas/live-command.nvim',
-  ft = utils.sourceFileTypes,
+  event = 'BufReadPost',
   -- Norm doesn't seem to work well
   config = function()
     require('live-command').setup {

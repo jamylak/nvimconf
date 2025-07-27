@@ -1,7 +1,6 @@
-local utils = require 'utils'
 return { -- Autoformat
   'stevearc/conform.nvim',
-  ft = utils.sourceFileTypes,
+  event = 'BufReadPost',
   opts = {
     notify_on_error = false,
     format_on_save = {
