@@ -155,9 +155,11 @@ function M.tcd_to_git_root(path)
   path = M.get_git_root(path)
   if path == '' then
     -- vim.notify('Not a git repository or some other error occurred', vim.log.levels.DEBUG)
+    return false
   else
     -- Change the tab directory
     vim.cmd('tcd ' .. path)
+    return true
   end
 end
 
