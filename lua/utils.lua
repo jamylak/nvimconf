@@ -72,6 +72,7 @@ M.sourceFileTypes = {
   'cue',
   'nix',
   'meson',
+  'sql',
 
   -- Markdown / text / doc formats
   'markdown',
