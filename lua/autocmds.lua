@@ -47,3 +47,18 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   pattern = '*.metal',
   command = 'set filetype=glsl',
 })
+
+-- Auto-cd to git root if Neovim is launched with a file
+vim.api.nvim_create_autocmd('VimEnter', {
+  callback = function()
+    local utils = require 'utils'
+    local argv = vim.fn.argv()
+    if #argv > 0 then
+      local file = argv[1]
+      local path = vim.fn.fnamemodify(file, ':p:h')
+
+      -- print('Auto-cd to git root for path: ' .. path)
+      utils.tcd_to_git_root(path)
+    end
+  end,
+})
