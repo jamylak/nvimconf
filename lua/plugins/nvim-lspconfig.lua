@@ -1,8 +1,8 @@
 return {
   'neovim/nvim-lspconfig',
   cmd = { 'Mason' },
-  -- event = 'BufReadPre',
-  event = 'BufReadPost',
+  -- event = 'BufReadPost',
+  event = 'VeryLazy',
   -- lazy = false,
   dependencies = {
     -- Automatically install LSPs and related tools to stdpath for neovim

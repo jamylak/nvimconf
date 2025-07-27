@@ -1,6 +1,6 @@
 return {
   'smjonas/live-command.nvim',
-  event = 'BufReadPost',
+  event = 'VeryLazy',
   -- Norm doesn't seem to work well
   config = function()
     require('live-command').setup {

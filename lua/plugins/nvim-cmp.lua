@@ -1,6 +1,8 @@
 return {
   'hrsh7th/nvim-cmp',
-  event = 'BufReadPost',
+  -- event = 'InsertEnter',
+  -- event = 'BufReadPost',
+  event = 'VeryLazy',
   -- event = { 'InsertEnter', 'CmdlineEnter' },
   -- event = 'InsertEnter',
   -- event = 'BufReadPost',

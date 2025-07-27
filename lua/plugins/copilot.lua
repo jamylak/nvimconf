@@ -1,6 +1,7 @@
 return {
   'zbirenbaum/copilot.lua',
-  event = 'BufReadPost',
+  -- event = 'BufReadPost',
+  event = 'VeryLazy',
   cmd = 'Copilot',
   opts = {
     suggestion = {

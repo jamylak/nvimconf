@@ -1,6 +1,6 @@
 return { -- Autoformat
   'stevearc/conform.nvim',
-  event = 'BufReadPost',
+  event = 'VeryLazy',
   opts = {
     notify_on_error = false,
     format_on_save = {
