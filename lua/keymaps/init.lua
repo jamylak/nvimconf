@@ -50,16 +50,12 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   end
   vim.keymap.set(mode, 'gko', cmd .. ':tabn 1<CR>', {})
   vim.keymap.set(mode, 'gkp', cmd .. ':tabn 2<CR>', {})
-  vim.keymap.set(mode, 'gk[', cmd .. ':tabn 3<CR>', {})
-  vim.keymap.set(mode, 'gkd', cmd .. ':tabn 4<CR>', {})
-  vim.keymap.set(mode, 'gk;', cmd .. ':tabn 4<CR>', {})
-  vim.keymap.set(mode, 'gke', cmd .. ':tabn 5<CR>', {})
-  vim.keymap.set(mode, 'gkf', cmd .. ':tabn 6<CR>', {})
-  vim.keymap.set(mode, 'gkg', cmd .. ':tabn 7<CR>', {})
-  vim.keymap.set(mode, 'gkh', cmd .. ':tabn 8<CR>', {})
-  vim.keymap.set(mode, 'gki', cmd .. ':tabn 9<CR>', {})
-  vim.keymap.set(mode, 'gkj', cmd .. ':tabn 10<CR>', {})
-  vim.keymap.set(mode, 'gkk', cmd .. ':tabn 11<CR>', {})
+  vim.keymap.set(mode, 'gk ', cmd .. ':tabn 3<CR>', {})
+  vim.keymap.set(mode, 'gkg', cmd .. ':tabn 4<CR>', {})
+  vim.keymap.set(mode, 'gkk', cmd .. ':tabn 5<CR>', {})
+  vim.keymap.set(mode, 'gkd', cmd .. ':tabn 6<CR>', {})
+  vim.keymap.set(mode, 'gke', cmd .. ':tabn 7<CR>', {})
+  vim.keymap.set(mode, 'gkf', cmd .. ':tabn 8<CR>', {})
 end
 
 vim.keymap.set('n', 'HE', ':tabn 1<CR>', {})
@@ -111,6 +107,7 @@ function scroll_buffer_to_bottom(buf_id)
     vim.cmd 'normal! G'
   end)
 end
+
 local function sendTerminalRepeat(initialCommand)
   -- First send a write command to write current file
   vim.cmd 'write'
@@ -254,7 +251,7 @@ vim.keymap.set('i', 'jfs', '/', { silent = true })
 -- Function to copy yanked text to system clipboard
 local function yank_to_clipboard()
   local yanked_text = vim.fn.getreg '"' -- Get the last yanked text
-  vim.fn.setreg('+', yanked_text) -- Set the yanked text to the clipboard register
+  vim.fn.setreg('+', yanked_text)       -- Set the yanked text to the clipboard register
 end
 
 -- Command to call the Lua function
@@ -296,8 +293,8 @@ vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irecto
 -- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
 
-vim.keymap.set('n', '<leader>k', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
-vim.keymap.set('n', '<leader>K', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
+vim.keymap.set('n', '<leader>K', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
+vim.keymap.set('n', '<leader>k', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', function()
   vim.fn.system('fish -c "yazi_hsplit ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Vertical Split' })
@@ -317,12 +314,16 @@ vim.keymap.set('n', '<C-S-\\>', function()
   vim.cmd 'startinsert'
 end, { silent = true, desc = 'Horizontal Split' })
 
-vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>', { noremap = true, desc = 'Execute lua' })
+vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
+  { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
-vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run ' })
-vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>', { noremap = true, desc = '[c]make build and run vertical ' })
+vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>',
+  { noremap = true, desc = '[c]make build and run ' })
+vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>',
+  { noremap = true, desc = '[c]make build and run vertical ' })
 -- Leader Y to yank whole file to clipboard
-vim.api.nvim_set_keymap('n', '<leader>y', 'ggVG"+y', { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
+vim.api.nvim_set_keymap('n', '<leader>y', 'ggVG"+y',
+  { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
 -- vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
 -- vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
 
@@ -350,6 +351,7 @@ function ExecuteVisualSelectionAsLua()
   -- Restore the cursor position
   vim.api.nvim_win_set_cursor(0, save_cursor)
 end
+
 local function terminal()
   vim.cmd 'term!'
   vim.cmd 'startinsert'
@@ -547,7 +549,8 @@ local function openCurrentFileInHelix()
   vim.fn.system(cmd)
 end
 
-vim.api.nvim_set_keymap('n', '<leader><leader>y', ':let @+ = expand("%:p")<CR>', { desc = 'Yank filename to clipboard', noremap = true, silent = true })
+vim.api.nvim_set_keymap('n', '<leader><leader>y', ':let @+ = expand("%:p")<CR>',
+  { desc = 'Yank filename to clipboard', noremap = true, silent = true })
 vim.keymap.set('n', '<leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })
 vim.keymap.set('n', '<leader>H', openCurrentFileInHelix, { desc = 'Open current file in helix' })
 vim.keymap.set('n', '<leader><leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })
@@ -654,6 +657,20 @@ function IsNonEmptyBuffer()
   local buf = vim.api.nvim_get_current_buf()
   local name = vim.api.nvim_buf_get_name(buf)
   return name ~= ''
+end
+
+-- Untested
+function DoesCurrentWindowHaveNonEmptyBuffer()
+  local win = vim.api.nvim_get_current_win()
+  local bufs = vim.api.nvim_list_bufs()
+  for _, buf in ipairs(bufs) do
+    if vim.api.nvim_buf_is_loaded(buf) and vim.api.nvim_win_is_buf(win, buf) then
+      if vim.api.nvim_buf_get_name(buf) ~= '' then
+        return true
+      end
+    end
+  end
+  return false
 end
 
 vim.keymap.set('n', '<m-n>', utils.fzfDir)
