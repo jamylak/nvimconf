@@ -16,21 +16,73 @@ return {
       name = 'lldb',
     }
 
+    -- Python adapter
+    dap.adapters.python = {
+      type = 'executable',
+      command = 'python3',
+      args = { '-m', 'debugpy.adapter' },
+    }
+
+    dap.configurations.python = {
+      {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch file',
+        program = '${file}',
+        stopOnEntry = true,
+        pythonPath = function()
+          return vim.fn.input('Path to python: ', 'python3', 'file')
+        end,
+      },
+    }
+
     dap.configurations.cpp = {
       {
         name = 'Launch',
         type = 'lldb',
         request = 'launch',
         program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+          return coroutine.create(function(coro)
+            local cwd = vim.fn.getcwd()
+            local current_file = vim.fn.expand('%:t:r') -- filename without extension
+            local candidate = cwd .. '/' .. current_file .. '.out'
+            local candidate_short = current_file .. '.out'
+
+            -- TODO: Just make this show first? Instead of filling path in?
+            local default_path = vim.fn.filereadable(candidate) == 1 and candidate_short or ""
+            -- print('Default path:', default_path)
+
+            require('telescope.pickers').new({}, {
+              prompt_title = 'Select Executable',
+              finder = require('telescope.finders').new_oneshot_job(
+                { 'fd', '--type', 'x', '--exec-batch', 'realpath' },
+                { cwd = cwd }
+              ),
+              sorter = require('telescope.config').values.generic_sorter({}),
+              default_text = default_path,
+              attach_mappings = function(prompt_bufnr, _)
+                local actions = require('telescope.actions')
+                local action_state = require('telescope.actions.state')
+
+                actions.select_default:replace(function()
+                  actions.close(prompt_bufnr)
+                  local entry = action_state.get_selected_entry()
+                  coroutine.resume(coro, entry[1])
+                end)
+
+                return true
+              end,
+            }):find()
+          end)
         end,
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
+        initCommands = {
+          "breakpoint set --name main",
+        },
         args = {},
       },
     }
-
-    -- Optional: share same config for C and Rust
     dap.configurations.c = dap.configurations.cpp
     dap.configurations.rust = dap.configurations.cpp
   end,
