@@ -44,6 +44,14 @@ return {
       end,
       desc = 'Continue Debugging',
     },
+    -- Idea: A version of this which just runs through normally
+    -- no isntant break? -- maybe
+    --
+    -- TODO: Need another keymap when there is eg.
+    -- project wide cmake
+    -- or eg. just a very custom build command
+    -- test different debugs on large projects etc until there is
+    -- a reliable way
     {
       '<leader>GJ',
       function()
@@ -91,8 +99,11 @@ return {
             else
               vim.notify("✅ Compilation succeeded, launching debugger", vim.log.levels.INFO)
 
-              -- 🚀 Start DAP with compiled binary
-              require('dap').run({
+              local dap = require('dap')
+              local dapui = require('dapui')
+
+              -- Define the config you want to launch
+              local config = {
                 name = "Launch compiled .out",
                 type = "lldb",
                 request = "launch",
@@ -103,10 +114,26 @@ return {
                 initCommands = {
                   "breakpoint set --name main"
                 }
-              })
+              }
 
-              -- Optional: open dap-ui if available
-              pcall(require('dapui').open)
+              -- Check if a session is active
+              if dap.session() then
+                -- Register a one-time listener
+                local function on_terminated()
+                  dap.listeners.after.event_terminated["restart_and_run"] = nil
+                  vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+                  dap.run(config)
+                  pcall(dapui.open)
+                end
+
+                dap.listeners.after.event_terminated["restart_and_run"] = on_terminated
+                vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
+                dap.terminate()
+              else
+                vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+                dap.run(config)
+                pcall(dapui.open)
+              end
             end
           end,
         })
