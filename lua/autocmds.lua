@@ -67,3 +67,13 @@ vim.api.nvim_create_autocmd('VimEnter', {
     end
   end,
 })
+
+-- Set filetype for LLVM libcxx headers
+-- which dont have a file extension
+-- eg. #include <bitset>
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  pattern = "*/llvm-project/libcxx/include/*",
+  callback = function()
+    vim.bo.filetype = "cpp"
+  end,
+})
