@@ -31,7 +31,11 @@ return {
         program = '${file}',
         stopOnEntry = true,
         pythonPath = function()
-          return vim.fn.input('Path to python: ', 'python3', 'file')
+          # TODO: Needs to be from root of github?? maybe maybe not
+          local venv_python_local = '.venv/bin/python3'
+          local venv_python = vim.fn.getcwd() .. '/' .. venv_python_local
+          local default_python = vim.fn.filereadable(venv_python) == 1 and venv_python_local or 'python3'
+          return vim.fn.input('Path to python: ', default_python, 'file')
         end,
       },
     }
