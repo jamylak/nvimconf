@@ -44,7 +44,43 @@ return {
       end,
       desc = 'Continue Debugging',
     },
-    -- Idea: A version of this which just runs through normally
+    {
+      '<leader>GC',
+      function()
+        require('dap').continue()
+      end,
+      desc = 'Continue Debugging',
+    },
+    {
+      '<leader>GK',
+      function()
+        -- NOTE: This seems to be able to run to
+        -- end without needing to terminate stuff
+        local dap = require('dap')
+        local breakpoints = require('dap.breakpoints')
+
+        local cur_bufnr = vim.api.nvim_get_current_buf()
+        local last_line = vim.fn.line('$')
+        breakpoints.set({}, cur_bufnr, last_line)
+
+
+        dap.run({
+          type = 'python',
+          request = 'launch',
+          name = 'Autopilot',
+          program = vim.fn.expand('%'), -- current file
+          stopOnEntry = false,
+          pythonPath = function()
+            -- TODO: Needs to be from root of github?? maybe maybe not
+            local venv_python_local = '.venv/bin/python3'
+            local venv_python = vim.fn.getcwd() .. '/' .. venv_python_local
+            return vim.fn.filereadable(venv_python) == 1 and venv_python_local or 'python3'
+          end,
+        })
+      end,
+      desc = 'Debug current file (no stop, no prompt)'
+    },
+    -- Idea: A version of this which just runs through nokrmally
     -- no isntant break? -- maybe
     --
     -- TODO: Need another keymap when there is eg.
