@@ -5,6 +5,7 @@ return {
     "mfussenegger/nvim-dap",
   },
   cmd = {
+    "Telescope dap",
     "Telescope dap commands",
     "Telescope dap configurations",
     "Telescope dap list_breakpoints",
