@@ -52,7 +52,6 @@ return {
   config = function()
     local dap, dapui = require 'dap', require 'dapui'
 
-    print("Loading DAP UI config...")
     require('nvim-dap-virtual-text').setup({
       commented = true
     })
