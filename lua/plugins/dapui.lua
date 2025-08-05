@@ -1,3 +1,35 @@
+-- Load dap config from project root
+-- e.g. .nvim/dap.lua
+-- eg. to put some custom args
+-- Example:
+--
+-- ✨ Example .nvim/dap-config.lua (Per Project)
+-- return {
+--   python = {
+--     args = { "--domains", "example.com", "--debug" },
+--     pythonPath = function()
+--       return ".venv/bin/python3"
+--     end,
+--   },
+--   cpp = {
+--     args = { "--log-level", "trace" },
+--     stopOnEntry = true,
+--     initCommands = { "breakpoint set --name main" },
+--   },
+--   rust = {
+--     args = { "--port", "8080" }
+--   }
+-- }
+
+local function load_dap_project_config(lang)
+  local config_path = vim.fn.getcwd() .. "/.nvim/dap.lua"
+  local ok, config = pcall(dofile, config_path)
+  if not ok or type(config) ~= "table" then
+    return {}
+  end
+  return config[lang] or {}
+end
+
 return {
   'rcarriga/nvim-dap-ui',
   dependencies = {
@@ -63,19 +95,21 @@ return {
         local last_line = vim.fn.line('$')
         breakpoints.set({}, cur_bufnr, last_line)
 
+        local cfg = load_dap_project_config("python")
+
 
         dap.run({
           type = 'python',
           request = 'launch',
           name = 'Autopilot',
-          program = vim.fn.expand('%'), -- current file
-          stopOnEntry = false,
-          pythonPath = function()
-            -- TODO: Needs to be from root of github?? maybe maybe not
-            local venv_python_local = '.venv/bin/python3'
-            local venv_python = vim.fn.getcwd() .. '/' .. venv_python_local
-            return vim.fn.filereadable(venv_python) == 1 and venv_python_local or 'python3'
+          program = cfg.program or vim.fn.expand('%'), -- current file
+          args = cfg.args or {},
+          cwd = cfg.cwd or cwd,
+          stopOnEntry = cfg.stopOnEntry or false,
+          pythonPath = cfg.pythonPath or function()
+            return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
           end,
+          initCommands = cfg.initCommands or {}
         })
       end,
       desc = 'Debug current file (no stop, no prompt)'
@@ -138,18 +172,22 @@ return {
               local dap = require('dap')
               local dapui = require('dapui')
 
+              -- TODO: handle C or Rust should be easy to just adjust
+              -- the below string
+              local cfg = load_dap_project_config("cpp")
+
               -- Define the config you want to launch
               local config = {
                 name = "Launch compiled .out",
                 type = "lldb",
                 request = "launch",
-                program = output_path,
-                cwd = cwd,
-                stopOnEntry = false,
-                args = {},
-                initCommands = {
-                  "breakpoint set --name main"
-                }
+                program = cfg.output_path or output_path,
+                cwd = cfg.cwd or cwd,
+                -- Note for cpp this fails cause it probably stops
+                -- on _start so you'd wanna do the breakpoint set change
+                stopOnEntry = cfg.stopOnEntry or false,
+                args = cfg.args or {},
+                initCommands = cfg.initCommands or { "breakpoint set --name main" }
               }
 
               -- Check if a session is active
