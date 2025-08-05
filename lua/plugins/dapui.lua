@@ -20,6 +20,17 @@
 --     args = { "--port", "8080" }
 --   }
 -- }
+--
+--
+-- In terms of layout setup
+-- Console never gets used so don't bother with it
+-- elements = { {
+--     id = "repl",
+--     size = 0.5
+--   }, {
+--     id = "console",
+--     size = 0.5
+--   } },
 
 local function load_dap_project_config(lang)
   local config_path = vim.fn.getcwd() .. "/.nvim/dap.lua"
@@ -35,47 +46,34 @@ return {
   dependencies = {
     'mfussenegger/nvim-dap',
     'nvim-neotest/nvim-nio',
+    'Jorenar/nvim-dap-disasm',
+    "rcarriga/cmp-dap",
   },
   config = function()
     local dap, dapui = require 'dap', require 'dapui'
 
+    print("Loading DAP UI config...")
     require('nvim-dap-virtual-text').setup({
-      -- commented = true
+      commented = true
     })
-    dapui.setup({
-      layouts = { {
-        elements = { {
-          id = "scopes",
-          size = 0.25
-        }, {
-          id = "breakpoints",
-          size = 0.25
-        }, {
-          id = "stacks",
-          size = 0.25
-        }, {
-          id = "watches",
-          size = 0.25
-        } },
-        position = "left",
-        size = 40
-      }, {
-        -- Console never gets used so don't bother with it
-        -- elements = { {
-        --     id = "repl",
-        --     size = 0.5
-        --   }, {
-        --     id = "console",
-        --     size = 0.5
-        --   } },
-        elements = { {
-          id = "repl",
-          size = 1.0
-        },
-        },
-        position = "bottom",
-        size = 10
-      } },
+
+    require("dap-disasm").setup({})
+    -- Setup DAP REPL with cmp autocomplete
+    local cmp = require 'cmp'
+    cmp.setup {
+      -- Normally, nvim-cmp disables itself inside "prompt" buffers to avoid interfering with UIs like Telescope prompts.
+      -- But the DAP REPL is a "prompt" buffer — and we do want completions there.
+      -- So this line re-enables it only when the buffer is related to debugging.
+      enabled = function()
+        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+            or require("cmp_dap").is_dap_buffer()
+      end,
+    }
+
+    cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+      sources = {
+        { name = "dap" },
+      },
     })
 
     dap.listeners.after.event_initialized['dapui_config'] = function()
@@ -125,12 +123,41 @@ return {
         local dap = require('dap')
         local breakpoints = require('dap.breakpoints')
 
+        -- TODO: Config could turn this off
         local cur_bufnr = vim.api.nvim_get_current_buf()
         local last_line = vim.fn.line('$')
         breakpoints.set({}, cur_bufnr, last_line)
 
         local cfg = load_dap_project_config("python")
-
+        local dapui = require('dapui')
+        dapui.setup({
+          layouts = { {
+            elements = { {
+              id = "scopes",
+              size = 0.25
+            }, {
+              id = "breakpoints",
+              size = 0.25
+            }, {
+              id = "stacks",
+              size = 0.25
+            }, {
+              id = "watches",
+              size = 0.25
+            } },
+            position = "left",
+            size = 40
+          }, {
+            elements = {
+              {
+                id = "repl",
+                size = 1.0
+              },
+            },
+            position = "bottom",
+            size = 10
+          } },
+        })
 
         dap.run({
           type = 'python',
@@ -223,6 +250,38 @@ return {
                 args = cfg.args or {},
                 initCommands = cfg.initCommands or { "breakpoint set --name main" }
               }
+              dapui.setup({
+                layouts = { {
+                  elements = { {
+                    id = "scopes",
+                    size = 0.25
+                  }, {
+                    id = "breakpoints",
+                    size = 0.25
+                  }, {
+                    id = "stacks",
+                    size = 0.25
+                  }, {
+                    id = "watches",
+                    size = 0.25
+                  } },
+                  position = "left",
+                  size = 40
+                }, {
+                  elements = {
+                    {
+                      id = "repl",
+                      size = 0.5
+                    },
+                    {
+                      id = "disassembly",
+                      size = 0.5,
+                    },
+                  },
+                  position = "bottom",
+                  size = 10
+                } },
+              })
 
               -- Check if a session is active
               if dap.session() then
