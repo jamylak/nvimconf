@@ -23,7 +23,7 @@ return {
 
     'onsails/lspkind.nvim',
     'saadparwaiz1/cmp_luasnip',
-    "rcarriga/cmp-dap",
+    -- "rcarriga/cmp-dap",
 
     -- Adds other completion capabilities.
     --  nvim-cmp does not ship with all sources by default. They are split
@@ -87,10 +87,10 @@ return {
       -- Normally, nvim-cmp disables itself inside "prompt" buffers to avoid interfering with UIs like Telescope prompts.
       -- But the DAP REPL is a "prompt" buffer — and we do want completions there.
       -- So this line re-enables it only when the buffer is related to debugging.
-      enabled = function()
-        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-            or require("cmp_dap").is_dap_buffer()
-      end,
+      -- enabled = function()
+      --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
+      --       or require("cmp_dap").is_dap_buffer()
+      -- end,
       formatting = {
         fields = { 'abbr', 'kind', 'menu' },
         expandable_indicator = true,
@@ -230,11 +230,6 @@ return {
       sources = {
         { name = 'vim-dadbod-completion' },
         { name = 'buffer' },
-      },
-    })
-    cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-      sources = {
-        { name = "dap" },
       },
     })
   end,
