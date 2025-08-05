@@ -22,21 +22,30 @@ return {
       command = 'python3',
       args = { '-m', 'debugpy.adapter' },
     }
+    local pythonPath = function()
+      -- TODO: Needs to be from root of github?? maybe maybe not
+      local venv_python_local = '.venv/bin/python3'
+      local venv_python = vim.fn.getcwd() .. '/' .. venv_python_local
+      local default_python = vim.fn.filereadable(venv_python) == 1 and venv_python_local or 'python3'
+      return vim.fn.input('Path to python: ', default_python, 'file')
+    end
 
     dap.configurations.python = {
       {
         type = 'python',
         request = 'launch',
-        name = 'Launch file',
+        name = 'Launch (stop on entry)',
         program = '${file}',
         stopOnEntry = true,
-        pythonPath = function()
-          -- TODO: Needs to be from root of github?? maybe maybe not
-          local venv_python_local = '.venv/bin/python3'
-          local venv_python = vim.fn.getcwd() .. '/' .. venv_python_local
-          local default_python = vim.fn.filereadable(venv_python) == 1 and venv_python_local or 'python3'
-          return vim.fn.input('Path to python: ', default_python, 'file')
-        end,
+        pythonPath = pythonPath,
+      },
+      {
+        type = 'python',
+        request = 'launch',
+        name = 'Launch (no stop)',
+        program = '${file}',
+        stopOnEntry = false,
+        pythonPath = pythonPath,
       },
     }
 
