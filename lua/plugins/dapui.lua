@@ -42,7 +42,41 @@ return {
     require('nvim-dap-virtual-text').setup({
       -- commented = true
     })
-    dapui.setup()
+    dapui.setup({
+      layouts = { {
+        elements = { {
+          id = "scopes",
+          size = 0.25
+        }, {
+          id = "breakpoints",
+          size = 0.25
+        }, {
+          id = "stacks",
+          size = 0.25
+        }, {
+          id = "watches",
+          size = 0.25
+        } },
+        position = "left",
+        size = 40
+      }, {
+        -- Console never gets used so don't bother with it
+        -- elements = { {
+        --     id = "repl",
+        --     size = 0.5
+        --   }, {
+        --     id = "console",
+        --     size = 0.5
+        --   } },
+        elements = { {
+          id = "repl",
+          size = 1.0
+        },
+        },
+        position = "bottom",
+        size = 10
+      } },
+    })
 
     dap.listeners.after.event_initialized['dapui_config'] = function()
       dapui.open()
