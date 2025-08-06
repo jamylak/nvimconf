@@ -8,7 +8,7 @@ return {
   },
   keys = {
     {
-      "<leader>F", -- try it if you didn't it is a banger keybinding for a picker
+      "<leader>F",
       function()
         require("fff").find_in_git_root()
       end,
