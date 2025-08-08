@@ -10,7 +10,7 @@ return {
   version = false, -- Never set this value to "*"! Never!
   ---@module 'avante'
   ---@type avante.Config
-  keys = { "<leader>aa", "<leader>an", "<leader>at" },
+  keys = { "<leader>a", "<leader>aa", "<leader>an", "<leader>at" },
   opts = {
     -- add any opts here
     -- for example
