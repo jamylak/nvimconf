@@ -11,6 +11,23 @@ return {
   ---@module 'avante'
   ---@type avante.Config
   keys = { "<leader>a", "<leader>aa", "<leader>an", "<leader>at" },
+  cmd = {
+    "Avante",
+    "AvanteNew",
+    "AvanteToggle",
+    "AvanteChat",
+    "AvanteChatNew",
+    "AvanteShowRepoMap",
+    "AvanteHistory",
+    "AvanteGenerate",
+    "AvanteEdit",
+    "AvanteRefactor",
+    "AvanteExplain",
+    "AvanteFix",
+    "AvanteAsk",
+    "AvanteClear",
+    "AvanteModels",
+  },
   opts = {
     -- add any opts here
     -- for example
