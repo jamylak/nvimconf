@@ -175,11 +175,6 @@ vim.keymap.set('n', '<leader>gg', function()
   utils.lazygit()
 end, { noremap = true })
 
-vim.keymap.set('n', '<m-g>', function()
-  local utils = require 'utils'
-  utils.lazygit()
-end, { noremap = true })
-
 local function openLazyGitFloating()
   local width = vim.api.nvim_get_option 'columns'
   local height = vim.api.nvim_get_option 'lines'
