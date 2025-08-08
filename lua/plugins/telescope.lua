@@ -40,7 +40,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<m-o>',
     '<m-i>',
     '<m-u>',
-    '<m-b>',
     '<m-CR>',
     '<leader>j',
     '<leader>J',
@@ -419,17 +418,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
         vim.api.nvim_buf_delete(selection.bufnr, { force = true })
       end
     end
-
-    vim.keymap.set('n', '<m-b>', function()
-      -- Like normal search buffers but also with option to delete
-      builtin.buffers {
-        attach_mappings = function(_, map)
-          map('i', '<c-r>', deleteBuffer)
-          map('n', 'D', deleteBuffer)
-          return true
-        end,
-      }
-    end, { desc = '[S]earch [B]uffers' })
 
     vim.keymap.set('n', '<leader>sb', function()
       -- Like normal search buffers but also with option to delete
