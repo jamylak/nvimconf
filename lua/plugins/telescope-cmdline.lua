@@ -23,20 +23,18 @@ return {
           map('i', '<C-f>', function()
             -- Get the current input from the prompt buffer
             local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
-
             print("Current input: " .. current_input)
-
-
             -- Close the Telescope picker
             require('telescope.actions').close(prompt_bufnr)
 
             -- Construct the command to feed: enter command mode, type the input, then literally press <C-f>
-            -- local cmd_to_feed = current_input .. "<C-f>"
-            local cmd_to_feed = current_input
-            --
-            -- Feed the keys to Neovim
-            -- 'n' for normal mode (to ensure we enter command mode), 'x' for execute, true for remap
-            vim.api.nvim_feedkeys(cmd_to_feed, 'nx', true)
+            -- The current_input from telescope-cmdline already includes the leading ':'
+            -- Remove starting space from current_input
+            current_input = current_input:gsub('^%s+:%s+', ':')
+            local cmd_to_feed = current_input .. "<C-f>"
+            -- local cmd_to_feed = ":pwd" .. "<C-f>"
+            local keys = vim.api.nvim_replace_termcodes(cmd_to_feed, true, false, true)
+            vim.api.nvim_feedkeys(keys, 'n', false)
           end)
           return true
         end,
