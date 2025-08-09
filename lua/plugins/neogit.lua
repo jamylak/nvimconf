@@ -41,9 +41,14 @@ return {
     },
   },
   dependencies = {
-    'nvim-lua/plenary.nvim', -- required
+    'nvim-lua/plenary.nvim',  -- required
     'sindrets/diffview.nvim', -- optional - Diff integration
     'nvim-telescope/telescope.nvim',
+    'petertriho/cmp-git',     -- optional - Git completion
   },
-  config = true,
+  config = function(_, opts)
+    require("cmp_git").setup()
+    table.insert(require("cmp").get_config().sources, { name = "git" })
+    require('neogit').setup(opts)
+  end,
 }
