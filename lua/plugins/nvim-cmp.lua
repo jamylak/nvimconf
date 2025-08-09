@@ -196,7 +196,19 @@ return {
             return require('cmp').lsp.CompletionItemKind.Text ~= entry:get_kind()
           end,
         },
-        { name = 'path' },
+        { name = 'path', option = {
+          get_cwd = function(param)
+            local proj_root_ft = { gitcommit = true, octo = true, NeogitCommitMessage = true }
+            -- TODO: Is there a smart way to handle project root vs
+            -- /root? Maybe /is always project root? but how to get
+            -- / system root then?
+            if proj_root_ft[param.context.filetype] then
+              -- Otherwise eg. neogit is inside .git and cwd is not correct
+              return vim.fn.getcwd()
+            end
+            return vim.fn.expand '%:p:h'
+          end },
+        }
       },
     }
     cmp.setup.filetype('sql', {
