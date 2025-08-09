@@ -14,6 +14,9 @@ require('lazy').setup({
   spec = {
     { import = "plugins" },
   },
+  defaults = {
+    lazy = true,
+  },
   performance = {
     cache = {
       enabled = true,
