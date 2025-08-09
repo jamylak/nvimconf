@@ -1,13 +1,7 @@
 return {
   'hrsh7th/nvim-cmp',
-  -- event = 'InsertEnter',
-  -- event = 'BufReadPost',
   event = 'VeryLazy',
-  -- event = { 'InsertEnter', 'CmdlineEnter' },
-  -- event = 'InsertEnter',
-  -- event = 'BufReadPost',
   dependencies = {
-    -- Snippet Engine & its associated nvim-cmp source
     {
       'L3MON4D3/LuaSnip',
       build = (function()
@@ -23,20 +17,11 @@ return {
 
     'onsails/lspkind.nvim',
     'saadparwaiz1/cmp_luasnip',
-    -- "rcarriga/cmp-dap",
-
-    -- Adds other completion capabilities.
-    --  nvim-cmp does not ship with all sources by default. They are split
-    --  into multiple repos for maintenance purposes.
     'hrsh7th/cmp-nvim-lsp',
     -- 'hrsh7th/cmp-cmdline',
-    -- 'hrsh7th/cmp-path',
+    'hrsh7th/cmp-path',
     -- 'hrsh7th/cmp-buffer',
 
-    -- If you want to add a bunch of pre-configured snippets,
-    --    you can use this plugin to help you. It even has snippets
-    --    for various frameworks/libraries/etc. but you will have to
-    --    set up the ones that are useful for you.
     'rafamadriz/friendly-snippets',
   },
   config = function()
@@ -84,13 +69,6 @@ return {
     -- })
 
     cmp.setup {
-      -- Normally, nvim-cmp disables itself inside "prompt" buffers to avoid interfering with UIs like Telescope prompts.
-      -- But the DAP REPL is a "prompt" buffer — and we do want completions there.
-      -- So this line re-enables it only when the buffer is related to debugging.
-      -- enabled = function()
-      --   return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-      --       or require("cmp_dap").is_dap_buffer()
-      -- end,
       formatting = {
         fields = { 'abbr', 'kind', 'menu' },
         expandable_indicator = true,
@@ -129,19 +107,15 @@ return {
       mapping = cmp.mapping.preset.insert {
         ['<C-b>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            -- print 'Visible'
             cmp.scroll_docs(-4)
           else
-            -- print 'fallback'
             fallback()
           end
         end, { 'i', 's' }),
         ['<C-f>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
-            -- print 'Visible'
             cmp.scroll_docs(4)
           else
-            -- print 'fallback'
             fallback()
           end
         end, { 'i', 's' }),
@@ -156,7 +130,6 @@ return {
             cmp.select_next_item()
           else
             fallback()
-            -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<c-o>w', true, true, true), 'n', true)
           end
         end, { 'i', 's' }),
         ['<C-p>'] = cmp.mapping(function(fallback)
