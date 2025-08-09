@@ -90,7 +90,6 @@ return {
             nvim_lsp = '[LSP]',
             luasnip = '[LuaSnip]',
             path = '[Path]',
-            cody = '[Cody]',
           },
         },
       },
