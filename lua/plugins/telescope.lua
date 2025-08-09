@@ -234,8 +234,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
             end,
 
             ['<m-g>'] = function()
-              local utils = require 'utils'
-              utils.lazygit()
+              local Snacks = require 'snacks'
+              Snacks.lazygit()
             end,
             ['<m-t>'] = function()
               local selection = require('telescope.actions.state').get_selected_entry()
