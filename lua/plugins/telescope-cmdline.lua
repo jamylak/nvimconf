@@ -1,6 +1,6 @@
 return {
   'jamylak/telescope-cmdline.nvim',
-  branch = 'cmdline-edit',
+  branch = 'cmdline-edit2',
   dependencies = {},
   cmd = 'Telescope cmdline',
   keys = {
