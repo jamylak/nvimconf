@@ -20,6 +20,16 @@ local function get_safe_project_name()
   return project_folder_name
 end
 
+-- Reusable function to process CMake templates
+local function process_cmake_template(template_content)
+  local current_vars = vim.tbl_deep_extend("force", {}, M.opts)
+  current_vars.project_name = get_safe_project_name()
+  local formatted_content = template_content:gsub("{{(.-)}}", function(key)
+    return tostring(current_vars[key] or "")
+  end)
+  return formatted_content
+end
+
 local function gen_cpp()
   local content = [[
 cmake_minimum_required(VERSION 3.20)
@@ -32,11 +42,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable({{project_name}} main.cpp)
 ]]
-  local current_vars = vim.tbl_deep_extend("force", {}, M.opts)
-  current_vars.project_name = get_safe_project_name()
-  local formatted_content = content:gsub("{{(.-)}}", function(key)
-    return tostring(current_vars[key] or "")
-  end)
+  local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
   vim.notify("Generated C++ CMakeLists.txt in " .. vim.fn.getcwd())
 end
@@ -53,11 +59,7 @@ set(CMAKE_C_EXTENSIONS OFF)
 
 add_executable({{project_name}} main.c)
 ]]
-  local current_vars = vim.tbl_deep_extend("force", {}, M.opts)
-  current_vars.project_name = get_safe_project_name()
-  local formatted_content = content:gsub("{{(.-)}}", function(key)
-    return tostring(current_vars[key] or "")
-  end)
+  local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
   vim.notify("Generated C17 CMakeLists.txt in " .. vim.fn.getcwd())
 end
@@ -80,5 +82,8 @@ function M.setup(opts)
   end
   vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
 end
+
+M.gen_cpp = gen_cpp
+M.gen_c = gen_c
 
 return M
