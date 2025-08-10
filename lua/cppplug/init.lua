@@ -18,6 +18,7 @@ local function gen_cpp()
 cmake_minimum_required(VERSION 3.20)
 project(MyProject LANGUAGES CXX)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -33,6 +34,7 @@ local function gen_c()
 cmake_minimum_required(VERSION 3.20)
 project(MyProject LANGUAGES C)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_C_STANDARD 17)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
@@ -55,6 +57,16 @@ function M.setup(opts)
 
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
+
+  local function configure_cmake()
+    vim.api.nvim_command("sp | terminal cmake -B build -S .")
+  end
+  vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
+
+  local function build_cmake()
+    vim.api.nvim_command("sp | terminal cmake --build build")
+  end
+  vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
 end
 
 return M
