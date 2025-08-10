@@ -157,9 +157,9 @@ function M.setup(opts)
         print("event: ", vim.inspect(event))
         vim.schedule(function()
           if exit_code == 0 then
-            vim.notify(success_message, vim.log.levels.INFO)
+            -- vim.notify(success_message, vim.log.levels.INFO)
             if should_close_on_success then
-              vim.api.nvim_win_close(win_id, true)
+              -- vim.api.nvim_win_close(win_id, true)
               if on_success_callback then
                 on_success_callback()
               end
