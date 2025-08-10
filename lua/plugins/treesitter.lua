@@ -35,6 +35,11 @@ return { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter-textobjects',
     'nvim-treesitter/nvim-treesitter-context',
   },
+  cmd = {
+    'TSPlaygroundToggle',
+    'TSUpdate',
+    'TSInstall',
+  },
   build = ':TSUpdate',
   config = function()
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
