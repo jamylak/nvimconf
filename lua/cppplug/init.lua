@@ -166,6 +166,34 @@ function M.setup(opts)
     scroll_buffer_to_bottom(term_buf_nr)
   end
   vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
+
+  local function build_cmake_once()
+    local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+    -- Open a new split window
+    vim.cmd('sp')
+    local win_id = vim.api.nvim_get_current_win()
+    vim.api.nvim_set_current_buf(term_buf_nr)
+
+    vim.fn.termopen('cmake --build build', {
+      on_exit = function(job_id, exit_code, event)
+        if exit_code == 0 then
+          -- Close the specific window if successful
+          vim.api.nvim_win_close(win_id, true)
+          vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
+        else
+          vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+          scroll_buffer_to_bottom(term_buf_nr)
+          -- TODO: Need to make it so this doesn't close the window
+          -- if i accidentally open insert mode and press a few keys
+        end
+      end
+    })
+    scroll_buffer_to_bottom(term_buf_nr)
+    -- Return focus to original window
+    vim.cmd('wincmd p')
+  end
+  vim.api.nvim_create_user_command("CMakeBuildOnce", build_cmake_once, {})
 end
 
 M.gen_cpp = gen_cpp
