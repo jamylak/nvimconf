@@ -121,8 +121,9 @@ function M.setup(opts)
   local function configure_cmake()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
-    vim.cmd('sp')                                 -- Open a new split window
-    local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
+    -- Open a new split window
+    vim.cmd('sp')
+    local win_id = vim.api.nvim_get_current_win()
     vim.api.nvim_set_current_buf(term_buf_nr)
 
     vim.fn.termopen('cmake -B build -S .', {
@@ -134,11 +135,12 @@ function M.setup(opts)
         else
           vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
         end
-        scroll_buffer_to_bottom(term_buf_nr) -- Scroll to bottom after exit
+        scroll_buffer_to_bottom(term_buf_nr)
       end
     })
-    scroll_buffer_to_bottom(term_buf_nr) -- Scroll to bottom on start
-    vim.cmd('wincmd p')                  -- Return focus to original window
+    scroll_buffer_to_bottom(term_buf_nr)
+    -- Return focus to original window
+    vim.cmd('wincmd p')
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
