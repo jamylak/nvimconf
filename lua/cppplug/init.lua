@@ -144,7 +144,8 @@ function M.setup(opts)
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
-  local function _run_watchexec_command(command_str, success_message, error_message, should_close_on_success)
+  local function _run_watchexec_command(command_str, success_message, error_message, should_close_on_success,
+                                        on_success_callback)
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
     vim.cmd('sp')
@@ -153,14 +154,18 @@ function M.setup(opts)
 
     vim.fn.termopen(command_str, {
       on_exit = function(job_id, exit_code, event)
+        print("event: ", vim.inspect(event))
         vim.schedule(function()
           if exit_code == 0 then
             vim.notify(success_message, vim.log.levels.INFO)
             if should_close_on_success then
-              -- vim.api.nvim_win_close(win_id, true)
+              vim.api.nvim_win_close(win_id, true)
+              if on_success_callback then
+                on_success_callback()
+              end
             end
           else
-            vim.notify(error_message, vim.log.levels.ERROR)
+            -- vim.notify(error_message, vim.log.levels.ERROR)
             scroll_buffer_to_bottom(term_buf_nr)
             vim.api.nvim_set_current_win(win_id)
             vim.cmd('startinsert')
@@ -174,7 +179,7 @@ function M.setup(opts)
 
   local function build_watch_cmake()
     _run_watchexec_command(
-      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
+      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- 'cmake --build build']],
       'Build watcher exited. Terminal closed.',
       'Build watcher exited with errors. Terminal left open for inspection.',
       false -- Don't close on success for watcher
@@ -196,6 +201,19 @@ function M.setup(opts)
     )
   end
   vim.api.nvim_create_user_command("CMakeBuildAndRunWatch", build_and_run_watch_cmake, {})
+
+  local function build_watch_until_success_cmake(on_success_cb)
+    _run_watchexec_command(
+      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
+      'Build watcher exited successfully after successful build. Terminal closed.',
+      'Build watcher exited with errors before successful build. Terminal left open for inspection.',
+      true, -- Close on success
+      on_success_cb
+    )
+  end
+  vim.api.nvim_create_user_command("CMakeBuildWatchUntilSuccess",
+    function(opts) build_watch_until_success_cmake(opts.fargs[1]) end,
+    { nargs = '?', complete = 'custom,v:lua.vim.lsp.get_clients' })
 
   local function build_cmake_once()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
@@ -219,9 +237,9 @@ function M.setup(opts)
         end
       end
     })
+    vim.cmd('wincmd p')
     scroll_buffer_to_bottom(term_buf_nr)
     -- Return focus to original window
-    vim.cmd('wincmd p')
   end
   vim.api.nvim_create_user_command("CMakeBuildOnce", build_cmake_once, {})
 end
