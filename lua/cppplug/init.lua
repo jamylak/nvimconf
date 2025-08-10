@@ -111,14 +111,46 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeNewProjectC", setup_new_project_c, {})
 
   local function configure_cmake()
-    vim.api.nvim_command("sp | terminal cmake -B build -S .")
-    vim.api.nvim_command("wincmd p")
+    local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+    vim.cmd('sp') -- Open a new split window
+    local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
+    vim.api.nvim_set_current_buf(term_buf_nr)
+
+    vim.fn.termopen('cmake -B build -S .', {
+      on_exit = function(job_id, exit_code, event)
+        if exit_code == 0 then
+          -- Close the specific window if successful
+          vim.api.nvim_win_close(win_id, true)
+          vim.notify('CMake configure successful, terminal closed.', vim.log.levels.INFO)
+        else
+          vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+        end
+      end
+    })
+    vim.cmd('wincmd p') -- Return focus to original window
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
   local function build_cmake()
-    vim.api.nvim_command("sp | terminal cmake --build build")
-    vim.api.nvim_command("wincmd p")
+    local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+    vim.cmd('sp') -- Open a new split window
+    local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
+    vim.api.nvim_set_current_buf(term_buf_nr)
+
+    vim.fn.termopen('cmake --build build', {
+      on_exit = function(job_id, exit_code, event)
+        if exit_code == 0 then
+          -- Close the window if successful
+          vim.api.nvim_win_close(win_id, true)
+          vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
+        else
+          vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+        end
+      end
+    })
+    vim.cmd('wincmd p') -- Return focus to original window
   end
   vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
 end
