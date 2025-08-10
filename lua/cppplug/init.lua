@@ -134,8 +134,8 @@ function M.setup(opts)
           vim.notify('CMake configure successful, terminal closed.', vim.log.levels.INFO)
         else
           vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+          scroll_buffer_to_bottom(term_buf_nr)
         end
-        scroll_buffer_to_bottom(term_buf_nr)
       end
     })
     scroll_buffer_to_bottom(term_buf_nr)
@@ -152,7 +152,7 @@ function M.setup(opts)
     vim.api.nvim_set_current_buf(term_buf_nr)
 
     vim.fn.termopen(
-    [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
+      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
       {
         on_exit = function(job_id, exit_code, event)
           -- The watchexec process has exited, so we can notify the user and close the window
