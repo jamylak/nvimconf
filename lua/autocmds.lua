@@ -77,3 +77,9 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
     vim.bo.filetype = "cpp"
   end,
 })
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "spectre_panel" },
+  callback = function()
+    vim.b.copilot_suggestion_auto_trigger = false
+  end,
+})
