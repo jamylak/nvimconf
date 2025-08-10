@@ -134,8 +134,10 @@ function M.setup(opts)
         else
           vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
         end
+        scroll_buffer_to_bottom(term_buf_nr) -- Scroll to bottom after exit
       end
     })
+    scroll_buffer_to_bottom(term_buf_nr) -- Scroll to bottom on start
     vim.cmd('wincmd p') -- Return focus to original window
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
