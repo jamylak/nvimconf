@@ -64,11 +64,51 @@ add_executable({{project_name}} main.c)
   vim.notify("Generated C17 CMakeLists.txt in " .. vim.fn.getcwd())
 end
 
+local function setup_new_project_cpp()
+  local success, err = pcall(function()
+    vim.notify("Generating CMakeLists.txt for C++ project...", vim.log.levels.INFO)
+    gen_cpp()
+
+    vim.notify("Configuring CMake project...", vim.log.levels.INFO)
+    vim.api.nvim_command("CMakeConfigure")
+
+    -- vim.notify("Building CMake project...", vim.log.levels.INFO)
+    -- vim.api.nvim_command("CMakeBuild")
+
+    vim.notify("New C++ CMake project setup complete!", vim.log.levels.INFO)
+  end)
+
+  if not success then
+    vim.notify("C++ CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
+  end
+end
+
+local function setup_new_project_c()
+  local success, err = pcall(function()
+    vim.notify("Generating CMakeLists.txt for C project...", vim.log.levels.INFO)
+    gen_c()
+
+    vim.notify("Configuring CMake project...", vim.log.levels.INFO)
+    vim.api.nvim_command("CMakeConfigure")
+
+    -- vim.notify("Building CMake project...", vim.log.levels.INFO)
+    -- vim.api.nvim_command("CMakeBuild")
+
+    vim.notify("New C CMake project setup complete!", vim.log.levels.INFO)
+  end)
+
+  if not success then
+    vim.notify("C CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
+  end
+end
+
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
 
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
+  vim.api.nvim_create_user_command("CMakeNewProjectCPP", setup_new_project_cpp, {})
+  vim.api.nvim_create_user_command("CMakeNewProjectC", setup_new_project_c, {})
 
   local function configure_cmake()
     vim.api.nvim_command("sp | terminal cmake -B build -S .")
