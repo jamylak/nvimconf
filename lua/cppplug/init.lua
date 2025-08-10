@@ -182,10 +182,10 @@ function M.setup(opts)
           vim.api.nvim_win_close(win_id, true)
           vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
         else
-          vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+          -- vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
           scroll_buffer_to_bottom(term_buf_nr)
-          -- TODO: Need to make it so this doesn't close the window
-          -- if i accidentally open insert mode and press a few keys
+          vim.api.nvim_set_current_win(win_id)
+          vim.cmd('startinsert')
         end
       end
     })
