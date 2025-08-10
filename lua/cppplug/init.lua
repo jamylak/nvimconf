@@ -138,7 +138,7 @@ function M.setup(opts)
       end
     })
     scroll_buffer_to_bottom(term_buf_nr) -- Scroll to bottom on start
-    vim.cmd('wincmd p') -- Return focus to original window
+    vim.cmd('wincmd p')                  -- Return focus to original window
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
@@ -149,7 +149,7 @@ function M.setup(opts)
     local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
     vim.api.nvim_set_current_buf(term_buf_nr)
 
-    vim.fn.termopen('watchexec -w . -e cpp,c,h,hpp,txt -- cmake --build build', {
+    vim.fn.termopen('watchexec -w . -e cpp,c,h,hpp,txt -i build -- cmake --build build', {
       on_exit = function(job_id, exit_code, event)
         -- The watchexec process has exited, so we can notify the user and close the window
         vim.schedule(function()
