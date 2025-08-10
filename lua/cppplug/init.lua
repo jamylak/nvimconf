@@ -157,7 +157,7 @@ function M.setup(opts)
           if exit_code == 0 then
             vim.notify(success_message, vim.log.levels.INFO)
             if should_close_on_success then
-              vim.api.nvim_win_close(win_id, true)
+              -- vim.api.nvim_win_close(win_id, true)
             end
           else
             vim.notify(error_message, vim.log.levels.ERROR)
