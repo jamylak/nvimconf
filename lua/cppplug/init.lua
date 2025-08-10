@@ -151,16 +151,17 @@ function M.setup(opts)
     local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
     vim.api.nvim_set_current_buf(term_buf_nr)
 
-    vim.fn.termopen('watchexec -w . -e cpp,c,h,hpp,txt -i build -- cmake --build build', {
-      on_exit = function(job_id, exit_code, event)
-        -- The watchexec process has exited, so we can notify the user and close the window
-        vim.schedule(function()
-          vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
-          vim.api.nvim_win_close(win_id, true)
-          scroll_buffer_to_bottom(term_buf_nr)
-        end)
-      end
-    })
+    vim.fn.termopen(
+    [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
+      {
+        on_exit = function(job_id, exit_code, event)
+          -- The watchexec process has exited, so we can notify the user and close the window
+          vim.schedule(function()
+            vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
+            vim.api.nvim_win_close(win_id, true)
+          end)
+        end
+      })
     vim.cmd('wincmd p') -- Return focus to original window
     scroll_buffer_to_bottom(term_buf_nr)
   end
