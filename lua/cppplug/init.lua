@@ -30,6 +30,14 @@ local function process_cmake_template(template_content)
   return formatted_content
 end
 
+function scroll_buffer_to_bottom(buf_id)
+  -- Use nvim_buf_call to run commands in the context of the specified buffer
+  vim.api.nvim_buf_call(buf_id, function()
+    -- Execute the normal mode command 'G' to go to the end of the buffer
+    vim.cmd 'normal! G'
+  end)
+end
+
 local function gen_cpp()
   local content = [[
 cmake_minimum_required(VERSION 3.20)
@@ -113,7 +121,7 @@ function M.setup(opts)
   local function configure_cmake()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
-    vim.cmd('sp') -- Open a new split window
+    vim.cmd('sp')                                 -- Open a new split window
     local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
     vim.api.nvim_set_current_buf(term_buf_nr)
 
@@ -135,19 +143,17 @@ function M.setup(opts)
   local function build_cmake()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
-    vim.cmd('sp') -- Open a new split window
+    vim.cmd('sp')                                 -- Open a new split window
     local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
     vim.api.nvim_set_current_buf(term_buf_nr)
 
-    vim.fn.termopen('cmake --build build', {
+    vim.fn.termopen('watchexec -w . -e cpp,c,h,hpp,txt -- cmake --build build', {
       on_exit = function(job_id, exit_code, event)
-        if exit_code == 0 then
-          -- Close the window if successful
+        -- The watchexec process has exited, so we can notify the user and close the window
+        vim.schedule(function()
+          vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
           vim.api.nvim_win_close(win_id, true)
-          vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
-        else
-          vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
-        end
+        end)
       end
     })
     vim.cmd('wincmd p') -- Return focus to original window
