@@ -157,10 +157,12 @@ function M.setup(opts)
         vim.schedule(function()
           vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
           vim.api.nvim_win_close(win_id, true)
+          scroll_buffer_to_bottom(term_buf_nr)
         end)
       end
     })
     vim.cmd('wincmd p') -- Return focus to original window
+    scroll_buffer_to_bottom(term_buf_nr)
   end
   vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
 end
