@@ -158,7 +158,7 @@ function M.setup(opts)
           -- The watchexec process has exited, so we can notify the user and close the window
           vim.schedule(function()
             vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
-            vim.api.nvim_win_close(win_id, true)
+            -- vim.api.nvim_win_close(win_id, true)
           end)
         end
       })
