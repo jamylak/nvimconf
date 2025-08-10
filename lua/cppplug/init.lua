@@ -144,28 +144,58 @@ function M.setup(opts)
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
-  local function build_cmake()
+  local function _run_watchexec_command(command_str, success_message, error_message, should_close_on_success)
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
-    vim.cmd('sp')                                 -- Open a new split window
-    local win_id = vim.api.nvim_get_current_win() -- Capture the window ID
+    vim.cmd('sp')
+    local win_id = vim.api.nvim_get_current_win()
     vim.api.nvim_set_current_buf(term_buf_nr)
 
-    vim.fn.termopen(
-      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
-      {
-        on_exit = function(job_id, exit_code, event)
-          -- The watchexec process has exited, so we can notify the user and close the window
-          vim.schedule(function()
-            vim.notify('Build watcher exited. Terminal closed.', vim.log.levels.INFO)
-            -- vim.api.nvim_win_close(win_id, true)
-          end)
-        end
-      })
-    vim.cmd('wincmd p') -- Return focus to original window
+    vim.fn.termopen(command_str, {
+      on_exit = function(job_id, exit_code, event)
+        vim.schedule(function()
+          if exit_code == 0 then
+            vim.notify(success_message, vim.log.levels.INFO)
+            if should_close_on_success then
+              vim.api.nvim_win_close(win_id, true)
+            end
+          else
+            vim.notify(error_message, vim.log.levels.ERROR)
+            scroll_buffer_to_bottom(term_buf_nr)
+            vim.api.nvim_set_current_win(win_id)
+            vim.cmd('startinsert')
+          end
+        end)
+      end
+    })
+    vim.cmd('wincmd p')
     scroll_buffer_to_bottom(term_buf_nr)
   end
-  vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
+
+  local function build_watch_cmake()
+    _run_watchexec_command(
+      [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- cmake --build build]],
+      'Build watcher exited. Terminal closed.',
+      'Build watcher exited with errors. Terminal left open for inspection.',
+      false -- Don't close on success for watcher
+    )
+  end
+  vim.api.nvim_create_user_command("CMakeBuildWatch", build_watch_cmake, {})
+
+  local function build_and_run_watch_cmake()
+    local project_name = get_safe_project_name()
+    local executable_path = "build/" .. project_name
+    _run_watchexec_command(
+      string.format(
+        [[watchexec -w . -e cpp,c,h,hpp -i 'build/**' -i '.git/**' -i '**/*.sw?' -i '**/*~' -i '**/.#*' -i '**/.DS_Store' -i '**/.cache/**' -i '**/.undo/**' -i '**/spectre*/**' --debounce 200ms -- fish -c '"cmake --build build && %s"']],
+        executable_path
+      ),
+      'Build and run watcher exited successfully. Terminal closed.',
+      'Build and run watcher exited with errors. Terminal left open for inspection.',
+      true -- Close on success for build and run
+    )
+  end
+  vim.api.nvim_create_user_command("CMakeBuildAndRunWatch", build_and_run_watch_cmake, {})
 
   local function build_cmake_once()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
