@@ -48,12 +48,6 @@ end
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
   local aug = vim.api.nvim_create_augroup("CppPlug", { clear = true })
-  -- -- example autocmd, keep if you want
-  -- vim.api.nvim_create_autocmd("BufEnter", {
-  --   group = aug,
-  --   pattern = "*.cpp,*.hpp,*.cc,*.cxx,*.hh,*.c,*.h",
-  --   callback = function() end,
-  -- })
 
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
