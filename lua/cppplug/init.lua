@@ -60,11 +60,13 @@ function M.setup(opts)
 
   local function configure_cmake()
     vim.api.nvim_command("sp | terminal cmake -B build -S .")
+    vim.api.nvim_command("wincmd p")
   end
   vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
 
   local function build_cmake()
     vim.api.nvim_command("sp | terminal cmake --build build")
+    vim.api.nvim_command("wincmd p")
   end
   vim.api.nvim_create_user_command("CMakeBuild", build_cmake, {})
 end
