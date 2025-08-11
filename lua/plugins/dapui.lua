@@ -341,6 +341,13 @@ return {
       desc = 'Launch Debugger (Python/C++)',
     },
     {
+      '<leader>c',
+      function()
+        dispatch_dap_launch()
+      end,
+      desc = 'Launch Debugger (Python/C++)',
+    },
+    {
       '<leader>GN',
       function()
         require('dap').step_over()
