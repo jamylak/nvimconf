@@ -83,21 +83,91 @@ local function gen_cmake()
   end
 end
 
+local function configure_cmake(on_success_cb, on_error_cb)
+  local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+  -- Open a new split window
+  vim.cmd('sp')
+  local win_id = vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_buf(term_buf_nr)
+
+  vim.fn.termopen('cmake -B build -S .', {
+    on_exit = function(job_id, exit_code, event)
+      if exit_code == 0 then
+        -- Close the specific window if successful
+        vim.api.nvim_win_close(win_id, true)
+        vim.notify('CMake configure successful, terminal closed.', vim.log.levels.INFO)
+        if type(on_success_cb) == 'function' then
+          on_success_cb()
+        end
+      else
+        vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+        scroll_buffer_to_bottom(term_buf_nr)
+        if type(on_error_cb) == 'function' then
+          on_error_cb()
+        end
+      end
+    end
+  })
+  scroll_buffer_to_bottom(term_buf_nr)
+  -- Return focus to original window
+  vim.cmd('wincmd p')
+end
+
+local function build_cmake_once(on_success_cb, on_error_cb)
+  local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+  -- Open a new split window
+  vim.cmd('sp')
+  local win_id = vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_buf(term_buf_nr)
+
+  vim.fn.termopen('cmake --build build', {
+    on_exit = function(job_id, exit_code, event)
+      if exit_code == 0 then
+        -- Close the specific window if successful
+        vim.api.nvim_win_close(win_id, true)
+        vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
+        if type(on_success_cb) == 'function' then
+          on_success_cb()
+        end
+      else
+        -- vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
+        scroll_buffer_to_bottom(term_buf_nr)
+        vim.api.nvim_set_current_win(win_id)
+        vim.cmd('startinsert')
+        if type(on_error_cb) == 'function' then
+          on_error_cb()
+        end
+      end
+    end
+  })
+  vim.cmd('wincmd p')
+  scroll_buffer_to_bottom(term_buf_nr)
+  -- Return focus to original window
+end
 
 local function setup_new_project()
-  local success, err = pcall(function()
-    vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
-    gen_cmake()
+  vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
+  gen_cmake()
 
-    vim.notify("Configuring CMake project...", vim.log.levels.INFO)
-    vim.api.nvim_command("CMakeConfigure")
-
-    vim.notify("New CMake project setup complete!", vim.log.levels.INFO)
-  end)
-
-  if not success then
-    vim.notify("CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
-  end
+  vim.notify("Configuring CMake project...", vim.log.levels.INFO)
+  configure_cmake(
+    function() -- on_success_cb for configure_cmake
+      vim.notify("CMake configure successful. Building project...", vim.log.levels.INFO)
+      build_cmake_once(
+        function() -- on_success_cb for build_cmake_once
+          vim.notify("New CMake project setup and build complete!", vim.log.levels.INFO)
+        end,
+        function() -- on_error_cb for build_cmake_once
+          vim.notify("CMake build failed. New project setup incomplete.", vim.log.levels.ERROR)
+        end
+      )
+    end,
+    function() -- on_error_cb for configure_cmake
+      vim.notify("CMake configure failed. New project setup incomplete.", vim.log.levels.ERROR)
+    end
+  )
 end
 
 function M.setup(opts)
@@ -108,37 +178,8 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
   vim.api.nvim_create_user_command("CMakeNewProject", setup_new_project, {})
 
-  local function configure_cmake(on_success_cb, on_error_cb)
-    local term_buf_nr = vim.api.nvim_create_buf(false, true)
-
-    -- Open a new split window
-    vim.cmd('sp')
-    local win_id = vim.api.nvim_get_current_win()
-    vim.api.nvim_set_current_buf(term_buf_nr)
-
-    vim.fn.termopen('cmake -B build -S .', {
-      on_exit = function(job_id, exit_code, event)
-        if exit_code == 0 then
-          -- Close the specific window if successful
-          vim.api.nvim_win_close(win_id, true)
-          vim.notify('CMake configure successful, terminal closed.', vim.log.levels.INFO)
-          if type(on_success_cb) == 'function' then
-            on_success_cb()
-          end
-        else
-          vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
-          scroll_buffer_to_bottom(term_buf_nr)
-          if type(on_error_cb) == 'function' then
-            on_error_cb()
-          end
-        end
-      end
-    })
-    scroll_buffer_to_bottom(term_buf_nr)
-    -- Return focus to original window
-    vim.cmd('wincmd p')
-  end
-  vim.api.nvim_create_user_command("CMakeConfigure", function(opts) configure_cmake(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
+  vim.api.nvim_create_user_command("CMakeConfigure", function(opts) configure_cmake(opts.fargs[1], opts.fargs[2]) end,
+    { nargs = '*' })
 
   local function _run_watchexec_command(command_str, success_message, error_message, should_close_on_success,
                                         on_success_callback)
@@ -211,38 +252,7 @@ function M.setup(opts)
     function(opts) build_watch_until_success_cmake(opts.fargs[1]) end,
     { nargs = '?', complete = 'custom,v:lua.vim.lsp.get_clients' })
 
-  local function build_cmake_once(on_success_cb, on_error_cb)
-    local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
-    -- Open a new split window
-    vim.cmd('sp')
-    local win_id = vim.api.nvim_get_current_win()
-    vim.api.nvim_set_current_buf(term_buf_nr)
-
-    vim.fn.termopen('cmake --build build', {
-      on_exit = function(job_id, exit_code, event)
-        if exit_code == 0 then
-          -- Close the specific window if successful
-          vim.api.nvim_win_close(win_id, true)
-          vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
-          if type(on_success_cb) == 'function' then
-            on_success_cb()
-          end
-        else
-          -- vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
-          scroll_buffer_to_bottom(term_buf_nr)
-          vim.api.nvim_set_current_win(win_id)
-          vim.cmd('startinsert')
-          if type(on_error_cb) == 'function' then
-            on_error_cb()
-          end
-        end
-      end
-    })
-    vim.cmd('wincmd p')
-    scroll_buffer_to_bottom(term_buf_nr)
-    -- Return focus to original window
-  end
   vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
 end
