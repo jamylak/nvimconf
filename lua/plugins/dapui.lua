@@ -175,101 +175,68 @@ local function launch_python_debugger()
   end
 end
 
-local function launch_cpp_debugger()
-  -- Compile and then debug
-  -- Default compile command for now
-  -- assuming C++
-  -- g++ -g -O0 {cur_file}.cpp -std=c++23 -o {cur_file}.out
-  local current_file = vim.fn.expand('%:t:r') -- filename without extension
-  local compile_command = string.format(
-    'g++ -g -O0 %s.cpp -std=c++23 -o %s.out', current_file, current_file
-  )
-  local output_path = vim.fn.expand('%:p:h') .. '/' .. current_file .. '.out'
+local function launch_c_cpp_debugger()
+  local dap = require('dap')
+  local dapui = require('dapui')
+  local cppplug = require('cppplug')
   local cwd = vim.fn.getcwd()
-  local stdout_lines = {}
-  local stderr_lines = {}
 
-  -- 🛠 Run compilation
-  vim.fn.jobstart(compile_command, {
-    stdout_buffered = true,
-    stderr_buffered = true,
+  local function on_build_success(output_path)
+    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
 
-    on_stdout = function(_, data)
-      if data then
-        vim.list_extend(stdout_lines, data)
+    local cfg = load_dap_project_config("cpp")
+
+    -- Define the config you want to launch
+    local config = {
+      name = "Launch compiled .out",
+      type = "lldb",
+      request = "launch",
+      program = cfg.output_path or output_path,
+      cwd = cfg.cwd or cwd,
+      stopOnEntry = cfg.stopOnEntry or false,
+      args = cfg.args or {},
+      initCommands = cfg.initCommands or { "breakpoint set --name main" }
+    }
+    setup_cpp_dapui_layouts()
+
+    -- Check if a session is active
+    if dap.session() then
+      -- Register a one-time listener
+      local function on_terminated()
+        dap.listeners.after.event_terminated["restart_and_run"] = nil
+        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+        dap.run(config)
+        pcall(dapui.open)
       end
-    end,
 
-    on_stderr = function(_, data)
-      if data then
-        vim.list_extend(stderr_lines, data)
-      end
-    end,
+      dap.listeners.after.event_terminated["restart_and_run"] = on_terminated
+      vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
+      dap.terminate()
+    else
+      vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+      dap.run(config)
+      pcall(dapui.open)
+    end
+  end
 
-    on_exit = function(_, exit_code)
-      if exit_code ~= 0 then
-        if #stdout_lines > 0 then
-          local output = table.concat(stdout_lines, '\n')
-          vim.notify(output, vim.log.levels.INFO)
-        end
+  local function on_build_failure(error_output)
+    vim.notify("❌ Build failed\n" .. error_output, vim.log.levels.ERROR)
+  end
 
-        if #stderr_lines > 0 then
-          local error_output = "❌ Compilation failed\n" .. table.concat(stderr_lines, '\n')
-          vim.notify(error_output, vim.log.levels.ERROR)
-        end
-      else
-        vim.notify("✅ Compilation succeeded, launching debugger", vim.log.levels.INFO)
-
-        local dap = require('dap')
-        local dapui = require('dapui')
-
-        -- TODO: handle C or Rust should be easy to just adjust
-        -- the below string
-        local cfg = load_dap_project_config("cpp")
-
-        -- Define the config you want to launch
-        local config = {
-          name = "Launch compiled .out",
-          type = "lldb",
-          request = "launch",
-          program = cfg.output_path or output_path,
-          cwd = cfg.cwd or cwd,
-          -- Note for cpp this fails cause it probably stops
-          -- on _start so you'd wanna do the breakpoint set change
-          stopOnEntry = cfg.stopOnEntry or false,
-          args = cfg.args or {},
-          initCommands = cfg.initCommands or { "breakpoint set --name main" }
-        }
-        setup_cpp_dapui_layouts()
-
-        -- Check if a session is active
-        if dap.session() then
-          -- Register a one-time listener
-          local function on_terminated()
-            dap.listeners.after.event_terminated["restart_and_run"] = nil
-            vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
-            dap.run(config)
-            pcall(dapui.open)
-          end
-
-          dap.listeners.after.event_terminated["restart_and_run"] = on_terminated
-          vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
-          dap.terminate()
-        else
-          vim.notify("✅ Launching debugger", vim.log.levels.INFO)
-          dap.run(config)
-          pcall(dapui.open)
-        end
-      end
-    end,
-  })
+  -- Check if CMakeLists.txt exists
+  if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
+    cppplug.build_cmake_once(on_build_success, on_build_failure)
+  else
+    cppplug.setup_new_project(on_build_success, on_build_failure)
+  end
 end
+
 local function dispatch_dap_launch()
   local filetype = vim.bo.filetype
   if filetype == 'python' then
     launch_python_debugger()
   elseif filetype == 'cpp' or filetype == 'c' then
-    launch_cpp_debugger()
+    launch_c_cpp_debugger()
   else
     vim.notify("No debugger configured for filetype: " .. filetype, vim.log.levels.WARN)
   end
@@ -320,6 +287,14 @@ return {
     --   dapui.close()
     -- end
   end,
+  -- icons = {},
+  -- mappings = {},
+  -- element_mappings = {},
+  -- expand_lines = false,
+  -- force_buffers = false,
+  -- floating = {},
+  -- controls = {},
+  -- render = {},
   keys = {
     {
       '<leader>GG', -- or any key you want
