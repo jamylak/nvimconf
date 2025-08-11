@@ -109,7 +109,7 @@ end
 
 function M.fzfDir()
   -- TODO: /tmp and then it will do CD instead of git root?
-  local dirs = vim.fn.split(vim.fn.system [[ls -d /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]],
+  local dirs = vim.fn.split(vim.fn.system [[ls -dt /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]],
     '\n')
 
   require('telescope.pickers')
