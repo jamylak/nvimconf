@@ -17,6 +17,9 @@ require('lazy').setup({
   defaults = {
     lazy = true,
   },
+  checker = {
+    notify = false, -- get a notification when new updates are found
+  },
   performance = {
     cache = {
       enabled = true,
