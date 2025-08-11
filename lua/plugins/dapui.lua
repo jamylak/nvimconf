@@ -357,12 +357,27 @@ return {
     {
       '<leader>GI',
       function()
-        require('dap').step_into()
+        -- require('dap').step_into()
+      end,
+      desc = 'Step Into',
+    },
+
+    {
+      '<leader><leader>i',
+      function()
+        -- require('dap').step_into()
       end,
       desc = 'Step Into',
     },
     {
       '<leader>GO',
+      function()
+        -- require('dap').step_out()
+      end,
+      desc = 'Step Out',
+    },
+    {
+      '<leader><leader>o',
       function()
         require('dap').step_out()
       end,
@@ -370,6 +385,13 @@ return {
     },
     {
       '<leader>GR',
+      function()
+        require('dap').run_to_cursor()
+      end,
+      desc = 'Run to Cursor',
+    },
+    {
+      '<leader><leader>r',
       function()
         require('dap').run_to_cursor()
       end,
