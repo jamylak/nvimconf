@@ -129,6 +129,11 @@ return {
 
         local cfg = load_dap_project_config("python")
         local dapui = require('dapui')
+        local dap = require('dap')
+
+        -- TODO: Fix issue it can't be calld twice
+
+        -- Check if a session is active
         dapui.setup({
           layouts = { {
             elements = { {
@@ -164,6 +169,7 @@ return {
           name = 'Autopilot',
           program = cfg.program or vim.fn.expand('%'), -- current file
           args = cfg.args or {},
+          justMyCode = cfg.justMyCode or false,
           cwd = cfg.cwd or cwd,
           stopOnEntry = cfg.stopOnEntry or false,
           pythonPath = cfg.pythonPath or function()
