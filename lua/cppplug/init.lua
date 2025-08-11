@@ -84,41 +84,19 @@ local function gen_cmake()
 end
 
 
-local function setup_new_project_cpp()
+local function setup_new_project()
   local success, err = pcall(function()
-    vim.notify("Generating CMakeLists.txt for C++ project...", vim.log.levels.INFO)
-    gen_cpp()
+    vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
+    gen_cmake()
 
     vim.notify("Configuring CMake project...", vim.log.levels.INFO)
     vim.api.nvim_command("CMakeConfigure")
 
-    -- vim.notify("Building CMake project...", vim.log.levels.INFO)
-    -- vim.api.nvim_command("CMakeBuild")
-
-    vim.notify("New C++ CMake project setup complete!", vim.log.levels.INFO)
+    vim.notify("New CMake project setup complete!", vim.log.levels.INFO)
   end)
 
   if not success then
-    vim.notify("C++ CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
-  end
-end
-
-local function setup_new_project_c()
-  local success, err = pcall(function()
-    vim.notify("Generating CMakeLists.txt for C project...", vim.log.levels.INFO)
-    gen_c()
-
-    vim.notify("Configuring CMake project...", vim.log.levels.INFO)
-    vim.api.nvim_command("CMakeConfigure")
-
-    -- vim.notify("Building CMake project...", vim.log.levels.INFO)
-    -- vim.api.nvim_command("CMakeBuild")
-
-    vim.notify("New C CMake project setup complete!", vim.log.levels.INFO)
-  end)
-
-  if not success then
-    vim.notify("C CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
+    vim.notify("CMake project setup failed: " .. tostring(err), vim.log.levels.ERROR)
   end
 end
 
@@ -128,8 +106,7 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
-  vim.api.nvim_create_user_command("CMakeNewProjectCPP", setup_new_project_cpp, {})
-  vim.api.nvim_create_user_command("CMakeNewProjectC", setup_new_project_c, {})
+  vim.api.nvim_create_user_command("CMakeNewProject", setup_new_project, {})
 
   local function configure_cmake()
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
