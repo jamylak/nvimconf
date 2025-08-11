@@ -72,6 +72,18 @@ add_executable({{project_name}} main.c)
   vim.notify("Generated C17 CMakeLists.txt in " .. vim.fn.getcwd())
 end
 
+local function gen_cmake()
+  local file_extension = vim.fn.expand('%:e')
+  if file_extension == 'cpp' or file_extension == 'hpp' then
+    gen_cpp()
+  elseif file_extension == 'c' or file_extension == 'h' then
+    gen_c()
+  else
+    vim.notify("Current file is not a C, C++, .h, or .hpp file. Cannot generate CMakeLists.txt", vim.log.levels.ERROR)
+  end
+end
+
+
 local function setup_new_project_cpp()
   local success, err = pcall(function()
     vim.notify("Generating CMakeLists.txt for C++ project...", vim.log.levels.INFO)
@@ -248,18 +260,8 @@ function M.setup(opts)
     scroll_buffer_to_bottom(term_buf_nr)
     -- Return focus to original window
   end
-  vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
-end
-
-local function gen_cmake()
-  local file_extension = vim.fn.expand('%:e')
-  if file_extension == 'cpp' or file_extension == 'hpp' then
-    gen_cpp()
-  elseif file_extension == 'c' or file_extension == 'h' then
-    gen_c()
-  else
-    vim.notify("Current file is not a C, C++, .h, or .hpp file. Cannot generate CMakeLists.txt", vim.log.levels.ERROR)
-  end
+  vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end,
+    { nargs = '*' })
 end
 
 M.gen_cpp = gen_cpp
