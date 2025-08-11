@@ -179,6 +179,10 @@ local function setup_new_project(on_success_cb, on_error_cb)
   )
 end
 
+function M.get_default_executable_name()
+  return "build/" .. get_safe_project_name()
+end
+
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
 
