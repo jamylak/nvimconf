@@ -215,7 +215,7 @@ function M.setup(opts)
     function(opts) build_watch_until_success_cmake(opts.fargs[1]) end,
     { nargs = '?', complete = 'custom,v:lua.vim.lsp.get_clients' })
 
-  local function build_cmake_once()
+  local function build_cmake_once(on_success_cb, on_error_cb)
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
     -- Open a new split window
@@ -229,11 +229,17 @@ function M.setup(opts)
           -- Close the specific window if successful
           vim.api.nvim_win_close(win_id, true)
           vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
+          if type(on_success_cb) == 'function' then
+            on_success_cb()
+          end
         else
           -- vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
           scroll_buffer_to_bottom(term_buf_nr)
           vim.api.nvim_set_current_win(win_id)
           vim.cmd('startinsert')
+          if type(on_error_cb) == 'function' then
+            on_error_cb()
+          end
         end
       end
     })
@@ -241,10 +247,11 @@ function M.setup(opts)
     scroll_buffer_to_bottom(term_buf_nr)
     -- Return focus to original window
   end
-  vim.api.nvim_create_user_command("CMakeBuildOnce", build_cmake_once, {})
+  vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
 end
 
 M.gen_cpp = gen_cpp
 M.gen_c = gen_c
+M.build_cmake_once = build_cmake_once
 
 return M
