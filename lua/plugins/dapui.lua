@@ -10,7 +10,6 @@ local function ensure_dap_config()
   -- Write template if file missing
   if not vim.loop.fs_stat(config_file) then
     local template = [[
--- ✨ Example .nvim/dap.lua (Per Project)
 return {
 --   python = {
 --     args = { "--domains", "example.com", "--debug" },
