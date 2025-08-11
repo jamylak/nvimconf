@@ -108,7 +108,7 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
   vim.api.nvim_create_user_command("CMakeNewProject", setup_new_project, {})
 
-  local function configure_cmake()
+  local function configure_cmake(on_success_cb, on_error_cb)
     local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
     -- Open a new split window
@@ -122,9 +122,15 @@ function M.setup(opts)
           -- Close the specific window if successful
           vim.api.nvim_win_close(win_id, true)
           vim.notify('CMake configure successful, terminal closed.', vim.log.levels.INFO)
+          if type(on_success_cb) == 'function' then
+            on_success_cb()
+          end
         else
           vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
           scroll_buffer_to_bottom(term_buf_nr)
+          if type(on_error_cb) == 'function' then
+            on_error_cb()
+          end
         end
       end
     })
@@ -132,7 +138,7 @@ function M.setup(opts)
     -- Return focus to original window
     vim.cmd('wincmd p')
   end
-  vim.api.nvim_create_user_command("CMakeConfigure", configure_cmake, {})
+  vim.api.nvim_create_user_command("CMakeConfigure", function(opts) configure_cmake(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
 
   local function _run_watchexec_command(command_str, success_message, error_message, should_close_on_success,
                                         on_success_callback)
