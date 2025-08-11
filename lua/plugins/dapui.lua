@@ -41,6 +41,77 @@ local function load_dap_project_config(lang)
   return config[lang] or {}
 end
 
+local function setup_python_dapui_layouts()
+  require('dapui').setup({
+    layouts = { {
+      elements = { {
+        id = "scopes",
+        size = 0.25
+      }, {
+        id = "breakpoints",
+        size = 0.25
+      }, {
+        id = "stacks",
+        size = 0.25
+      }, {
+        id = "watches",
+        size = 0.25
+      } },
+      position = "left",
+      size = 40
+    }, {
+      elements = {
+        {
+          id = "repl",
+          size = 1.0
+        },
+      },
+      position = "bottom",
+      size = 10
+    } },
+  })
+end
+
+
+
+local function setup_cpp_dapui_layouts()
+  require('dapui').setup({
+    layouts = { {
+      elements = { {
+        id = "scopes",
+        size = 0.25
+      }, {
+        id = "breakpoints",
+        size = 0.25
+      }, {
+        id = "stacks",
+        size = 0.25
+      }, {
+        id = "watches",
+        size = 0.25
+      } },
+      position = "left",
+      size = 40
+    }, {
+      elements = {
+        {
+          id = "repl",
+          size = 0.5
+        },
+        {
+          id = "disassembly",
+          size = 0.5,
+        },
+      },
+      position = "bottom",
+      size = 10
+    } },
+  })
+end
+
+
+
+
 return {
   'rcarriga/nvim-dap-ui',
   dependencies = {
@@ -141,34 +212,7 @@ return {
           local function on_terminated()
             dap.listeners.after.event_terminated["restart_and_run_python"] = nil
             vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
-            dapui.setup({
-              layouts = { {
-                elements = { {
-                  id = "scopes",
-                  size = 0.25
-                }, {
-                  id = "breakpoints",
-                  size = 0.25
-                }, {
-                  id = "stacks",
-                  size = 0.25
-                }, {
-                  id = "watches",
-                  size = 0.25
-                } },
-                position = "left",
-                size = 40
-              }, {
-                elements = {
-                  {
-                    id = "repl",
-                    size = 1.0
-                  },
-                },
-                position = "bottom",
-                size = 10
-              } },
-            })
+            setup_python_dapui_layouts()
 
             dap.run({
               type = 'python',
@@ -192,34 +236,7 @@ return {
           dap.terminate()
         else
           vim.notify("✅ Launching debugger", vim.log.levels.INFO)
-          dapui.setup({
-            layouts = { {
-              elements = { {
-                id = "scopes",
-                size = 0.25
-              }, {
-                id = "breakpoints",
-                size = 0.25
-              }, {
-                id = "stacks",
-                size = 0.25
-              }, {
-                id = "watches",
-                size = 0.25
-              } },
-              position = "left",
-              size = 40
-            }, {
-              elements = {
-                {
-                  id = "repl",
-                  size = 1.0
-                },
-              },
-              position = "bottom",
-              size = 10
-            } },
-          })
+          setup_python_dapui_layouts()
 
           dap.run({
             type = 'python',
@@ -315,38 +332,7 @@ return {
                 args = cfg.args or {},
                 initCommands = cfg.initCommands or { "breakpoint set --name main" }
               }
-              dapui.setup({
-                layouts = { {
-                  elements = { {
-                    id = "scopes",
-                    size = 0.25
-                  }, {
-                    id = "breakpoints",
-                    size = 0.25
-                  }, {
-                    id = "stacks",
-                    size = 0.25
-                  }, {
-                    id = "watches",
-                    size = 0.25
-                  } },
-                  position = "left",
-                  size = 40
-                }, {
-                  elements = {
-                    {
-                      id = "repl",
-                      size = 0.5
-                    },
-                    {
-                      id = "disassembly",
-                      size = 0.5,
-                    },
-                  },
-                  position = "bottom",
-                  size = 10
-                } },
-              })
+              setup_cpp_dapui_layouts()
 
               -- Check if a session is active
               if dap.session() then
