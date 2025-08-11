@@ -115,6 +115,7 @@ function M.setup(opts)
 
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
+  vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
   vim.api.nvim_create_user_command("CMakeNewProjectCPP", setup_new_project_cpp, {})
   vim.api.nvim_create_user_command("CMakeNewProjectC", setup_new_project_c, {})
 
@@ -250,8 +251,20 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
 end
 
+local function gen_cmake()
+  local file_extension = vim.fn.expand('%:e')
+  if file_extension == 'cpp' or file_extension == 'hpp' then
+    gen_cpp()
+  elseif file_extension == 'c' or file_extension == 'h' then
+    gen_c()
+  else
+    vim.notify("Current file is not a C, C++, .h, or .hpp file. Cannot generate CMakeLists.txt", vim.log.levels.ERROR)
+  end
+end
+
 M.gen_cpp = gen_cpp
 M.gen_c = gen_c
+M.gen_cmake = gen_cmake
 M.build_cmake_once = build_cmake_once
 
 return M
