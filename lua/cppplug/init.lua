@@ -147,25 +147,34 @@ local function build_cmake_once(on_success_cb, on_error_cb)
   -- Return focus to original window
 end
 
-local function setup_new_project()
+local function setup_new_project(on_success_cb, on_error_cb)
   vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
   gen_cmake()
 
   vim.notify("Configuring CMake project...", vim.log.levels.INFO)
   configure_cmake(
-    function() -- on_success_cb for configure_cmake
+    function(output_path) -- on_success_cb for configure_cmake
       vim.notify("CMake configure successful. Building project...", vim.log.levels.INFO)
       build_cmake_once(
         function() -- on_success_cb for build_cmake_once
           vim.notify("New CMake project setup and build complete!", vim.log.levels.INFO)
+          if type(on_success_cb) == 'function' then
+            on_success_cb(output_path)
+          end
         end,
-        function() -- on_error_cb for build_cmake_once
+        function(error_output) -- on_error_cb for build_cmake_once
           vim.notify("CMake build failed. New project setup incomplete.", vim.log.levels.ERROR)
+          if type(on_error_cb) == 'function' then
+            on_error_cb(error_output)
+          end
         end
       )
     end,
-    function() -- on_error_cb for configure_cmake
+    function(error_output) -- on_error_cb for configure_cmake
       vim.notify("CMake configure failed. New project setup incomplete.", vim.log.levels.ERROR)
+      if type(on_error_cb) == 'function' then
+        on_error_cb(error_output)
+      end
     end
   )
 end
@@ -176,7 +185,7 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
-  vim.api.nvim_create_user_command("CMakeNewProject", setup_new_project, {})
+  vim.api.nvim_create_user_command("CMakeNewProject", function(opts) setup_new_project(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
 
   vim.api.nvim_create_user_command("CMakeConfigure", function(opts) configure_cmake(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
