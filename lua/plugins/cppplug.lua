@@ -2,7 +2,7 @@ return {
   {
     -- load from local directory sitting inside your config
     dir = vim.fn.stdpath("config") .. "/lua/cppplug",
-    name = "myplugin",
+    name = "cppplug",
     lazy = true,
     -- lazy = false,
     cmd = {
