@@ -260,6 +260,7 @@ end
 M.gen_cpp = gen_cpp
 M.gen_c = gen_c
 M.gen_cmake = gen_cmake
+M.setup_new_project = setup_new_project
 M.build_cmake_once = build_cmake_once
 
 return M
