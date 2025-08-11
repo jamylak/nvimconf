@@ -121,6 +121,7 @@ return {
         -- end without needing to terminate stuff
         local dap = require('dap')
         local breakpoints = require('dap.breakpoints')
+        local cwd = vim.fn.getcwd() -- Define cwd here
 
         -- TODO: Config could turn this off
         local cur_bufnr = vim.api.nvim_get_current_buf()
@@ -129,54 +130,113 @@ return {
 
         local cfg = load_dap_project_config("python")
         local dapui = require('dapui')
-        local dap = require('dap')
+        -- local dapui = require('dapui') -- Already defined at the top of the config block
+        -- local dap = require('dap') -- Already defined at the top of the config block
 
         -- TODO: Fix issue it can't be calld twice
 
         -- Check if a session is active
-        dapui.setup({
-          layouts = { {
-            elements = { {
-              id = "scopes",
-              size = 0.25
-            }, {
-              id = "breakpoints",
-              size = 0.25
-            }, {
-              id = "stacks",
-              size = 0.25
-            }, {
-              id = "watches",
-              size = 0.25
-            } },
-            position = "left",
-            size = 40
-          }, {
-            elements = {
-              {
-                id = "repl",
-                size = 1.0
-              },
-            },
-            position = "bottom",
-            size = 10
-          } },
-        })
+        if dap.session() then
+          -- Register a one-time listener
+          local function on_terminated()
+            dap.listeners.after.event_terminated["restart_and_run_python"] = nil
+            vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+            dapui.setup({
+              layouts = { {
+                elements = { {
+                  id = "scopes",
+                  size = 0.25
+                }, {
+                  id = "breakpoints",
+                  size = 0.25
+                }, {
+                  id = "stacks",
+                  size = 0.25
+                }, {
+                  id = "watches",
+                  size = 0.25
+                } },
+                position = "left",
+                size = 40
+              }, {
+                elements = {
+                  {
+                    id = "repl",
+                    size = 1.0
+                  },
+                },
+                position = "bottom",
+                size = 10
+              } },
+            })
 
-        dap.run({
-          type = 'python',
-          request = 'launch',
-          name = 'Autopilot',
-          program = cfg.program or vim.fn.expand('%'), -- current file
-          args = cfg.args or {},
-          justMyCode = cfg.justMyCode or false,
-          cwd = cfg.cwd or cwd,
-          stopOnEntry = cfg.stopOnEntry or false,
-          pythonPath = cfg.pythonPath or function()
-            return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
-          end,
-          initCommands = cfg.initCommands or {}
-        })
+            dap.run({
+              type = 'python',
+              request = 'launch',
+              name = 'Autopilot',
+              program = cfg.program or vim.fn.expand('%'), -- current file
+              args = cfg.args or {},
+              justMyCode = cfg.justMyCode or false,
+              cwd = cfg.cwd or cwd,
+              stopOnEntry = cfg.stopOnEntry or false,
+              pythonPath = cfg.pythonPath or function()
+                return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
+              end,
+              initCommands = cfg.initCommands or {}
+            })
+            pcall(dapui.open)
+          end
+
+          dap.listeners.after.event_terminated["restart_and_run_python"] = on_terminated
+          vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
+          dap.terminate()
+        else
+          vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+          dapui.setup({
+            layouts = { {
+              elements = { {
+                id = "scopes",
+                size = 0.25
+              }, {
+                id = "breakpoints",
+                size = 0.25
+              }, {
+                id = "stacks",
+                size = 0.25
+              }, {
+                id = "watches",
+                size = 0.25
+              } },
+              position = "left",
+              size = 40
+            }, {
+              elements = {
+                {
+                  id = "repl",
+                  size = 1.0
+                },
+              },
+              position = "bottom",
+              size = 10
+            } },
+          })
+
+          dap.run({
+            type = 'python',
+            request = 'launch',
+            name = 'Autopilot',
+            program = cfg.program or vim.fn.expand('%'), -- current file
+            args = cfg.args or {},
+            justMyCode = cfg.justMyCode or false,
+            cwd = cfg.cwd or cwd,
+            stopOnEntry = cfg.stopOnEntry or false,
+            pythonPath = cfg.pythonPath or function()
+              return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
+            end,
+            initCommands = cfg.initCommands or {}
+          })
+          pcall(dapui.open)
+        end
       end,
       desc = 'Debug current file (no stop, no prompt)'
     },
