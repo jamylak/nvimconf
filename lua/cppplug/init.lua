@@ -83,7 +83,8 @@ local function gen_cmake()
   end
 end
 
-local function configure_cmake(on_success_cb, on_error_cb)
+local function configure_cmake(on_success_cb, on_error_cb, build_type)
+  build_type = build_type or "" -- Default to empty string
   local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
   -- Open a new split window
@@ -91,7 +92,12 @@ local function configure_cmake(on_success_cb, on_error_cb)
   local win_id = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_buf(term_buf_nr)
 
-  vim.fn.termopen('cmake -B build -S .', {
+  local cmake_command = 'cmake -B build -S .'
+  if build_type ~= "" then
+    cmake_command = cmake_command .. ' -DCMAKE_BUILD_TYPE=' .. build_type
+  end
+
+  vim.fn.termopen(cmake_command, {
     on_exit = function(job_id, exit_code, event)
       if exit_code == 0 then
         -- Close the specific window if successful
@@ -129,7 +135,7 @@ local function build_cmake_once(on_success_cb, on_error_cb)
         vim.api.nvim_win_close(win_id, true)
         vim.notify('CMake build successful, terminal closed.', vim.log.levels.INFO)
         if type(on_success_cb) == 'function' then
-          on_success_cb()
+          on_success_cb(M.get_default_executable_name())
         end
       else
         -- vim.notify('CMake build failed. Terminal left open for inspection.', vim.log.levels.ERROR)
@@ -147,16 +153,26 @@ local function build_cmake_once(on_success_cb, on_error_cb)
   -- Return focus to original window
 end
 
+local function build_cmake_once_debug(on_success_cb, on_error_cb)
+  configure_cmake(
+    function()
+      build_cmake_once(on_success_cb, on_error_cb)
+    end,
+    on_error_cb,
+    "Debug"
+  )
+end
+
 local function setup_new_project(on_success_cb, on_error_cb)
   vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
   gen_cmake()
 
   vim.notify("Configuring CMake project...", vim.log.levels.INFO)
   configure_cmake(
-    function(output_path) -- on_success_cb for configure_cmake
+    function() -- configure_cmake doesn't return output_path
       vim.notify("CMake configure successful. Building project...", vim.log.levels.INFO)
-      build_cmake_once(
-        function() -- on_success_cb for build_cmake_once
+      build_cmake_once_debug(
+        function(output_path) -- build_cmake_once now returns output_path
           vim.notify("New CMake project setup and build complete!", vim.log.levels.INFO)
           if type(on_success_cb) == 'function' then
             on_success_cb(output_path)
@@ -189,7 +205,8 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeListsTxtGenCPP", gen_cpp, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGenC", gen_c, {})
   vim.api.nvim_create_user_command("CMakeListsTxtGen", gen_cmake, {})
-  vim.api.nvim_create_user_command("CMakeNewProject", function(opts) setup_new_project(opts.fargs[1], opts.fargs[2]) end, { nargs = '*' })
+  vim.api.nvim_create_user_command("CMakeNewProject", function(opts) setup_new_project(opts.fargs[1], opts.fargs[2]) end,
+    { nargs = '*' })
 
   vim.api.nvim_create_user_command("CMakeConfigure", function(opts) configure_cmake(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
@@ -275,5 +292,6 @@ M.gen_c = gen_c
 M.gen_cmake = gen_cmake
 M.setup_new_project = setup_new_project
 M.build_cmake_once = build_cmake_once
+M.build_cmake_once_debug = build_cmake_once_debug
 
 return M
