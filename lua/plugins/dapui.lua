@@ -21,6 +21,7 @@ return {
 --   },
 --   cpp = {
 --     args = { "--log-level", "trace" },
+--     program = "build/main",
 --     initCommands = { "breakpoint set --name main" },
 --   },
 --   rust = {
@@ -191,7 +192,7 @@ local function launch_c_cpp_debugger()
       name = "Launch compiled .out",
       type = "lldb",
       request = "launch",
-      program = cfg.output_path or cppplug.get_default_executable_name(),
+      program = cfg.program or cppplug.get_default_executable_name(),
       cwd = cfg.cwd or cwd,
       stopOnEntry = cfg.stopOnEntry or false,
       args = cfg.args or {},
