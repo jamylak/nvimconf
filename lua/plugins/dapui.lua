@@ -1,10 +1,17 @@
--- Load dap config from project root
--- e.g. .nvim/dap.lua
--- eg. to put some custom args
--- Example:
---
--- ✨ Example .nvim/dap-config.lua (Per Project)
--- return {
+local function ensure_dap_config()
+  local config_dir = vim.fn.getcwd() .. "/.nvim"
+  local config_file = config_dir .. "/dap.lua"
+
+  -- Create directory if missing
+  if not vim.loop.fs_stat(config_dir) then
+    vim.fn.mkdir(config_dir, "p")
+  end
+
+  -- Write template if file missing
+  if not vim.loop.fs_stat(config_file) then
+    local template = [[
+-- ✨ Example .nvim/dap.lua (Per Project)
+return {
 --   python = {
 --     args = { "--domains", "example.com", "--debug" },
 --     pythonPath = function()
@@ -19,20 +26,17 @@
 --   rust = {
 --     args = { "--port", "8080" }
 --   }
--- }
---
---
--- In terms of layout setup
--- Console never gets used so don't bother with it
--- elements = { {
---     id = "repl",
---     size = 0.5
---   }, {
---     id = "console",
---     size = 0.5
---   } },
+}
+]]
+    local fd = assert(io.open(config_file, "w"))
+    fd:write(template)
+    fd:close()
+    vim.notify("Created DAP config template at " .. config_file, vim.log.levels.INFO)
+  end
+end
 
 local function load_dap_project_config(lang)
+  ensure_dap_config()
   local config_path = vim.fn.getcwd() .. "/.nvim/dap.lua"
   local ok, config = pcall(dofile, config_path)
   if not ok or type(config) ~= "table" then
