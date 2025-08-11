@@ -181,7 +181,7 @@ local function launch_c_cpp_debugger()
   local cppplug = require('cppplug')
   local cwd = vim.fn.getcwd()
 
-  local function on_build_success(output_path)
+  local function on_build_success()
     vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
 
     local cfg = load_dap_project_config("cpp")
@@ -191,7 +191,7 @@ local function launch_c_cpp_debugger()
       name = "Launch compiled .out",
       type = "lldb",
       request = "launch",
-      program = cfg.output_path or output_path,
+      program = cfg.output_path or cppplug.get_default_executable_name(),
       cwd = cfg.cwd or cwd,
       stopOnEntry = cfg.stopOnEntry or false,
       args = cfg.args or {},
