@@ -355,6 +355,13 @@ return {
       desc = 'Step Over',
     },
     {
+      '<leader><leader>n',
+      function()
+        require('dap').step_over()
+      end,
+      desc = 'Step Over',
+    },
+    {
       '<leader>GI',
       function()
         -- require('dap').step_into()
