@@ -285,6 +285,10 @@ function M.setup(opts)
 
   vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
+
+  vim.api.nvim_create_user_command("CMakeBuildOnceDebug",
+    function(opts) build_cmake_once_debug(opts.fargs[1], opts.fargs[2]) end,
+    { nargs = '*' })
 end
 
 M.gen_cpp = gen_cpp
