@@ -13,7 +13,7 @@ return {
     },
     keys = {
       {
-        '<leader>CQ',
+        '<leader><leader>C',
         function()
           local input = vim.fn.input 'Quick Chat: '
           if input ~= '' then
@@ -23,7 +23,7 @@ return {
         desc = 'CopilotChat - Quick chat',
       },
       {
-        '<leader>CO',
+        '<leader>C',
         function()
           require('CopilotChat').open()
         end,
@@ -32,7 +32,7 @@ return {
     branch = 'main',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
-      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
+      { 'nvim-lua/plenary.nvim' },  -- for curl, log wrapper
     },
     opts = {
       debug = true, -- Enable debugging
