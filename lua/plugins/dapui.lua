@@ -11,19 +11,30 @@ local function ensure_dap_config()
   if not vim.loop.fs_stat(config_file) then
     local template = [[
 return {
---   python = {
+  python = {
 --     args = { "--domains", "example.com", "--debug" },
---     justMyCode = false,
---     stopOnEntry = true,
+--     justMyCode = true,
+--     stopOnExit = false,
+--     request = 'attach',
+--     connect = {
+--       host = 'localhost',
+--       port = 5678,
+--     }
 --     pythonPath = function()
 --       return ".venv/bin/python3"
 --     end,
---   },
---   cpp = {
+  },
+  cpp = {
+--     stopOnEntry = false,
 --     args = { "--log-level", "trace" },
+--     request = 'attach',
+--     connect = {
+--       host = 'localhost',
+--       port = 5678,
+--     }
 --     program = "build/main",
 --     initCommands = { "breakpoint set --name main" },
---   },
+  },
 --   rust = {
 --     args = { "--port", "8080" }
 --   }
@@ -117,14 +128,40 @@ local function launch_python_debugger()
   local dap = require('dap')
   local breakpoints = require('dap.breakpoints')
   local cwd = vim.fn.getcwd() -- Define cwd here
-
-  -- TODO: Config could turn this off
-  local cur_bufnr = vim.api.nvim_get_current_buf()
-  local last_line = vim.fn.line('$')
-  breakpoints.set({}, cur_bufnr, last_line)
-
   local cfg = load_dap_project_config("python")
+
+  if cfg.stopOnExit ~= false then
+    local cur_bufnr = vim.api.nvim_get_current_buf()
+    local last_line = vim.fn.line('$')
+    breakpoints.set({}, cur_bufnr, last_line)
+  end
+
   local dapui = require('dapui')
+
+  local function dap_run_python()
+    -- todo server allowed throughconfig
+    -- TEST this
+    local program = cfg.program or vim.fn.expand('%')
+    if cfg.module then
+      program = nil
+    end
+    dap.run({
+      type = 'python',
+      request = cfg.request or 'launch',
+      name = 'Autopilot',
+      module = cfg.module or nil,
+      program = program,
+      args = cfg.args or {},
+      justMyCode = cfg.justMyCode or false,
+      cwd = cfg.cwd or cwd,
+      connect = cfg.connect,
+      stopOnEntry = cfg.stopOnEntry or false,
+      pythonPath = cfg.pythonPath or function()
+        return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
+      end,
+      initCommands = cfg.initCommands or {}
+    })
+  end
 
   -- Check if a session is active
   if dap.session() then
@@ -133,21 +170,8 @@ local function launch_python_debugger()
       dap.listeners.after.event_terminated["restart_and_run_python"] = nil
       vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
       setup_python_dapui_layouts()
+      dap_run_python()
 
-      dap.run({
-        type = 'python',
-        request = 'launch',
-        name = 'Autopilot',
-        program = cfg.program or vim.fn.expand('%'), -- current file
-        args = cfg.args or {},
-        justMyCode = cfg.justMyCode or false,
-        cwd = cfg.cwd or cwd,
-        stopOnEntry = cfg.stopOnEntry or false,
-        pythonPath = cfg.pythonPath or function()
-          return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
-        end,
-        initCommands = cfg.initCommands or {}
-      })
       pcall(dapui.open)
     end
 
@@ -157,21 +181,8 @@ local function launch_python_debugger()
   else
     vim.notify("✅ Launching debugger", vim.log.levels.INFO)
     setup_python_dapui_layouts()
+    dap_run_python()
 
-    dap.run({
-      type = 'python',
-      request = 'launch',
-      name = 'Autopilot',
-      program = cfg.program or vim.fn.expand('%'), -- current file
-      args = cfg.args or {},
-      justMyCode = cfg.justMyCode or false,
-      cwd = cfg.cwd or cwd,
-      stopOnEntry = cfg.stopOnEntry or false,
-      pythonPath = cfg.pythonPath or function()
-        return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
-      end,
-      initCommands = cfg.initCommands or {}
-    })
     pcall(dapui.open)
   end
 end
