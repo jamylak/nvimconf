@@ -28,10 +28,6 @@ return {
 --     stopOnEntry = false,
 --     args = { "--log-level", "trace" },
 --     request = 'attach',
---     connect = {
---       host = 'localhost',
---       port = 5678,
---     }
 --     program = "build/main",
 --     initCommands = { "breakpoint set --name main" },
   },
@@ -187,6 +183,36 @@ local function launch_python_debugger()
   end
 end
 
+local pick_process = function(callback)
+  local pickers = require('telescope.pickers')
+  local finders = require('telescope.finders')
+  local conf = require('telescope.config').values
+  local action_state = require('telescope.actions.state')
+  local actions = require('telescope.actions')
+
+  vim.fn.jobstart({ 'ps', '-A', '-o', 'pid=,command=' }, {
+    stdout_buffered = true,
+    on_stdout = function(_, data)
+      table.remove(data, #data) -- remove last empty line
+      pickers.new({}, {
+        prompt_title = 'Select process',
+        finder = finders.new_table { results = data },
+        sorter = conf.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            local selection = action_state.get_selected_entry()[1]
+            local pid = tonumber(selection:match('^%s*(%d+)'))
+            actions.close(prompt_bufnr)
+            callback(pid)
+          end)
+          return true
+        end
+      }):find()
+    end
+  })
+end
+
+
 local function launch_c_cpp_debugger()
   local dap = require('dap')
   local dapui = require('dapui')
@@ -198,13 +224,25 @@ local function launch_c_cpp_debugger()
 
     local cfg = load_dap_project_config("cpp")
 
+    local program = cfg.program or cppplug.get_default_executable_name()
+    if cfg.request == 'attach' then
+      program = nil
+    end
+
     -- Define the config you want to launch
     local config = {
       name = "Launch compiled .out",
-      type = "lldb",
-      request = "launch",
-      program = cfg.program or cppplug.get_default_executable_name(),
+      type = cfg.type or 'lldb',
+      request = cfg.request or 'launch',
+      program = program,
       cwd = cfg.cwd or cwd,
+      pid = cfg.request == "attach" and function()
+        return coroutine.create(function(co)
+          pick_process(function(pid)
+            coroutine.resume(co, pid)
+          end)
+        end)
+      end,
       stopOnEntry = cfg.stopOnEntry or false,
       args = cfg.args or {},
       initCommands = cfg.initCommands or { "breakpoint set --name main" }
