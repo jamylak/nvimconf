@@ -45,12 +45,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>J',
     '<leader><c-j>',
     '<leader><m-j>',
-    '<leader>fj',
     '<leader>sm',
     '<leader>sb',
     '<leader>fb',
     '<leader>`',
-    '<leader>fj',
     '<leader>f/',
     '<leader>sn',
     '<leader>fn',
@@ -305,6 +303,9 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>.', function()
       builtin.find_files { no_ignore = false, cwd = getCWD(), prompt_title = 'Find files (cwd)' }
     end, { desc = '[F]ind [F]iles (cwd)' })
+    vim.keymap.set('n', '<leader>fj', function()
+      builtin.find_files { no_ignore = false, cwd = getCWD(), prompt_title = 'Find files (cwd)' }
+    end, { desc = '[F]ind [F]iles (cwd)' })
     vim.keymap.set('n', '<leader>ff', function()
       builtin.find_files { no_ignore = false }
     end, { desc = '[F]ind [F]iles' })
@@ -326,7 +327,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.grep_string { cwd = getCWD(), prompt_title = 'Find current word (cwd)' }
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.command_history, { desc = '[F]ind [C]ommands' })
-    vim.keymap.set('n', '<leader>fj', builtin.command_history, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
