@@ -10,18 +10,40 @@ return {
 
     local dap = require 'dap'
 
+    -- https://github.com/mfussenegger/nvim-dap-python/blob/65ccab83fb3d0b29ead6c765c1c52a1ed49592e8/lua/dap-python.lua#L136
+    -- Do i need to use this plugin?
+    dap.adapters.python = function(cb, config)
+      if config.request == 'attach' then
+        ---@diagnostic disable-next-line: undefined-field
+        local port = (config.connect or config).port
+        ---@diagnostic disable-next-line: undefined-field
+        local host = (config.connect or config).host or '127.0.0.1'
+        cb({
+          type = 'server',
+          port = assert(port, '`connect.port` is required for a python `attach` configuration'),
+          host = host,
+          options = {
+            source_filetype = 'python',
+          }
+        })
+      else
+        cb({
+          type = 'executable',
+          command = "python3",
+          args = { '-m', 'debugpy.adapter' },
+          options = {
+            source_filetype = 'python',
+          }
+        })
+      end
+    end
+
     dap.adapters.lldb = {
       type = 'executable',
       command = '/opt/homebrew/opt/llvm/bin/lldb-dap', -- You can override this if it's installed elsewhere
       name = 'lldb',
     }
 
-    -- Python adapter
-    dap.adapters.python = {
-      type = 'executable',
-      command = 'python3',
-      args = { '-m', 'debugpy.adapter' },
-    }
     local pythonPath = function()
       -- TODO: Needs to be from root of github?? maybe maybe not
       local venv_python_local = '.venv/bin/python3'
