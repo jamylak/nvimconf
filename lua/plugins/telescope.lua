@@ -1,7 +1,12 @@
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   -- event = 'VimEnter',
-  cmd = 'Telescope',
+  cmd = { 'Telescope', 'SearchAllBuffers',
+    'TelescopeResume', 'TelescopeFindFiles', 'TelescopeLiveGrep', 'TelescopeGrepString',
+    'TelescopeGitFiles', 'TelescopeGitStatus', 'TelescopeGitBranches', 'TelescopeGitCommits',
+    'TelescopeGitStash', 'TelescopeBuffers', 'TelescopeMarks', 'TelescopeManPages',
+    'TelescopeHelpTags', 'TelescopeCommandHistory', 'TelescopeRegisters',
+  },
   keys = {
     '<leader>fh',
     '<leader>fm',
@@ -47,6 +52,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader><m-j>',
     '<leader>sm',
     '<leader>sb',
+    '<leader>sB',
     '<leader>fb',
     '<leader>`',
     '<leader>f/',
@@ -492,5 +498,49 @@ return { -- Fuzzy Finder (files, lsp, etc)
     -- Key mapping to invoke the custom search function
     vim.keymap.set('n', '<leader>f.', searchDotFiles, { desc = '[F]ind [.] files' })
     vim.keymap.set('n', '<leader>f,', searchConfigFiles, { desc = '[F]ind Config files' })
+
+    local function all_buffers_picker()
+      local pickers = require('telescope.pickers')
+      local finders = require('telescope.finders')
+      local actions = require('telescope.actions')
+      local action_state = require('telescope.actions.state')
+      local conf = require('telescope.config').values
+      local results = {}
+      for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_loaded(buf) then
+          local name = vim.api.nvim_buf_get_name(buf)
+          if name == "" then name = "[No Name]" end
+          table.insert(results, { buf = buf, name = name })
+        end
+      end
+
+      pickers.new({}, {
+        prompt_title = "All Buffers (including hidden)",
+        finder = finders.new_table {
+          results = results,
+          entry_maker = function(entry)
+            return {
+              value = entry,
+              display = string.format("%d: %s", entry.buf, entry.name),
+              ordinal = entry.name,
+            }
+          end,
+        },
+        sorter = conf.generic_sorter({}),
+        attach_mappings = function(prompt_bufnr, map)
+          actions.select_default:replace(function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              vim.api.nvim_set_current_buf(selection.value.buf)
+            end
+          end)
+          return true
+        end,
+      }):find()
+    end
+
+    vim.api.nvim_create_user_command('SearchAllBuffers', all_buffers_picker, {})
+    vim.keymap.set('n', '<leader>sB', all_buffers_picker, { desc = '[S]earch All [B]uffers' })
   end,
 }
