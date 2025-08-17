@@ -3,6 +3,19 @@ return {
   dependencies = {
     'rcarriga/nvim-dap-ui',
   },
+  cmd = {
+    'DapContinue',
+    'DapStepInto',
+    'DapStepOver',
+    'DapStepOut',
+    'DapTerminate',
+    'DapToggleBreakpoint',
+    'DapSetBreakpoint',
+    'DapClearBreakpoints',
+    'DapListBreakpoints',
+    'DapToggleRepl',
+    'DapRunToCursor',
+  },
   config = function()
     if vim.loop.os_uname().sysname ~= 'Darwin' then
       return
