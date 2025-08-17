@@ -24,6 +24,7 @@ return {
       },
       {
         '<leader>C',
+        mode = { 'n', 'v' },
         function()
           require('CopilotChat').open()
         end,
