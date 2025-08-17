@@ -535,6 +535,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
               vim.api.nvim_set_current_buf(selection.value.buf)
             end
           end)
+          map('i', '<C-t>', function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              vim.cmd('tabnew')
+              vim.api.nvim_set_current_buf(selection.value.buf)
+            end
+          end)
           return true
         end,
       }):find()
