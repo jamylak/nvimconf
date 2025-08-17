@@ -13,7 +13,6 @@ end, { silent = true, noremap = true })
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
-
 -- Next quickfix eg. like :cn or :cp but for ]q and [q
 vim.keymap.set('n', ']q', ':cnext<CR>', { desc = 'Go to next [Q]uickfix' })
 vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
@@ -504,7 +503,7 @@ end, {})
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
 vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
-
+vim.keymap.set('i', '<C-y>', '<C-r>+', { silent = true })
 -- Faster way to do common symbols
 -- vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
 vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
