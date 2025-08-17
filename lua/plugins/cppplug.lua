@@ -15,6 +15,7 @@ return {
       "CMakeBuildAndRunWatch",
       "CMakeBuildWatchUntilSuccess",
       "CMakeBuildOnce",
+      "CMakeBuildOnceDebug",
     },
     -- keys = { { "<leader>mh", function() require("cppplug").echo() end, desc = "My hello" } },
     opts = {},
