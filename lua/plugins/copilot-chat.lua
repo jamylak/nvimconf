@@ -26,6 +26,10 @@ return {
         '<leader>C',
         mode = { 'n', 'v' },
         function()
+          -- just to make it look nicer
+          -- and cause i lazy load theme
+          -- for no good reason
+          require('tokyodark')
           require('CopilotChat').open()
         end,
       },
