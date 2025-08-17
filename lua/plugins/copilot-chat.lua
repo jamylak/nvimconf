@@ -45,6 +45,9 @@ return {
         jump_to_diff = {
           normal = '<nop>',
         },
+        close = {
+          insert = '<nop>',
+        },
       },
     },
     -- See Commands section for default commands if you want to lazy load on them
