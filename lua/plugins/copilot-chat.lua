@@ -36,7 +36,7 @@ return {
       { 'nvim-lua/plenary.nvim' },  -- for curl, log wrapper
     },
     opts = {
-      debug = true, -- Enable debugging
+      -- debug = true, -- Enable debugging
       mappings = {
         jump_to_diff = {
           normal = '<nop>',
