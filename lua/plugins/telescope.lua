@@ -204,12 +204,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local actions_state = require('telescope.actions.state')
               local current_picker = actions_state.get_current_picker(vim.api.nvim_get_current_buf())
               local current_input = ""
-              if current_picker and current_picker._get_prompt then
+              if current_picker and current_picker._get_prompt and current_picker.prompt_title:find("Grep") then
                 current_input = current_picker:_get_prompt() or ""
               end
               if current_picker and current_picker.prompt_title == "Live Grep" then
                 builtin.live_grep {
-                  prompt_title = 'Find words in all files',
+                  prompt_title = 'Live Grep - Global',
                   default_text = current_input,
                   additional_args = function(opts)
                     return { '--hidden', '--no-ignore' }
@@ -226,7 +226,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local builtin = require('telescope.builtin')
               local current_picker = require('telescope.actions.state').get_current_picker(vim.api.nvim_get_current_buf())
               local current_input = ""
-              if current_picker and current_picker._get_prompt then
+              if current_picker and current_picker._get_prompt and current_picker.prompt_title:find("Files") then
                 current_input = current_picker:_get_prompt() or ""
               end
               if current_picker and current_picker.prompt_title == "Find Files" then
@@ -396,21 +396,21 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader>fr', builtin.registers, { desc = '[F]ind [R]egisters' })
     vim.keymap.set('n', '<leader>fW', function()
       builtin.live_grep {
-        prompt_title = 'Find words in all files',
+        prompt_title = 'Live Grep - All Files',
         additional_args = function(opts)
           return { '--hidden', '--no-ignore' }
         end,
       }
-    end, { desc = 'Find words in all files (cwd)' })
+    end, { desc = 'Live Grep - All Files (cwd)' })
     vim.keymap.set('n', '<leader>sW', function()
       builtin.live_grep {
-        prompt_title = 'Find words in all files (cwd)',
+        prompt_title = 'Live Grep - All Files (cwd)',
         cwd = getCWD(),
         additional_args = function(opts)
           return { '--hidden', '--no-ignore' }
         end,
       }
-    end, { desc = 'Find words in all files' })
+    end, { desc = 'Live Grep - All Files' })
     vim.keymap.set('n', '<leader>fd', builtin.diagnostics, { desc = '[F]ind [D]iagnostics' })
     vim.keymap.set('n', '<leader>f<CR>', builtin.resume, { desc = '[F]ind [R]esume' })
     vim.keymap.set('n', '<m-CR>', builtin.resume, { desc = '[F]ind [R]esume' })
@@ -433,12 +433,12 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<leader><c-j>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader><m-j>', function()
       builtin.live_grep {
-        prompt_title = 'Find words in all files',
+        prompt_title = 'Live Grep - All Files',
         additional_args = function(opts)
           return { '--hidden', '--no-ignore' }
         end,
       }
-    end, { desc = 'Find words in all files (cwd)' })
+    end, { desc = 'Live Grep - All Files (cwd)' })
     vim.keymap.set('n', '<leader>sm', builtin.marks, { desc = '[S]earch [M]arks' })
 
     local function deleteBuffer(prompt_bufnr)
