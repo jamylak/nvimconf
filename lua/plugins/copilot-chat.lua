@@ -39,7 +39,8 @@ return {
       -- debug = true, -- Enable debugging
       mappings = {
         jump_to_diff = {
-          normal = '<nop>',
+          -- todo: add back, just not gj
+          normal = 'gD',
         },
         close = {
           insert = '<nop>',
