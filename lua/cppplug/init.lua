@@ -132,7 +132,8 @@ local function configure_cmake(on_success_cb, on_error_cb, build_type)
         vim.notify('CMake configure failed. Terminal left open for inspection.', vim.log.levels.ERROR)
         scroll_buffer_to_bottom(term_buf_nr)
         if type(on_error_cb) == 'function' then
-          on_error_cb()
+          -- TODO: Test proper error pass through?
+          on_error_cb(event)
         end
       end
     end
