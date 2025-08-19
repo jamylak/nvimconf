@@ -199,18 +199,21 @@ return { -- Fuzzy Finder (files, lsp, etc)
               utils.CloseTabOrQuit()
             end,
             ['<m-return>'] = setCWDToPickerAndOpen,
-            ['<m-u>'] = function()
+            ['<m-u>'] = function(prompt_bufnr)
               local builtin = require('telescope.builtin')
-              local current_picker = require('telescope.actions.state').get_current_picker(vim.api.nvim_get_current_buf())
+              local actions_state = require('telescope.actions.state')
+              local current_picker = actions_state.get_current_picker(vim.api.nvim_get_current_buf())
+              local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
               if current_picker and current_picker.prompt_title == "Live Grep" then
                 builtin.live_grep {
                   prompt_title = 'Find words in all files',
+                  default_text = current_input,
                   additional_args = function(opts)
                     return { '--hidden', '--no-ignore' }
                   end,
                 }
               else
-                builtin.live_grep {}
+                builtin.live_grep { default_text = current_input }
               end
             end,
             ['<m-o>'] = function()
