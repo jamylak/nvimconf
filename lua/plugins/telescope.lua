@@ -200,13 +200,30 @@ return { -- Fuzzy Finder (files, lsp, etc)
             end,
             ['<m-return>'] = setCWDToPickerAndOpen,
             ['<m-u>'] = function()
-              vim.cmd 'Telescope live_grep'
+              local builtin = require('telescope.builtin')
+              local current_picker = require('telescope.actions.state').get_current_picker(vim.api.nvim_get_current_buf())
+              if current_picker and current_picker.prompt_title == "Live Grep" then
+                builtin.live_grep {
+                  prompt_title = 'Find words in all files',
+                  additional_args = function(opts)
+                    return { '--hidden', '--no-ignore' }
+                  end,
+                }
+              else
+                builtin.live_grep {}
+              end
             end,
             ['<m-o>'] = function()
               vim.cmd 'Telescope oldfiles'
             end,
             ['<m-i>'] = function()
-              vim.cmd 'Telescope find_files'
+              local builtin = require('telescope.builtin')
+              local current_picker = require('telescope.actions.state').get_current_picker(vim.api.nvim_get_current_buf())
+              if current_picker and current_picker.prompt_title == "Find Files" then
+                builtin.find_files({ no_ignore = true, hidden = true, prompt_title = 'Find All Files' })
+              else
+                builtin.find_files()
+              end
             end,
             ['<m-v>'] = function(prompt_bufnr)
               -- Telescope is looking through wrong working dir, fix it..
