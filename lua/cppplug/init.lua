@@ -114,7 +114,7 @@ local function configure_cmake(on_success_cb, on_error_cb, build_type)
   local win_id = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_buf(term_buf_nr)
 
-  local cmake_command = 'cmake -B build -S .'
+  local cmake_command = 'cmake -G Ninja -B build -S .'
   if build_type ~= "" then
     cmake_command = cmake_command .. ' -DCMAKE_BUILD_TYPE=' .. build_type
   end
