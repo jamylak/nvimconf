@@ -124,9 +124,9 @@ local function launch_python_debugger()
   local dap = require('dap')
   local breakpoints = require('dap.breakpoints')
   local cwd = vim.fn.getcwd() -- Define cwd here
-  local cfg = load_dap_project_config("python")
+  local user_cfg = load_dap_project_config("python")
 
-  if cfg.stopOnExit ~= false then
+  if user_cfg.stopOnExit ~= false then
     local cur_bufnr = vim.api.nvim_get_current_buf()
     local last_line = vim.fn.line('$')
     breakpoints.set({}, cur_bufnr, last_line)
@@ -152,7 +152,7 @@ local function launch_python_debugger()
       end,
       initCommands = {},
     }
-    local config = vim.tbl_deep_extend('force', defaults, cfg or {})
+    local config = vim.tbl_deep_extend('force', defaults, user_cfg or {})
     -- If module is set, ignore program
     if config.module then
       config.program = nil
@@ -223,31 +223,34 @@ local function launch_c_cpp_debugger()
   local function on_build_success()
     vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
 
-    local cfg = load_dap_project_config("cpp")
+    local user_cfg = load_dap_project_config("cpp")
 
-    local program = cfg.program or cppplug.get_default_executable_name()
-    if cfg.request == 'attach' then
-      program = nil
-    end
-
-    -- Define the config you want to launch
-    local config = {
+    -- Define default config
+    local defaults = {
       name = "Launch compiled .out",
-      type = cfg.type or 'lldb',
-      request = cfg.request or 'launch',
-      program = program,
-      cwd = cfg.cwd or cwd,
-      pid = cfg.request == "attach" and function()
+      type = 'lldb',
+      request = 'launch',
+      program = cppplug.get_default_executable_name(),
+      cwd = cwd,
+      pid = nil,
+      stopOnEntry = false,
+      args = {},
+      initCommands = { "breakpoint set --name main" }
+    }
+
+    -- Merge cfg into defaults
+    local config = vim.tbl_deep_extend("force", defaults, user_cfg or {})
+    if config.request == 'attach' then
+      config.program = nil
+      config.pid = function()
         return coroutine.create(function(co)
           pick_process(function(pid)
             coroutine.resume(co, pid)
           end)
         end)
-      end,
-      stopOnEntry = cfg.stopOnEntry or false,
-      args = cfg.args or {},
-      initCommands = cfg.initCommands or { "breakpoint set --name main" }
-    }
+      end
+    end
+
     setup_cpp_dapui_layouts()
 
     -- Check if a session is active
