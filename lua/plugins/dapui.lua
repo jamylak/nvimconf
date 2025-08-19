@@ -274,7 +274,7 @@ local function launch_c_cpp_debugger()
   end
 
   local function on_build_failure(error_output)
-    vim.notify("❌ Build failed\n" .. error_output, vim.log.levels.ERROR)
+    vim.notify("❌ Build failed\n", vim.log.levels.ERROR)
   end
 
   -- Check if CMakeLists.txt exists
