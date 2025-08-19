@@ -38,6 +38,26 @@ function scroll_buffer_to_bottom(buf_id)
   end)
 end
 
+function fuzzsan_template()
+  return [[
+option(ENABLE_SANITIZERS "Build with sanitizers" OFF)
+option(ENABLE_FUZZING "Build fuzz targets" OFF)
+
+if (ENABLE_SANITIZERS)
+  add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer -g)
+  add_link_options(-fsanitize=address,undefined)
+endif()
+
+if (ENABLE_FUZZING)
+  add_executable(fuzz_target fuzz.cpp)
+  target_compile_options(fuzz_target PRIVATE -fsanitize=fuzzer,address,undefined -O1 -g)
+  target_link_options(fuzz_target PRIVATE -fsanitize=fuzzer,address,undefined)
+endif()
+  ]]
+
+  -- todo: memory, thread as well?
+end
+
 local function gen_cpp()
   local content = [[
 cmake_minimum_required(VERSION 3.20)
