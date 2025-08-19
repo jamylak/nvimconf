@@ -203,7 +203,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local builtin = require('telescope.builtin')
               local actions_state = require('telescope.actions.state')
               local current_picker = actions_state.get_current_picker(vim.api.nvim_get_current_buf())
-              local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
+              local current_input = ""
+              if current_picker and current_picker._get_prompt then
+                current_input = current_picker:_get_prompt() or ""
+              end
               if current_picker and current_picker.prompt_title == "Live Grep" then
                 builtin.live_grep {
                   prompt_title = 'Find words in all files',
@@ -222,10 +225,21 @@ return { -- Fuzzy Finder (files, lsp, etc)
             ['<m-i>'] = function()
               local builtin = require('telescope.builtin')
               local current_picker = require('telescope.actions.state').get_current_picker(vim.api.nvim_get_current_buf())
+              local current_input = ""
+              if current_picker and current_picker._get_prompt then
+                current_input = current_picker:_get_prompt() or ""
+              end
               if current_picker and current_picker.prompt_title == "Find Files" then
-                builtin.find_files({ no_ignore = true, hidden = true, prompt_title = 'Find All Files' })
+                builtin.find_files({
+                  default_text = current_input,
+                  no_ignore = true,
+                  hidden = true,
+                  prompt_title = 'Find All Files'
+                })
               else
-                builtin.find_files()
+                builtin.find_files({
+                  default_text = current_input,
+                })
               end
             end,
             ['<m-v>'] = function(prompt_bufnr)
