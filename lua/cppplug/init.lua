@@ -73,6 +73,8 @@ add_executable({{project_name}} main.cpp)
   local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
   vim.notify("Generated C++ CMakeLists.txt in " .. vim.fn.getcwd())
+
+  --- TODO : Add sanitizers and fuzzing options for C & CPP
 end
 
 local function gen_c()
