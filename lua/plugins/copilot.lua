@@ -1,6 +1,11 @@
 return {
   'zbirenbaum/copilot.lua',
-  -- event = 'BufReadPost',
+  -- Note: There is currently an issue eg.
+  -- Open project in working dir of eg. ~/foo
+  -- and then start :new, :w /tmp/gloo.txt
+  -- And now it will give error
+  -- [Copilot.lua] RPC[Error] code_name = InvalidParams, message = "Document for URI could not be found: file:///private/tmp/gloo.lua"
+  -- But if you do :e it fixes it...
   event = 'VeryLazy',
   cmd = 'Copilot',
   opts = {
