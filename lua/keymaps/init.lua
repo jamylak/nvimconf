@@ -311,8 +311,6 @@ end, { silent = true, desc = 'Horizontal Split' })
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
   { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
-vim.api.nvim_set_keymap('n', '<leader><leader>c', ':split | term zsh -l -c "cb; rn;"<CR>',
-  { noremap = true, desc = '[c]make build and run ' })
 vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>',
   { noremap = true, desc = '[c]make build and run vertical ' })
 -- Leader Y to yank whole file to clipboard

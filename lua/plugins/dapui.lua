@@ -372,6 +372,13 @@ return {
       desc = 'Continue Debugging',
     },
     {
+      '<leader><leader>c',
+      function()
+        require('dap').continue()
+      end,
+      desc = 'Continue Debugging',
+    },
+    {
       '<leader>GC',
       function()
         require('dap').continue()
