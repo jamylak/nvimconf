@@ -135,28 +135,29 @@ local function launch_python_debugger()
   local dapui = require('dapui')
 
   local function dap_run_python()
-    -- todo server allowed throughconfig
-    -- TEST this
-    local program = cfg.program or vim.fn.expand('%')
-    if cfg.module then
-      program = nil
-    end
-    dap.run({
+    -- Merge defaults into cfg
+    local defaults = {
       type = 'python',
-      request = cfg.request or 'launch',
+      request = 'launch',
       name = 'Autopilot',
-      module = cfg.module or nil,
-      program = program,
-      args = cfg.args or {},
-      justMyCode = cfg.justMyCode or false,
-      cwd = cfg.cwd or cwd,
-      connect = cfg.connect,
-      stopOnEntry = cfg.stopOnEntry or false,
-      pythonPath = cfg.pythonPath or function()
+      module = nil,
+      program = vim.fn.expand('%'),
+      args = {},
+      justMyCode = false,
+      cwd = cwd,
+      connect = nil,
+      stopOnEntry = false,
+      pythonPath = function()
         return vim.fn.filereadable('.venv/bin/python3') == 1 and '.venv/bin/python3' or 'python3'
       end,
-      initCommands = cfg.initCommands or {}
-    })
+      initCommands = {},
+    }
+    local config = vim.tbl_deep_extend('force', defaults, cfg or {})
+    -- If module is set, ignore program
+    if config.module then
+      config.program = nil
+    end
+    dap.run(config)
   end
 
   -- Check if a session is active
