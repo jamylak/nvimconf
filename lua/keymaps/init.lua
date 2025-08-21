@@ -363,6 +363,8 @@ end
 vim.keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'New Tab' })
 
 vim.keymap.set('n', '<a-t>', ':split<CR><C-w>T', { desc = 'New Tab' })
+vim.keymap.set('n', '<c-t>', ':tabnew<CR>', { desc = 'New Tab' })
+vim.keymap.set('n', '<c-return>', ':tabnew<CR>', { desc = 'New Tab' })
 vim.keymap.set('n', '<leader>te', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tk', terminal, { desc = ':term' })
 vim.keymap.set('n', '<leader>tt', terminalNewTab, { desc = 'Terminal - New Tab' })
