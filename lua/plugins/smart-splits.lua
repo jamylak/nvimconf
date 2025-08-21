@@ -1,3 +1,6 @@
+-- TODO: Make some defaults for when there are no other
+-- windows (or kitty windows?) open... eg. it could do something
+-- useful on a-j or a-k
 return {
   'mrjones2014/smart-splits.nvim',
   build = './kitty/install-kittens.bash',
