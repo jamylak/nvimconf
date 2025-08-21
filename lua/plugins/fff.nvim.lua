@@ -26,6 +26,10 @@ return {
       "<leader>F",
       function()
         require("fff").find_in_git_root()
+        -- if it had no git root
+        if vim.v.shell_error ~= 0 then
+          require("fff").find_files()
+        end
       end,
       desc = "Open file picker",
     },
@@ -33,6 +37,10 @@ return {
       "<c-space>",
       function()
         require("fff").find_in_git_root()
+        -- if it had no git root
+        if vim.v.shell_error ~= 0 then
+          require("fff").find_files()
+        end
       end,
       desc = "Open file picker",
     },
