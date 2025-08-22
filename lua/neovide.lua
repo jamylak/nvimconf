@@ -130,7 +130,7 @@ if vim.g.neovide then
       -- Should be a regular file, so cd to git root
       utils.tcd_to_git_root()
     end
-  end, 400)
+  end, 0)
 end
 
 vim.g.neovide_scroll_animation_length = 0.05
