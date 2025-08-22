@@ -6,7 +6,7 @@ if vim.g.neovide then
   local projects_dir = os.getenv 'PROJECTS_DIR'
   vim.cmd('cd ' .. projects_dir)
   -- vim.api.nvim_set_keymap('i', '<D-v>', '<cmd><ESC> "*P<cr>', { noremap = true })
-  vim.keymap.set('i', '<D-v>', '<C-r>*') -- Paste insert mode
+  vim.keymap.set('i', '<D-v>', '<C-r>*')            -- Paste insert mode
   vim.keymap.set('t', '<D-v>', '<C-\\><C-n>l"+Pli') -- Paste insert mode
 
   local function paste_in_terminal()
@@ -29,9 +29,10 @@ if vim.g.neovide then
     end,
   })
 
+
   vim.keymap.set('t', '<D-v>', paste_in_terminal)
-  vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
-  vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
+  vim.keymap.set('n', '<D-v>', '"+P')    -- Paste normal mode
+  vim.keymap.set('v', '<D-v>', '"+P')    -- Paste visual mode
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
   vim.g.neovide_input_macos_option_key_is_meta = 'both'
   vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
@@ -53,7 +54,8 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-j>', cmd .. ' te', { silent = true })
     -- Set D-0 to D-9 to escape then switch to the corresponding tab
     for i = 0, 9 do
-      vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>', { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>',
+        { noremap = true, silent = true })
     end
 
     -- Set D-Shift-[ to D-Shift-] to switch to the previous/next tab
