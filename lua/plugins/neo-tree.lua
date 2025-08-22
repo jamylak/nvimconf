@@ -29,13 +29,6 @@ vim.keymap.set('n', '<leader><leader>t', function()
   vim.cmd 'wincmd p'
 end, { desc = '[N]eotree - Toggle & Expand' })
 
--- Neotree collapse all
--- vim.keymap.set('n', '<leader><leader>z', function()
--- end, { desc = '[N]eotree - Collapse' })
-
-vim.keymap.set('n', '<leader><leader>x', function()
-  expandAllNeoTreeNodes()
-end, { desc = '[N]eotree - Expand' })
 return {
   'nvim-neo-tree/neo-tree.nvim',
   branch = 'v3.x',

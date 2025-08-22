@@ -486,6 +486,13 @@ return {
       desc = 'Terminate Debugging',
     },
     {
+      '<leader><leader>x',
+      function()
+        require('dap').terminate()
+      end,
+      desc = 'Terminate Debugging',
+    },
+    {
       '<leader>Ge',
       function()
         require('dap.ui.widgets').hover()
