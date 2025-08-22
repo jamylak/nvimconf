@@ -417,6 +417,8 @@ vim.keymap.set('n', '<c-e>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('v', '<c-e>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', '<c-a>', '0', { desc = 'End of line', silent = true })
 vim.keymap.set('v', '<c-a>', '0', { desc = 'Start of line', silent = true })
+
+-- TODO: Give <c-h> something useful
 vim.keymap.set('n', '<c-h>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })
 vim.keymap.set('n', 'qg', 'G', { desc = 'Go to end of file', silent = true })
