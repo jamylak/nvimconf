@@ -119,18 +119,18 @@ if vim.g.neovide then
   vim.defer_fn(function()
     local bufname = vim.api.nvim_buf_get_name(0)
     local utils = require 'utils'
-    if bufname == '' then
+    if string.find(bufname, 'oil') or vim.bo.filetype == 'netrw' then
+      utils.tcd_to_git_root()
+      vim.cmd 'Telescope find_files'
+    elseif bufname == '' then
       -- It's the empty buffer, so we didn't open neovide
       -- with a file, so show old files selector
       utils.fzfDir()
-    elseif string.find(bufname, 'oil') then
-      utils.tcd_to_git_root()
-      vim.cmd 'Telescope find_files'
     else
       -- Should be a regular file, so cd to git root
       utils.tcd_to_git_root()
     end
-  end, 300)
+  end, 400)
 end
 
 vim.g.neovide_scroll_animation_length = 0.05
