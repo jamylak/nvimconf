@@ -17,6 +17,18 @@ if vim.g.neovide then
     vim.api.nvim_chan_send(vim.b[current_buf].terminal_job_id, clipboard_content)
   end
 
+  vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+    -- pattern = "*/llvm-project/libcxx/include/*",
+    callback = function()
+      for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].filetype == "TelescopePrompt" then
+          require("telescope.actions").close(require("telescope.actions.state").get_current_picker(buf).prompt_bufnr)
+        end
+      end
+    end,
+  })
+
   vim.keymap.set('t', '<D-v>', paste_in_terminal)
   vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
   vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
