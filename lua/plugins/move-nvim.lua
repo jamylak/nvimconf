@@ -12,7 +12,8 @@ return {
       function()
         local line_count = vim.api.nvim_buf_line_count(0)
         -- When there are no lines to move, open fzfDir
-        if line_count <= 1 then
+        -- Or should netrw case do something else?
+        if line_count <= 1 or vim.bo.filetype == "netrw" then
           require("fff").find_in_git_root()
           -- if it had no git root
           if vim.v.shell_error ~= 0 then
