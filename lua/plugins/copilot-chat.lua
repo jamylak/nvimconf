@@ -27,6 +27,15 @@ return {
         mode = { 'n', 'v' },
         function()
           require('CopilotChat').open()
+          vim.cmd 'startinsert'
+        end,
+      },
+      -- why not working?
+      {
+        'C',
+        mode = 'v',
+        function()
+          require('CopilotChat').open()
         end,
       },
     },
@@ -36,7 +45,7 @@ return {
       { 'nvim-lua/plenary.nvim' },  -- for curl, log wrapper
     },
     opts = {
-      auto_insert_mode = true,
+      -- auto_insert_mode = true,
       -- debug = true, -- Enable debugging
       mappings = {
         jump_to_diff = {
@@ -45,6 +54,9 @@ return {
         },
         close = {
           insert = '<nop>',
+        },
+        submit_prompt = {
+          insert = '<S-CR>',
         },
       },
     },
