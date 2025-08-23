@@ -292,6 +292,76 @@ local function launch_c_cpp_debugger()
   end
 end
 
+local function launch_rust_debugger()
+  local dap = require('dap')
+  local dapui = require('dapui')
+  local cppplug = require('cppplug')
+  local cwd = vim.fn.getcwd()
+
+  local function on_build_success()
+    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
+
+    local user_cfg = load_dap_project_config("rust")
+
+    -- Define default config
+    local defaults = {
+      name = "Launch compiled .out",
+      type = 'lldb',
+      -- type = 'codelldb',
+      request = 'launch',
+      -- TODO: get from rustaceanvim??
+      program = "target/debug/" .. vim.fn.fnamemodify(cwd, ":t"),
+      cwd = cwd,
+      pid = nil,
+      stopOnEntry = false,
+      args = {},
+      initCommands = { "breakpoint set --name main" }
+    }
+
+    -- Merge cfg into defaults
+    local config = vim.tbl_deep_extend("force", defaults, user_cfg or {})
+    if config.request == 'attach' then
+      config.program = nil
+      config.pid = function()
+        return coroutine.create(function(co)
+          pick_process(function(pid)
+            coroutine.resume(co, pid)
+          end)
+        end)
+      end
+    end
+
+    setup_cpp_dapui_layouts()
+
+    -- Check if a session is active
+    if dap.session() then
+      -- Register a one-time listener
+      local function on_terminated()
+        dap.listeners.after.event_terminated["restart_and_run"] = nil
+        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+        dap.run(config)
+        pcall(dapui.open)
+      end
+
+      dap.listeners.after.event_terminated["restart_and_run"] = on_terminated
+      vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
+      dap.terminate()
+    else
+      vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+      dap.run(config)
+      pcall(dapui.open)
+    end
+  end
+
+  local function on_build_failure(error_output)
+    -- vim.notify("❌ Build failed\n", vim.log.levels.ERROR)
+  end
+
+  -- TODO: Call rustaceanvim debug build?
+  -- Or own?
+  on_build_success()
+end
+
 local function launch_zig_debugger()
   local dap = require('dap')
   local dapui = require('dapui')
@@ -350,6 +420,8 @@ local function dispatch_dap_launch()
     launch_c_cpp_debugger()
   elseif filetype == 'zig' then
     launch_zig_debugger()
+  elseif filetype == 'rust' then
+    launch_rust_debugger()
   else
     vim.notify("No debugger configured for filetype: " .. filetype, vim.log.levels.WARN)
   end
