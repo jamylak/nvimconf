@@ -36,6 +36,7 @@ return {
       { 'nvim-lua/plenary.nvim' },  -- for curl, log wrapper
     },
     opts = {
+      auto_insert_mode = true,
       -- debug = true, -- Enable debugging
       mappings = {
         jump_to_diff = {
