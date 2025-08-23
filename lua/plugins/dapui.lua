@@ -31,6 +31,13 @@ return {
 --     program = "build/main",
 --     initCommands = { "breakpoint set --name main" },
   },
+  zig = {
+--     stopOnEntry = false,
+--     request = 'attach',
+--     program = "zig-out/bin/main",
+--     args = {},
+--     initCommands = { "breakpoint set --name main" },
+  },
 --   rust = {
 --     args = { "--port", "8080" }
 --   }
@@ -285,12 +292,64 @@ local function launch_c_cpp_debugger()
   end
 end
 
+local function launch_zig_debugger()
+  local dap = require('dap')
+  local dapui = require('dapui')
+  local cwd = vim.fn.getcwd()
+  local user_cfg = load_dap_project_config("zig")
+
+  local defaults = {
+    name = "Launch Zig binary",
+    type = 'lldb',
+    request = 'launch',
+    program = cwd .. "/zig-out/bin/" .. vim.fn.fnamemodify(cwd, ":t"),
+    cwd = cwd,
+    stopOnEntry = false,
+    args = {},
+    initCommands = { "breakpoint set --name main" }
+  }
+
+  local config = vim.tbl_deep_extend("force", defaults, user_cfg or {})
+
+  if config.request == 'attach' then
+    config.program = nil
+    config.pid = function()
+      return coroutine.create(function(co)
+        pick_process(function(pid)
+          coroutine.resume(co, pid)
+        end)
+      end)
+    end
+  end
+
+  setup_cpp_dapui_layouts()
+
+  if dap.session() then
+    local function on_terminated()
+      dap.listeners.after.event_terminated["restart_and_run_zig"] = nil
+      vim.notify("✅ Old DAP session terminated, launching new Zig debugger", vim.log.levels.INFO)
+      dap.run(config)
+      pcall(dapui.open)
+    end
+
+    dap.listeners.after.event_terminated["restart_and_run_zig"] = on_terminated
+    vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
+    dap.terminate()
+  else
+    vim.notify("✅ Launching Zig debugger", vim.log.levels.INFO)
+    dap.run(config)
+    pcall(dapui.open)
+  end
+end
+
 local function dispatch_dap_launch()
   local filetype = vim.bo.filetype
   if filetype == 'python' then
     launch_python_debugger()
   elseif filetype == 'cpp' or filetype == 'c' then
     launch_c_cpp_debugger()
+  elseif filetype == 'zig' then
+    launch_zig_debugger()
   else
     vim.notify("No debugger configured for filetype: " .. filetype, vim.log.levels.WARN)
   end
@@ -306,6 +365,9 @@ return {
     "rcarriga/cmp-dap",
   },
   config = function()
+    vim.api.nvim_create_user_command("EnsureDapConfigTemplate", ensure_dap_config, {
+      desc = "Create a template for DAP configuration in the current project if it doesn't exist",
+    })
     local dap, dapui = require 'dap', require 'dapui'
 
     require('nvim-dap-virtual-text').setup({
@@ -349,6 +411,9 @@ return {
   -- floating = {},
   -- controls = {},
   -- render = {},
+  cmd = {
+    "EnsureDapConfigTemplate",
+  },
   keys = {
     {
       '<leader>GG', -- or any key you want
