@@ -53,8 +53,14 @@ return {
 
     dap.adapters.lldb = {
       type = 'executable',
-      command = '/opt/homebrew/opt/llvm/bin/lldb-dap', -- You can override this if it's installed elsewhere
+      command = '/opt/homebrew/opt/llvm/bin/lldb-dap',
       name = 'lldb',
+    }
+
+    dap.adapters.codelldb = {
+      type = 'executable',
+      command = '/usr/local/bin/codelldb',
+      name = 'codelldb',
     }
 
     local pythonPath = function()
