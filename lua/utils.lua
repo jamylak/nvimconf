@@ -76,12 +76,14 @@ function M.terminalHSplit()
   vim.cmd 'startinsert'
 end
 
-function M.yazi()
+function M.yazi(path)
   -- Remove old path file
   vim.fn.system 'rm -f /tmp/yazi-nvim-path'
 
+  local path = path or vim.fn.bufname '%'
+
   -- Open Yazi in a floating terminal and capture the buffer ID
-  vim.cmd('-tabnew | term yazi ' .. vim.fn.bufname '%' .. ' --chooser-file=/tmp/yazi-nvim-path')
+  vim.cmd('-tabnew | term yazi ' .. path .. ' --chooser-file=/tmp/yazi-nvim-path')
   vim.cmd 'startinsert'
   local term_buf = vim.api.nvim_get_current_buf()
 
