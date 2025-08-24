@@ -4,10 +4,52 @@
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "fff_input",
   callback = function(args)
-    vim.keymap.set("i", "<m-i>", function()
+    -- Feed through these to telescope
+    local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<c-g>" }
+    for _, key in ipairs(keys) do
+      vim.keymap.set("i", key, function()
+        vim.cmd "stopinsert"
+        require("fff.picker_ui").close()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "m", false)
+      end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+    end
+    -- For shift enter capture and get the prompt
+    -- Then make a new file with that name
+    vim.keymap.set("i", "<s-enter>", function()
       vim.cmd "stopinsert"
+      local input = require("fff.picker_ui").state.query
+
       require("fff.picker_ui").close()
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<A-i>", true, false, true), "m", false)
+
+      vim.schedule(function()
+        vim.cmd('edit ' .. input)
+        vim.cmd 'write'
+        -- hack to fix issue with LSP not startin
+        vim.cmd 'edit!'
+      end)
+    end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+
+    -- For <c-o> open oil
+    vim.keymap.set("i", "<c-o>", function()
+      vim.cmd "stopinsert"
+      local picker_ui = require("fff.picker_ui")
+
+      local items = picker_ui.state.filtered_items
+      if #items == 0 or picker_ui.state.cursor > #items then return end
+
+      local item = items[picker_ui.state.cursor]
+      -- print(vim.inspect(item))
+      local path = item.path
+      --
+      -- Get parent of the path
+      -- If the path is a file...
+      if vim.fn.isdirectory(path) == 0 then
+        path = vim.fn.fnamemodify(path, ':h')
+      end
+      print("Opeening at " .. path)
+
+      require("fff.picker_ui").close()
+      require('oil').open(path)
     end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
   end,
 })
@@ -38,22 +80,14 @@ return {
     {
       "<leader>F",
       function()
-        require("fff").find_in_git_root()
-        -- if it had no git root
-        if vim.v.shell_error ~= 0 then
-          require("fff").find_files()
-        end
+        require("utils").fff()
       end,
       desc = "Open file picker",
     },
     {
       "<c-space>",
       function()
-        require("fff").find_in_git_root()
-        -- if it had no git root
-        if vim.v.shell_error ~= 0 then
-          require("fff").find_files()
-        end
+        require("utils").fff()
       end,
       desc = "Open file picker",
     },
