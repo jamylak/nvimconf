@@ -179,18 +179,11 @@ return { -- Fuzzy Finder (files, lsp, etc)
             --   end, 200)
             -- end,
             ['<C-space>'] = function(prompt_bufnr)
+              -- TODO: Seems to be overriden in the word search one?
               -- Close telescope
               require('telescope.actions').close(prompt_bufnr)
 
-              require("fff").find_in_git_root()
-              -- if it had no git root
-              if vim.v.shell_error ~= 0 then
-                require("fff").find_files()
-              end
-
-              vim.defer_fn(function()
-                vim.cmd 'startinsert'
-              end, 100)
+              require("utils").fff()
             end,
             ['<S-Enter>'] = function(prompt_bufnr)
               -- Create new file
