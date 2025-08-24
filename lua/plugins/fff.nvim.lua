@@ -1,3 +1,16 @@
+-- TODO: move in config or something
+-- FFF.nvim and Telescope swap through each other
+-- when needed with some keybindings
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "fff_input",
+  callback = function(args)
+    vim.keymap.set("i", "<m-i>", function()
+      vim.cmd "stopinsert"
+      require("fff.picker_ui").close()
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<A-i>", true, false, true), "m", false)
+    end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+  end,
+})
 return {
   "dmtrKovalenko/fff.nvim",
   build = "cargo build --release",

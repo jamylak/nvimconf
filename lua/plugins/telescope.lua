@@ -170,6 +170,28 @@ return { -- Fuzzy Finder (files, lsp, etc)
         },
         mappings = {
           i = {
+            -- All these don't work
+            -- ['<M-space>'] = function(_)
+            --   vim.cmd 'stopinsert'
+            --   vim.cmd 'Telescope cmdline'
+            --   vim.defer_fn(function()
+            --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<M-space>', true, true, true), 'n', true)
+            --   end, 200)
+            -- end,
+            ['<C-space>'] = function(prompt_bufnr)
+              -- Close telescope
+              require('telescope.actions').close(prompt_bufnr)
+
+              require("fff").find_in_git_root()
+              -- if it had no git root
+              if vim.v.shell_error ~= 0 then
+                require("fff").find_files()
+              end
+
+              vim.defer_fn(function()
+                vim.cmd 'startinsert'
+              end, 100)
+            end,
             ['<S-Enter>'] = function(prompt_bufnr)
               -- Create new file
               local action_state = require 'telescope.actions.state'

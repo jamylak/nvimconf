@@ -4,8 +4,12 @@ return {
   dependencies = {},
   cmd = 'Telescope cmdline',
   keys = {
-    { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'n' },
+    -- Shouldn't need to do this for all mode = 'i'
+    -- but setting this as default telescope binding doesn't work well eg.
+    -- it is loading the extension without this config
+    -- Couldn't be bothered to fix
     { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'i' },
+    { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'n' },
   },
   config = function()
     -- TODO: Override C-j to do <enter>
