@@ -139,7 +139,8 @@ function M.fzfDir()
                 vim.cmd 'tabnew'
               end
               vim.cmd('tcd ' .. path)
-              vim.cmd 'Telescope find_files'
+              -- vim.cmd 'Telescope find_files'
+              M.fff()
             end
           end
           map('i', '<CR>', function(prompt_bufnr)
@@ -183,8 +184,8 @@ function M.fzfDir()
                 vim.cmd 'tabnew'
               end
               vim.cmd('tcd ' .. dir)
-              vim.cmd 'Telescope find_files'
-              -- end)
+              -- vim.cmd 'Telescope find_files'
+              M.fff()
             end
           end)
           return true
