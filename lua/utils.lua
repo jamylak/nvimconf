@@ -107,6 +107,17 @@ function M.yazi()
   })
 end
 
+function M.fff()
+  -- Currently need to close and schedule due to some bugs
+  require('fff.picker_ui').close()
+  vim.schedule(function()
+    require("fff").find_files()
+    vim.schedule(function()
+      vim.cmd 'startinsert'
+    end)
+  end)
+end
+
 function M.fzfDir()
   -- TODO: /tmp and then it will do CD instead of git root?
   local dirs = vim.fn.split(vim.fn.system [[ls -dt /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]],
