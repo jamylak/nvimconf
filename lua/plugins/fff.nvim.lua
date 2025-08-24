@@ -11,7 +11,7 @@ vim.api.nvim_create_autocmd("FileType", {
         vim.cmd "stopinsert"
         require("fff.picker_ui").close()
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "m", false)
-      end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+      end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed keys" })
     end
     -- For shift enter capture and get the prompt
     -- Then make a new file with that name
@@ -27,7 +27,7 @@ vim.api.nvim_create_autocmd("FileType", {
         -- hack to fix issue with LSP not startin
         vim.cmd 'edit!'
       end)
-    end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+    end, { buffer = args.buf, noremap = true, silent = true, desc = "New file" })
 
     -- For <c-o> open oil
     vim.keymap.set("i", "<c-o>", function()
@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
       require("fff.picker_ui").close()
       require('oil').open(path)
-    end, { buffer = args.buf, noremap = true, silent = true, desc = "Close FFF and feed <m-i>" })
+    end, { buffer = args.buf, noremap = true, silent = true, desc = "Oil" })
   end,
 })
 return {
