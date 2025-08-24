@@ -437,6 +437,18 @@ return {
     "rcarriga/cmp-dap",
   },
   config = function()
+    -- Dap repl <c-w> behaviour fix, doesn't delete word
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "dap-repl",
+      callback = function(args)
+        vim.keymap.set("i", "<c-w>", function()
+          -- Weirdly <c-w> doesnt work like normal
+          -- <c-o>db also doesnt work
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>bC", true, false, true), "t", true)
+        end, { buffer = args.buf, noremap = true, silent = true, desc = "Up" })
+      end,
+    })
+
     vim.api.nvim_create_user_command("EnsureDapConfigTemplate", ensure_dap_config, {
       desc = "Create a template for DAP configuration in the current project if it doesn't exist",
     })
