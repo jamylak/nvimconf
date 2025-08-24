@@ -561,7 +561,7 @@ return {
     {
       '<leader>GI',
       function()
-        -- require('dap').step_into()
+        require('dap').step_into()
       end,
       desc = 'Step Into',
     },
@@ -569,14 +569,14 @@ return {
     {
       '<leader><leader>i',
       function()
-        -- require('dap').step_into()
+        require('dap').step_into()
       end,
       desc = 'Step Into',
     },
     {
       '<leader>GO',
       function()
-        -- require('dap').step_out()
+        require('dap').step_out()
       end,
       desc = 'Step Out',
     },
