@@ -128,14 +128,16 @@ return {
           if cmp.visible() then
             cmp.select_next_item()
           else
-            fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, false, true), "t", true)
           end
         end, { 'i', 's' }),
         ['<C-p>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
+            print('visible')
             cmp.select_prev_item()
           else
-            fallback()
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, false, true), "t", true)
+            -- fallback()
           end
         end, { 'i', 's' }),
         ['<C-y>'] = cmp.mapping.confirm { select = true },
