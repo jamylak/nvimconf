@@ -30,6 +30,7 @@ return {
 --     request = 'attach',
 --     program = "build/main",
 --     initCommands = { "breakpoint set --name main" },
+--     initCommands = {  },
   },
   zig = {
 --     stopOnEntry = false,
@@ -508,6 +509,13 @@ return {
     },
     {
       '<leader>GB',
+      function()
+        require('dap').toggle_breakpoint()
+      end,
+      desc = 'Toggle Breakpoint',
+    },
+    {
+      '<leader><leader>b',
       function()
         require('dap').toggle_breakpoint()
       end,

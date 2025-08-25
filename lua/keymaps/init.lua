@@ -512,28 +512,6 @@ vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
 vim.keymap.set('i', '<C-->', ';', { silent = true, noremap = true })
 
--- Create a new project
-local function newProj()
-  require('telescope').extensions.file_browser.file_browser {
-    cwd = '~/bar',
-    attach_mappings = function(prompt_bufnr, map)
-      -- Define what happens when you press Enter
-      map('i', '<CR>', function()
-        -- Get the current input text
-        local current_input = require('telescope.actions.state').get_current_line()
-        print('Current input: ' .. current_input)
-        require('telescope.actions').close(prompt_bufnr)
-        local path = '~/bar/' .. current_input
-        vim.fn.mkdir(vim.fn.expand(path), 'p')
-        vim.cmd('e ' .. path)
-      end)
-      return true -- Return true to keep default mappings as well
-    end,
-  }
-end
-
-vim.keymap.set('n', '<leader><leader>b', newProj, { desc = 'New Project' })
-
 local function openCurrentFileInHelix()
   local filename = vim.fn.expand '%:p'
   local line_number = vim.fn.line '.'
