@@ -128,7 +128,7 @@ return {
           if cmp.visible() then
             cmp.select_next_item()
           else
-            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Up>", true, false, true), "t", true)
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Down>", true, false, true), "t", true)
           end
         end, { 'i', 's' }),
         ['<C-p>'] = cmp.mapping(function(fallback)
