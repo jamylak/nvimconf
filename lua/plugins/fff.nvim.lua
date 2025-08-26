@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "fff_input",
   callback = function(args)
     -- Feed through these to telescope
-    local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<c-g>" }
+    local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-g>" }
     for _, key in ipairs(keys) do
       vim.keymap.set("i", key, function()
         vim.cmd "stopinsert"
@@ -46,7 +46,6 @@ vim.api.nvim_create_autocmd("FileType", {
       if vim.fn.isdirectory(path) == 0 then
         path = vim.fn.fnamemodify(path, ':h')
       end
-      print("Opeening at " .. path)
 
       require("fff.picker_ui").close()
       require('oil').open(path)
