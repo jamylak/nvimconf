@@ -50,6 +50,11 @@ vim.api.nvim_create_autocmd("FileType", {
       require("fff.picker_ui").close()
       require('oil').open(path)
     end, { buffer = args.buf, noremap = true, silent = true, desc = "Oil" })
+    vim.keymap.set("i", "<a-w>", function()
+      -- Close fff on <m-w>
+      local utils = require 'utils'
+      utils.CloseTabOrQuit()
+    end, { buffer = args.buf, noremap = true, silent = true, desc = "Oil" })
   end,
 })
 return {
