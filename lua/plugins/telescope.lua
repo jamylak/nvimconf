@@ -1,3 +1,4 @@
+-- TODO: A find eg. /searchterm across all windows and takes me to that window
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   -- event = 'VimEnter',
@@ -74,8 +75,25 @@ return { -- Fuzzy Finder (files, lsp, etc)
           for _, win in ipairs(wins) do
             local buf = vim.api.nvim_win_get_buf(win)
             local name = vim.api.nvim_buf_get_name(buf)
-            if name == "" then name = "[No Name]" end
+            if name == "" then
+              -- It should have got the name properly above
+              -- but somethings show empty window names eg. Trouble
+              -- so try another method
+              local ft = vim.api.nvim_buf_get_option(buf, "filetype")
+              local bt = vim.api.nvim_buf_get_option(buf, "buftype")
+              name = ""
+              if ft ~= "" then
+                name = name .. string.format("[ft:%s]", ft)
+              end
+              if bt ~= "" then
+                name = name .. string.format("[bt:%s]", bt)
+              end
+              if ft == "" and bt == "" then
+                name = "[No Name]"
+              end
+            end
             table.insert(results, {
+
               display = string.format("win %d: %s", win, name),
               win = win,
             })
