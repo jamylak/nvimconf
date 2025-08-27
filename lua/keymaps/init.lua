@@ -56,13 +56,6 @@ for _, mode in ipairs { 'n', 'i', 't' } do
   vim.keymap.set(mode, 'gkf', cmd .. ':tabn 7<CR>', {})
 end
 
-vim.keymap.set('n', 'HE', ':tabn 1<CR>', {})
-vim.keymap.set('n', 'HR', ':tabn 2<CR>', {})
-vim.keymap.set('n', 'HF', ':tabn 3<CR>', {})
-vim.keymap.set('n', 'HU', ':tabn 4<CR>', {})
-vim.keymap.set('n', 'HI', ':tabn 5<CR>', {})
-vim.keymap.set('n', 'HO', ':tabn 6<CR>', {})
-
 for i = 1, 8 do
   vim.keymap.set('n', '<a-' .. i .. '>', ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
   vim.keymap.set('n', '<leader>t' .. i, ':tabn ' .. i .. '<CR>', { desc = 'Go to tab ' .. i })
@@ -643,3 +636,45 @@ end
 vim.keymap.set('n', '<m-n>', utils.fzfDir)
 vim.keymap.set('i', '<m-n>', utils.fzfDir)
 vim.api.nvim_create_user_command('F', utils.fzfDir, {})
+
+-- I should be able to do a search eg. /foo
+-- and then it takes me to whatever window that terms is in
+vim.keymap.set('n', '<leader>W', function()
+
+end, { desc = "Jump to window with search term" })
+
+local function searchAcrossWindows()
+  local term = vim.fn.input("Search across windows: ")
+  if term == "" then return end
+
+  local cur_win = vim.api.nvim_get_current_win()
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+
+  for _, win in ipairs(wins) do
+    local buf = vim.api.nvim_win_get_buf(win)
+
+    -- get top and bottom visible lines in this window
+    local top = vim.fn.line("w0", win)
+    local bot = vim.fn.line("w$", win)
+
+    -- fetch only visible lines
+    local lines = vim.api.nvim_buf_get_lines(buf, top - 1, bot, false)
+
+    -- all lines
+    -- local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    --
+    for i, line in ipairs(lines) do
+      if line:lower():find(term:lower(), 1, true) then
+        vim.api.nvim_set_current_win(win)
+        vim.api.nvim_win_set_cursor(win, { i, 0 })
+        return
+      end
+    end
+  end
+
+  print("No match for '" .. term .. "' in any window")
+  vim.api.nvim_set_current_win(cur_win)
+end
+-- Search all windows for a pattern and jump to the first match
+vim.keymap.set("n", "<leader>W", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
+vim.keymap.set("n", "H", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
