@@ -10,6 +10,9 @@ return {
     -- Couldn't be bothered to fix
     { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'i' },
     { '<m-space>', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'n' },
+    -- Backup incase alt-space overriden
+    { '<leader>:', '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'n' },
+    { '<m-;>',     '<cmd>Telescope cmdline<cr>', desc = 'Telescope cmdline', mode = 'n' },
   },
   config = function()
     -- TODO: Override C-j to do <enter>
