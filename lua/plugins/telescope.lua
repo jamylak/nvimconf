@@ -211,6 +211,10 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local utils = require 'utils'
               utils.CloseTabOrQuit()
             end,
+            ['<m-;>'] = function(prompt_bufnr)
+              require('telescope.actions').close(prompt_bufnr)
+              vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<m-;>", true, false, true), "m", false)
+            end,
             ['<m-return>'] = setCWDToPickerAndOpen,
             ['<m-u>'] = function(prompt_bufnr)
               local builtin = require('telescope.builtin')
@@ -480,6 +484,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
         end,
       }
     end, { desc = '[S]earch [B]uffers' })
+
     -- Can remap <leader><leader> to something more useful
     -- vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[S]earch [B]uffers' })
     vim.keymap.set('n', '<leader>fb', function()
