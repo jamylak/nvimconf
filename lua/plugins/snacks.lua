@@ -15,13 +15,6 @@ return {
       end,
       desc = "Open LazyGit"
     },
-    {
-      "<leader>gl",
-      function()
-        Snacks.lazygit.log_file()
-      end,
-      desc = "Open LazyGit"
-    },
   },
   config = function()
     vim.api.nvim_create_autocmd("TermOpen", {

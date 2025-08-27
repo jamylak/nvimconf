@@ -12,18 +12,6 @@ return {
   commit = '75ee709d18625a94aef90d94ccac4e562c9a0046',
   keys = {
     {
-      '<leader>gn',
-      function()
-        require('neogit').open { kind = 'vsplit' }
-      end,
-    },
-    {
-      '<leader>gj',
-      function()
-        require('neogit').open { kind = 'vsplit' }
-      end,
-    },
-    {
       '<c-g>',
       function()
         -- Open neogit in a new tab
@@ -31,12 +19,6 @@ return {
         -- closed it goes back to the previous tab
         vim.cmd '-tabnew'
         require('neogit').open { kind = 'replace' }
-      end,
-    },
-    {
-      '<leader>gv',
-      function()
-        require('neogit').open { kind = 'vsplit' }
       end,
     },
   },

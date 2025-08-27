@@ -23,15 +23,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
     '<leader>fw',
     '<leader>fW',
     '<leader>/',
-    '<leader>gs',
     '<leader>fg',
-    '<leader>gS',
-    '<leader>gf',
     '<leader>fy',
-    '<leader>gb',
-    '<leader>gc',
-    -- '<leader>gj',
-    '<leader>gk',
+    '<leader>GF',
+    '<leader>GS',
+    '<leader>GB',
+    '<leader>GC',
+    '<leader>GK',
     '<leader>sk',
     '<leader>sw',
     '<leader>fp',
@@ -386,17 +384,15 @@ return { -- Fuzzy Finder (files, lsp, etc)
     vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
     -- Git status
-    vim.keymap.set('n', '<leader>gs', builtin.git_status, { desc = '[G]it [S]tatus' })
     vim.keymap.set('n', '<leader>fg', builtin.git_status, { desc = '[G]it [S]tatus' })
-    vim.keymap.set('n', '<leader>gS', builtin.git_stash, { desc = '[G]it [S]tash' })
-    -- Git files
-    vim.keymap.set('n', '<leader>gf', builtin.git_files, { desc = '[G]it [F]iles' })
     vim.keymap.set('n', '<leader>fy', builtin.git_files, { desc = '[G]it [F]iles' })
+    vim.keymap.set('n', '<leader>GS', builtin.git_status, { desc = '[G]it [S]tatus' })
+    -- Git files
+    vim.keymap.set('n', '<leader>GF', builtin.git_files, { desc = '[G]it [F]iles' })
     -- Git branches
-    vim.keymap.set('n', '<leader>gb', builtin.git_branches, { desc = '[G]it [B]ranches' }) -- Git commits
-    vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
-    -- vim.keymap.set('n', '<leader>gj', builtin.git_files, { desc = '[G]it [F]iles' })
-    vim.keymap.set('n', '<leader>gk', builtin.git_commits, { desc = '[G]it Commits' })
+    vim.keymap.set('n', '<leader>GB', builtin.git_branches, { desc = '[G]it [B]ranches' }) -- Git commits
+    vim.keymap.set('n', '<leader>GC', builtin.git_commits, { desc = '[G]it [C]ommits' })
+    vim.keymap.set('n', '<leader>GK', builtin.git_commits, { desc = '[G]it Commits' })
 
     vim.keymap.set('n', '<leader>sk', function()
       builtin.live_grep { cwd = getCWD(), prompt_title = 'Find word (cwd)' }
@@ -589,6 +585,30 @@ return { -- Fuzzy Finder (files, lsp, etc)
             actions.close(prompt_bufnr)
             if selection then
               vim.cmd('tabnew')
+              vim.api.nvim_set_current_buf(selection.value.buf)
+            end
+          end)
+          map('i', '<C-v>', function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              vim.cmd('vsplit')
+              vim.api.nvim_set_current_buf(selection.value.buf)
+            end
+          end)
+          map('i', '<C-j>', function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              vim.cmd('vsplit')
+              vim.api.nvim_set_current_buf(selection.value.buf)
+            end
+          end)
+          map('i', '<C-h>', function()
+            local selection = action_state.get_selected_entry()
+            actions.close(prompt_bufnr)
+            if selection then
+              vim.cmd('split')
               vim.api.nvim_set_current_buf(selection.value.buf)
             end
           end)

@@ -1,3 +1,6 @@
+-- TODO: 2nd layout i can in 1 click switch between?
+-- could have eg. 3 different useful layouts eg. 1 with vertical
+-- right REPL
 local function ensure_dap_config()
   local config_dir = vim.fn.getcwd() .. "/.nvim"
   local config_file = config_dir .. "/dap.lua"
@@ -501,14 +504,14 @@ return {
   },
   keys = {
     {
-      '<leader>GG', -- or any key you want
+      '<leader>gg', -- or any key you want
       function()
         require('dapui').toggle()
       end,
       desc = 'Toggle DAP UI',
     },
     {
-      '<leader>GB',
+      '<leader>gb',
       function()
         require('dap').toggle_breakpoint()
       end,
@@ -522,7 +525,7 @@ return {
       desc = 'Toggle Breakpoint',
     },
     {
-      '<leader>GC',
+      '<leader>gc',
       function()
         require('dap').continue()
       end,
@@ -536,7 +539,7 @@ return {
       desc = 'Continue Debugging',
     },
     {
-      '<leader>GC',
+      '<leader>gc',
       function()
         require('dap').continue()
       end,
@@ -551,7 +554,7 @@ return {
     -- test different debugs on large projects etc until there is
     -- a reliable way
     {
-      '<leader>GJ',
+      '<leader>gj',
       function()
         dispatch_dap_launch()
       end,
@@ -565,7 +568,7 @@ return {
       desc = 'Launch Debugger (Python/C++)',
     },
     {
-      '<leader>GN',
+      '<leader>gn',
       function()
         require('dap').step_over()
       end,
@@ -579,7 +582,7 @@ return {
       desc = 'Step Over',
     },
     {
-      '<leader>GI',
+      '<leader>gi',
       function()
         require('dap').step_into()
       end,
@@ -594,7 +597,7 @@ return {
       desc = 'Step Into',
     },
     {
-      '<leader>GO',
+      '<leader>go',
       function()
         require('dap').step_out()
       end,
@@ -608,7 +611,7 @@ return {
       desc = 'Step Out',
     },
     {
-      '<leader>GR',
+      '<leader>gr',
       function()
         require('dap').run_to_cursor()
       end,
@@ -622,21 +625,21 @@ return {
       desc = 'Run to Cursor',
     },
     {
-      '<leader>GQ',
+      '<leader>gq',
       function()
         require('dap').restart()
       end,
       desc = 'Restart Debugging',
     },
     {
-      '<leader>Gx',
+      '<leader>gx',
       function()
         require('dap').terminate()
       end,
       desc = 'Terminate Debugging',
     },
     {
-      '<leader>GX',
+      '<leader>gx',
       function()
         require('dap').terminate()
       end,
@@ -650,7 +653,7 @@ return {
       desc = 'Terminate Debugging',
     },
     {
-      '<leader>Ge',
+      '<leader>ge',
       function()
         require('dap.ui.widgets').hover()
       end,

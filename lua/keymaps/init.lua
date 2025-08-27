@@ -168,10 +168,6 @@ end
 
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
-vim.keymap.set('n', '<leader>gg', function()
-  local utils = require 'utils'
-  utils.lazygit()
-end, { noremap = true })
 
 local function openLazyGitFloating()
   local width = vim.api.nvim_get_option 'columns'
@@ -200,8 +196,6 @@ local function cdOpenLazyGitFloating()
   -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('cd', true, true, true), 'n', true)
   openLazyGitFloating()
 end
-vim.keymap.set('n', '<leader>gh', openLazyGitFloating, { noremap = true })
-vim.keymap.set('n', '<leader>gm', cdOpenLazyGitFloating, { noremap = true })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 
