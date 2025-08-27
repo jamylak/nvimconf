@@ -1,4 +1,46 @@
--- TODO: A find eg. /searchterm across all windows and takes me to that window
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+
+local function telescope_tabs()
+  local tabs = vim.api.nvim_list_tabpages()
+  local current_tab = vim.api.nvim_get_current_tabpage()
+  local entries = {}
+  for _, tab in ipairs(tabs) do
+    if tab == current_tab then
+      goto continue
+    end
+    local win = vim.api.nvim_tabpage_get_win(tab)
+    local buf = vim.api.nvim_win_get_buf(win)
+    local path = vim.api.nvim_buf_get_name(buf)
+    table.insert(entries, {
+      display = path ~= "" and path or "[No Name]",
+      ordinal = path ~= "" and path or "[No Name]",
+      tabnr = vim.api.nvim_tabpage_get_number(tab),
+    })
+    ::continue::
+  end
+
+  pickers.new({}, {
+    prompt_title = "Tabs",
+    finder = finders.new_table {
+      results = entries,
+      entry_maker = function(entry) return entry end,
+    },
+    sorter = conf.generic_sorter({}),
+    attach_mappings = function(_, map)
+      map("i", "<CR>", function(prompt_bufnr)
+        local entry = action_state.get_selected_entry()
+        actions.close(prompt_bufnr)
+        vim.cmd("tabnext " .. entry.tabnr)
+      end)
+      return true
+    end,
+  }):find()
+end
+
 return { -- Fuzzy Finder (files, lsp, etc)
   'nvim-telescope/telescope.nvim',
   -- event = 'VimEnter',
@@ -60,6 +102,31 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'sn',
     '<leader>f.',
     '<leader>f,',
+    {
+      '<leader>ts',
+      telescope_tabs,
+      { desc = 'List tabs' },
+    },
+    {
+      '<leader>st',
+      telescope_tabs,
+      { desc = 'List tabs' },
+    },
+    {
+      'ss',
+      telescope_tabs,
+      { desc = 'List tabs' },
+    },
+    {
+      'sh',
+      telescope_tabs,
+      { desc = 'List tabs' },
+    },
+    {
+      'sn',
+      telescope_tabs,
+      { desc = 'List tabs' },
+    },
     {
       "<c-h>",
       function()
@@ -582,9 +649,6 @@ return { -- Fuzzy Finder (files, lsp, etc)
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[F]ind [N]eovim Files' })
     vim.keymap.set('n', '<leader>fn', function()
-      builtin.find_files { cwd = vim.fn.stdpath 'config' }
-    end, { desc = '[F]ind [N]eovim Files' })
-    vim.keymap.set('n', 'sn', function()
       builtin.find_files { cwd = vim.fn.stdpath 'config' }
     end, { desc = '[F]ind [N]eovim Files' })
 
