@@ -3,6 +3,7 @@ local finders = require("telescope.finders")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local conf = require("telescope.config").values
+local previewers = require("telescope.previewers")
 
 local function telescope_tabs()
   local tabs = vim.api.nvim_list_tabpages()
@@ -30,8 +31,26 @@ local function telescope_tabs()
       entry_maker = function(entry) return entry end,
     },
     sorter = conf.generic_sorter({}),
+    previewer = previewers.new_buffer_previewer({
+      define_preview = function(self, entry)
+        local tab = nil
+        for _, t in ipairs(tabs) do
+          if vim.api.nvim_tabpage_get_number(t) == entry.tabnr then
+            tab = t
+            break
+          end
+        end
+        if tab then
+          local win = vim.api.nvim_tabpage_get_win(tab)
+          local buf = vim.api.nvim_win_get_buf(win)
+          local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+          vim.api.nvim_buf_set_lines(self.state.bufnr, 0, -1, false, lines)
+          vim.api.nvim_buf_set_option(self.state.bufnr, "filetype", vim.api.nvim_buf_get_option(buf, "filetype"))
+        end
+      end,
+    }),
     attach_mappings = function(_, map)
-      map("i", "<CR>", function(prompt_bufnr)
+      map("i", "<cr>", function(prompt_bufnr)
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
         if entry and entry.tabnr then
