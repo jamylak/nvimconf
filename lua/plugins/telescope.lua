@@ -34,7 +34,9 @@ local function telescope_tabs()
       map("i", "<CR>", function(prompt_bufnr)
         local entry = action_state.get_selected_entry()
         actions.close(prompt_bufnr)
-        vim.cmd("tabnext " .. entry.tabnr)
+        if entry and entry.tabnr then
+          vim.cmd("tabnext " .. entry.tabnr)
+        end
       end)
       return true
     end,
