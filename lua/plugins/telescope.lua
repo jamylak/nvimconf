@@ -59,6 +59,61 @@ return { -- Fuzzy Finder (files, lsp, etc)
     'sn',
     '<leader>f.',
     '<leader>f,',
+    {
+      "<c-h>",
+      function()
+        local pickers = require("telescope.pickers")
+        local finders = require("telescope.finders")
+        local actions = require("telescope.actions")
+        local action_state = require("telescope.actions.state")
+        local conf = require("telescope.config").values
+
+        local function get_windows()
+          local wins = vim.api.nvim_list_wins()
+          local results = {}
+          for _, win in ipairs(wins) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            local name = vim.api.nvim_buf_get_name(buf)
+            if name == "" then name = "[No Name]" end
+            table.insert(results, {
+              display = string.format("win %d: %s", win, name),
+              win = win,
+            })
+          end
+          return results
+        end
+
+        local function window_picker()
+          pickers.new({}, {
+            prompt_title = "Switch Window",
+            finder = finders.new_table {
+              results = get_windows(),
+              entry_maker = function(entry)
+                return {
+                  value = entry.win,
+                  display = entry.display,
+                  ordinal = entry.display,
+                }
+              end,
+            },
+            sorter = conf.generic_sorter({}),
+            attach_mappings = function(_, map)
+              actions.select_default:replace(function(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
+                if selection then
+                  vim.api.nvim_set_current_win(selection.value)
+                end
+              end)
+              return true
+            end,
+          }):find()
+        end
+
+        return window_picker()
+      end,
+      desc = "Telescope: Switch Window",
+    },
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
