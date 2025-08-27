@@ -137,9 +137,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
         local conf = require("telescope.config").values
 
         local function get_windows()
+          local cur_win = vim.api.nvim_get_current_win()
           local wins = vim.api.nvim_list_wins()
           local results = {}
           for _, win in ipairs(wins) do
+            if win == cur_win then
+              goto continue
+            end
             local buf = vim.api.nvim_win_get_buf(win)
             local name = vim.api.nvim_buf_get_name(buf)
             if name == "" then
@@ -164,6 +168,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
               display = string.format("win %d: %s", win, name),
               win = win,
             })
+            ::continue::
           end
           return results
         end

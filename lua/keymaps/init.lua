@@ -27,7 +27,6 @@ vim.keymap.set('n', '<a-[>', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', '<a-]>', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
 vim.keymap.set('i', '<a-[>', '<esc>:tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('i', '<a-]>', '<esc>:tabnext<CR>', { desc = 'Go to next [T]ab' })
-vim.keymap.set('n', 'H', ':tabnext #<CR>', { noremap = true, desc = 'Go to previously active [T]ab', silent = true })
 vim.keymap.set('n', '<a-d>', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
 vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to prev Window', silent = true })
 vim.keymap.set('n', 'L', ':b#<CR>', { desc = 'Go to last active buffer', silent = true })
@@ -645,16 +644,14 @@ end, { desc = "Jump to window with search term" })
 -- Maybe not needed cause it's quick...
 -- TODO: Make it also search the titles that show up too
 -- TODO: Search the virtual text too?
+-- TODO: Should empty repeat last search?
 local function searchAcrossWindows()
   local wins = vim.api.nvim_tabpage_list_wins(0)
-  if #wins == 2 then
-    -- Only two windows so just switch to the other one
-    vim.cmd 'wincmd w'
-    return
-  end
-
   local term = vim.fn.input("Search across windows: ")
-  if term == "" then return end
+  if term == "" then
+    -- If no search term then get it from the slash register
+    term = vim.fn.getreg('/')
+  end
 
   local cur_win = vim.api.nvim_get_current_win()
 
