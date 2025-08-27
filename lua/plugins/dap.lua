@@ -15,6 +15,8 @@ return {
     'DapListBreakpoints',
     'DapToggleRepl',
     'DapRunToCursor',
+    -- TODO: one to toggle breakpoint with a condition
+    -- eg. =require('dap').set_breakpoint("key == 96")
   },
   config = function()
     if vim.loop.os_uname().sysname ~= 'Darwin' then
