@@ -1,3 +1,5 @@
+-- TODO: Fix issue inside plug eg. if i run CMakeNewProject
+-- directly from CMakeLists.txt
 return {
   {
     -- load from local directory sitting inside your config
