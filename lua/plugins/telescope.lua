@@ -159,7 +159,8 @@ return { -- Fuzzy Finder (files, lsp, etc)
 
         local function get_windows()
           local cur_win = vim.api.nvim_get_current_win()
-          local wins = vim.api.nvim_list_wins()
+          local cur_tab = vim.api.nvim_get_current_tabpage()
+          local wins = vim.api.nvim_tabpage_list_wins(cur_tab)
           local results = {}
           for _, win in ipairs(wins) do
             if win == cur_win then
