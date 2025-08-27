@@ -21,7 +21,7 @@ return {
       pattern = "*lazygit*",
       callback = function(args)
         -- For these keymaps, close lazy git then feed through the keys
-        local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-space>" }
+        local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-space>", "<a-;>" }
         for _, key in ipairs(keys) do
           vim.keymap.set("t", key, function()
             -- Quit neovim

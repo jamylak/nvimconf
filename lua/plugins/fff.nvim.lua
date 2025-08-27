@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "fff_input",
   callback = function(args)
     -- Feed through these to telescope
-    local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-g>" }
+    local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-g>", "<a-;>" }
     for _, key in ipairs(keys) do
       vim.keymap.set("i", key, function()
         vim.cmd "stopinsert"
