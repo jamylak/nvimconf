@@ -643,15 +643,29 @@ vim.keymap.set('n', '<leader>W', function()
 
 end, { desc = "Jump to window with search term" })
 
--- Should it have auto highlight as you type or something
+-- Should it have auto highlight as you type or something?
+-- Maybe not needed cause it's quick...
+-- TODO: Make it also search the titles that show up too
+-- TODO: Search the virtual text too?
 local function searchAcrossWindows()
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+  if #wins == 2 then
+    -- Only two windows so just switch to the other one
+    vim.cmd 'wincmd w'
+    return
+  end
+
   local term = vim.fn.input("Search across windows: ")
   if term == "" then return end
 
   local cur_win = vim.api.nvim_get_current_win()
-  local wins = vim.api.nvim_tabpage_list_wins(0)
 
   for _, win in ipairs(wins) do
+    -- If it is the current window skip it
+    if win == cur_win then
+      goto continue
+    end
+
     local buf = vim.api.nvim_win_get_buf(win)
 
     -- get top and bottom visible lines in this window
@@ -665,12 +679,18 @@ local function searchAcrossWindows()
     --
     for i, line in ipairs(lines) do
       if line:lower():find(term:lower(), 1, true) then
+        -- Now that we found it save the search term
+        -- to the slash register in case we need to press n or N
+        -- to find next or previous match
+        vim.fn.setreg('/', term)
+
         vim.api.nvim_set_current_win(win)
         local col = line:lower():find(term:lower(), 1, true) - 1
         vim.api.nvim_win_set_cursor(win, { top + i - 1, col })
         return
       end
     end
+    ::continue::
   end
 
   print("No match for '" .. term .. "' in any window")
