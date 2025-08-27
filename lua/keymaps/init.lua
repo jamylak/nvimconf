@@ -643,6 +643,7 @@ vim.keymap.set('n', '<leader>W', function()
 
 end, { desc = "Jump to window with search term" })
 
+-- Should it have auto highlight as you type or something
 local function searchAcrossWindows()
   local term = vim.fn.input("Search across windows: ")
   if term == "" then return end
@@ -657,7 +658,6 @@ local function searchAcrossWindows()
     local top = vim.fn.line("w0", win)
     local bot = vim.fn.line("w$", win)
 
-    -- fetch only visible lines
     local lines = vim.api.nvim_buf_get_lines(buf, top - 1, bot, false)
 
     -- all lines
@@ -666,7 +666,8 @@ local function searchAcrossWindows()
     for i, line in ipairs(lines) do
       if line:lower():find(term:lower(), 1, true) then
         vim.api.nvim_set_current_win(win)
-        vim.api.nvim_win_set_cursor(win, { i, 0 })
+        local col = line:lower():find(term:lower(), 1, true) - 1
+        vim.api.nvim_win_set_cursor(win, { top + i - 1, col })
         return
       end
     end
