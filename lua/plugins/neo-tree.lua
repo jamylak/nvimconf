@@ -53,6 +53,8 @@ return {
         ['z'] = 'close_all_nodes',
         ['Z'] = 'expand_all_nodes',
         ['m'] = 'none',
+        ['H'] = 'none',
+        ['.'] = 'toggle_hidden',
       },
     },
   },
