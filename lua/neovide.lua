@@ -115,7 +115,8 @@ if vim.g.neovide then
   -- Test
   -- vim.api.nvim_set_keymap('t', '<D-k>', '<C-\\><C-n>gf:CD<CR>', { noremap = true, silent = true })
 
-  -- Open telescope old files
+  -- Hacky neovide fixes for opening files either from
+  -- Finder / Spotlight or opening without a file
   vim.defer_fn(function()
     local bufname = vim.api.nvim_buf_get_name(0)
     local utils = require 'utils'
@@ -128,9 +129,11 @@ if vim.g.neovide then
       utils.fzfDir()
     else
       -- Should be a regular file, so cd to git root
+      -- Maybe the defer time delay only needed here?
       utils.tcd_to_git_root()
+      vim.cmd 'edit'
     end
-  end, 0)
+  end, 400)
 end
 
 vim.g.neovide_scroll_animation_length = 0.05
