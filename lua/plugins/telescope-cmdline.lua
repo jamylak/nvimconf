@@ -1,3 +1,35 @@
+-- TODO: Move out?
+local ignore_next_enter = false
+vim.api.nvim_create_autocmd("TermClose", {
+  -- Interestingly enough if i put this in, i open a terminal, then press ctrl-d
+  -- it says "Enter pressed"...
+  callback = function()
+    ignore_next_enter = true
+  end,
+})
+
+-- Quick binding for <enter> to open telescope cmdline
+-- but also dont mess up stuff like q: which uses
+-- enter to select the command
+-- TODO: Doesn't apply on eg. scratchpad and stuff
+-- eg. open `nvim`... and try press enter
+vim.api.nvim_create_autocmd("BufWinEnter", {
+  callback = function()
+    if vim.bo.buftype == "" and vim.bo.filetype ~= "" then
+      vim.keymap.set("n", "<enter>", function()
+        if ignore_next_enter then
+          ignore_next_enter = false
+          return
+        end
+        -- Otherwise it doesn't load the config..?
+        -- Somehow the office lazy keys does work but this doesn't
+        require('telescope._extensions.cmdline')
+        vim.cmd "Telescope cmdline"
+      end, { buffer = true, desc = "Enter" })
+    end
+  end,
+})
+
 return {
   'jamylak/telescope-cmdline.nvim',
   branch = 'cmdline-edit2',
@@ -17,16 +49,33 @@ return {
   config = function()
     -- TODO: Override C-j to do <enter>
     require('telescope').load_extension 'cmdline'
+
     require('telescope._extensions.cmdline').setup {
       picker = {
         layout_config = {
           width = 120,
           height = 25,
         },
-        -- These both fail
-        -- I want a way eventually to do something like
-        -- :<c-f>
         attach_mappings = function(prompt_bufnr, map)
+          map('i', '<S-CR>', function()
+            -- Get the current input from the prompt buffer
+            -- and just run it as is without the telescope stuff
+            local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
+            -- Remove leading/trailing whitespace and leading ':'
+            local cmd = current_input
+            require('telescope.actions').close(prompt_bufnr)
+            if cmd ~= "" then
+              vim.cmd(cmd)
+            end
+          end)
+          map('i', '<C-k>', function()
+            -- Get the current line and cursor position
+            local line = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
+            local col = vim.api.nvim_win_get_cursor(0)[2]
+            -- Keep text before cursor, remove after
+            local new_line = line:sub(1, col)
+            vim.api.nvim_buf_set_lines(prompt_bufnr, 0, 1, false, { new_line })
+          end)
           map('i', '<C-f>', function()
             -- Get the current input from the prompt buffer
             local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
@@ -45,13 +94,6 @@ return {
           end)
           return true
         end,
-        -- mappings = {
-        --   i = {
-        --     ["<C-f>"] = function(prompt_bufnr)
-        --       print("hello world")
-        --     end,
-        --   },
-        -- },
       },
     }
   end,

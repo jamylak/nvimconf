@@ -478,11 +478,6 @@ vim.api.nvim_create_user_command('TCD', function()
   utils.tcd_to_git_root()
 end, {})
 
--- not yet going straight to insert mode
-vim.api.nvim_create_user_command('TERM', function()
-  utils.terminalNewTab()
-end, {})
-
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
@@ -694,26 +689,3 @@ end
 -- Search all windows for a pattern and jump to the first match
 vim.keymap.set("n", "<leader>W", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
 vim.keymap.set("n", "H", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
-
-local ignore_next_enter = false
-vim.api.nvim_create_autocmd("TermClose", {
-  -- Interestingly enough if i put this in, i open a terminal, then press ctrl-d
-  -- it says "Enter pressed"...
-  callback = function()
-    ignore_next_enter = true
-  end,
-})
-
-vim.keymap.set("n", "<enter>", function()
-  if ignore_next_enter then
-    ignore_next_enter = false
-    return
-  end
-  -- Yeah it doesn't load config properly if i do this
-  -- But i think i should just make my own telecsope cmdline
-  -- which i customise to my needs
-  -- Also I could make it so eg. it wouldnt pick TERM instead of term
-  -- command and also if i wanted a custom command eg. `cd ..`
-  -- it should allow that. also support ctrl-f and stuff
-  vim.cmd "Telescope cmdline"
-end, { desc = "Enter" })
