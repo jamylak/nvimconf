@@ -1,6 +1,9 @@
 -- TODO: 2nd layout i can in 1 click switch between?
 -- could have eg. 3 different useful layouts eg. 1 with vertical
 -- right REPL
+-- TODO:
+-- 1. Assembly link EACH op code -> Description / Docs
+-- 2. Attach to dap disasm view and shift K = doc lookup above
 local function ensure_dap_config()
   local config_dir = vim.fn.getcwd() .. "/.nvim"
   local config_file = config_dir .. "/dap.lua"
