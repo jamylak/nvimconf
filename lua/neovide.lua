@@ -1,5 +1,30 @@
 -- Neovide settings
 if vim.g.neovide then
+  vim.schedule(function()
+    -- https://github.com/neovide/neovide/blob/db41b205200aff74530910bb5f9d666b8ffcde55/lua/init.lua#L131
+    -- https://github.com/neovide/neovide/blob/db41b205200aff74530910bb5f9d666b8ffcde55/src/bridge/ui_commands.rs#L209
+    -- Override Neovide specific dropfile to properly handle Finder opening Files with Neovide
+    if _G.neovide and _G.neovide.private and _G.neovide.private.dropfile then
+      local orig = _G.neovide.private.dropfile
+      _G.neovide.private.dropfile = function(filename, tabs)
+        vim.schedule(function()
+          local utils = require 'utils'
+          -- Make sure to tcd for new files
+          -- TODO: Backup normal cd to the file if git didnt work
+          utils.tcd_to_git_root()
+          -- Hacky bug fix to stop LSP and formatter not working
+          vim.cmd 'edit'
+          vim.defer_fn(function()
+            -- hacky bug fix to stop it getting stuck in insert mode
+            -- (i think from telescope just having been open)
+            vim.cmd "stopinsert"
+          end, 50)
+        end)
+        return orig(filename, tabs)
+      end
+    end
+  end)
+
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
   vim.o.guifont = 'Fira Code Medium:h18'
   -- Set current working directory to the project directory env var
@@ -17,32 +42,15 @@ if vim.g.neovide then
     vim.api.nvim_chan_send(vim.b[current_buf].terminal_job_id, clipboard_content)
   end
 
+  -- Hacky bugfix to close any open telescope windows when
+  -- opening a file from Finder or Spotlight
+  -- Since i put an auto telescope on app startup but files get sent in soon after
   vim.api.nvim_create_autocmd({ "BufReadPost" }, {
     callback = function()
       for _, win in ipairs(vim.api.nvim_list_wins()) do
         local buf = vim.api.nvim_win_get_buf(win)
         if vim.bo[buf].filetype == "TelescopePrompt" then
           require("telescope.actions").close(require("telescope.actions.state").get_current_picker(buf).prompt_bufnr)
-          -- Bug fix for openinfg Neovide with a file
-          -- 1) So Neovide first opens up empty for some reason and therefore
-          --    tries to open the project finder fzf telescope
-          --    Then we close it once it finally gets the signal to open the file
-          --    so we have to then recover things that got ruined
-          -- 2) Note this could get called again for other file sent in to the
-          --    Neovide instance from Finder
-          vim.defer_fn(function()
-            -- This is a hacky bug fix to stop it getting stuck in insert mode
-            -- and also it has not loaded the right formatters and LSP etc
-            vim.cmd "stopinsert"
-            vim.cmd "edit"
-            -- Let's just assume every time this happens for now, it's the initial
-            -- open situtation
-            -- TODO: How to handle normal file uploads from Finder in an EXITING nvim instance?
-            -- But distinguish them from just normal nvim file opens?
-            local utils = require 'utils'
-            utils.tcd_to_git_root()
-            vim.cmd 'edit'
-          end, 50)
         end
       end
     end,
@@ -58,7 +66,6 @@ if vim.g.neovide then
       end
     end,
   })
-
 
 
   vim.keymap.set('t', '<D-v>', paste_in_terminal)
