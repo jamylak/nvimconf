@@ -1,3 +1,23 @@
+-- put this in your init.lua (or a Lua plugin file)
+local grp = vim.api.nvim_create_augroup("RunOnEnterButNotCmdwin", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWinEnter", "BufReadPost", "BufNewFile" }, {
+  group = grp,
+  callback = function(args)
+    -- only in "normal" buffers (buftype == ""), not quickfix/term/help/cmdwin/etc.
+    if vim.bo[args.buf].buftype ~= "" then return end
+    -- extra safety: don't apply inside the command-line window (q:, q/, q?)
+    if vim.fn.getcmdwintype() ~= "" then return end
+
+    vim.keymap.set("n", "<CR>", function()
+      -- TODO: replace with what you want to run on Enter:
+      -- example: vim.cmd("write | make")
+      print("Enter pressed in buffer #" .. args.buf)
+    end, { buffer = args.buf, silent = true, desc = "Run on Enter (files & [No Name], not q:)" })
+  end,
+})
+
+
 -- TODO: Move out?
 local ignore_next_enter = false
 vim.api.nvim_create_autocmd("TermClose", {
