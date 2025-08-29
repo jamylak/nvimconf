@@ -49,6 +49,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
 })
 
 -- Auto-cd to git root if Neovim is launched with a file
+-- eg. nvim somefile.txt or nvim /some/path/to/file.txt
 vim.api.nvim_create_autocmd('VimEnter', {
   callback = function()
     local utils = require 'utils'
