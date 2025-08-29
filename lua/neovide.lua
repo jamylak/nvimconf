@@ -18,12 +18,31 @@ if vim.g.neovide then
   end
 
   vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-    -- pattern = "*/llvm-project/libcxx/include/*",
     callback = function()
       for _, win in ipairs(vim.api.nvim_list_wins()) do
         local buf = vim.api.nvim_win_get_buf(win)
         if vim.bo[buf].filetype == "TelescopePrompt" then
           require("telescope.actions").close(require("telescope.actions.state").get_current_picker(buf).prompt_bufnr)
+          -- Bug fix for openinfg Neovide with a file
+          -- 1) So Neovide first opens up empty for some reason and therefore
+          --    tries to open the project finder fzf telescope
+          --    Then we close it once it finally gets the signal to open the file
+          --    so we have to then recover things that got ruined
+          -- 2) Note this could get called again for other file sent in to the
+          --    Neovide instance from Finder
+          vim.defer_fn(function()
+            -- This is a hacky bug fix to stop it getting stuck in insert mode
+            -- and also it has not loaded the right formatters and LSP etc
+            vim.cmd "stopinsert"
+            vim.cmd "edit"
+            -- Let's just assume every time this happens for now, it's the initial
+            -- open situtation
+            -- TODO: How to handle normal file uploads from Finder in an EXITING nvim instance?
+            -- But distinguish them from just normal nvim file opens?
+            local utils = require 'utils'
+            utils.tcd_to_git_root()
+            vim.cmd 'edit'
+          end, 50)
         end
       end
     end,
@@ -117,7 +136,7 @@ if vim.g.neovide then
 
   -- Hacky neovide fixes for opening files either from
   -- Finder / Spotlight or opening without a file
-  vim.defer_fn(function()
+  vim.schedule(function()
     local bufname = vim.api.nvim_buf_get_name(0)
     local utils = require 'utils'
     if string.find(bufname, 'oil') or vim.bo.filetype == 'netrw' then
@@ -127,13 +146,8 @@ if vim.g.neovide then
       -- It's the empty buffer, so we didn't open neovide
       -- with a file, so show old files selector
       utils.fzfDir()
-    else
-      -- Should be a regular file, so cd to git root
-      -- Maybe the defer time delay only needed here?
-      utils.tcd_to_git_root()
-      vim.cmd 'edit'
     end
-  end, 400)
+  end)
 end
 
 vim.g.neovide_scroll_animation_length = 0.05
