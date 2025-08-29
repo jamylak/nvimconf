@@ -1,52 +1,44 @@
--- put this in your init.lua (or a Lua plugin file)
-local grp = vim.api.nvim_create_augroup("RunOnEnterButNotCmdwin", { clear = true })
+-- Quick binding for <enter> to open telescope cmdline
+-- but also dont mess up stuff like q: which uses
+-- enter to select the command
+local grp = vim.api.nvim_create_augroup("RunOnEnter_RealBuffersOnly", { clear = true })
 
-vim.api.nvim_create_autocmd({ "BufWinEnter", "BufReadPost", "BufNewFile" }, {
-  group = grp,
-  callback = function(args)
-    -- only in "normal" buffers (buftype == ""), not quickfix/term/help/cmdwin/etc.
-    if vim.bo[args.buf].buftype ~= "" then return end
-    -- extra safety: don't apply inside the command-line window (q:, q/, q?)
-    if vim.fn.getcmdwintype() ~= "" then return end
-
-    vim.keymap.set("n", "<CR>", function()
-      -- TODO: replace with what you want to run on Enter:
-      -- example: vim.cmd("write | make")
-      print("Enter pressed in buffer #" .. args.buf)
-    end, { buffer = args.buf, silent = true, desc = "Run on Enter (files & [No Name], not q:)" })
-  end,
-})
-
-
--- TODO: Move out?
 local ignore_next_enter = false
 vim.api.nvim_create_autocmd("TermClose", {
   -- Interestingly enough if i put this in, i open a terminal, then press ctrl-d
-  -- it says "Enter pressed"...
+  -- it says "Enter pressed"... somehow a stray enter comes from terms
+  -- TODO: Just ignore term type?
   callback = function()
     ignore_next_enter = true
   end,
 })
 
--- Quick binding for <enter> to open telescope cmdline
--- but also dont mess up stuff like q: which uses
--- enter to select the command
--- TODO: Doesn't apply on eg. scratchpad and stuff
--- eg. open `nvim`... and try press enter
-vim.api.nvim_create_autocmd("BufWinEnter", {
-  callback = function()
-    if vim.bo.buftype == "" and vim.bo.filetype ~= "" then
-      vim.keymap.set("n", "<enter>", function()
-        if ignore_next_enter then
-          ignore_next_enter = false
-          return
-        end
-        -- Otherwise it doesn't load the config..?
-        -- Somehow the office lazy keys does work but this doesn't
-        require('telescope._extensions.cmdline')
-        vim.cmd "Telescope cmdline"
-      end, { buffer = true, desc = "Enter" })
+local function map_enter(buf)
+  -- only real file buffers: buftype must be empty
+  if vim.bo[buf].buftype ~= "" then return end
+  -- don't double-define
+  if vim.b[buf].__enter_mapped then return end
+  vim.b[buf].__enter_mapped = true
+
+  vim.keymap.set("n", "<CR>", function()
+    if ignore_next_enter then
+      ignore_next_enter = false
+      return
     end
+    -- Otherwise it doesn't load the config..?
+    -- Somehow the office lazy keys does work but this doesn't
+    require('telescope._extensions.cmdline')
+    vim.cmd "Telescope cmdline"
+  end, { buffer = buf, silent = true, noremap = true, desc = "Run on Enter (files & [No Name], not q:)" })
+end
+
+-- Use BufEnter so it also covers already-open & newly-created buffers
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = grp,
+  callback = function(args)
+    -- If somehow triggered from cmdwin, just skip (extra safety)
+    if vim.fn.getcmdwintype() ~= "" then return end
+    map_enter(args.buf)
   end,
 })
 
