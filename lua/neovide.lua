@@ -23,6 +23,8 @@ if vim.g.neovide then
         return orig(filename, tabs)
       end
     end
+    -- just to make it look nicer and cause i lazy load theme for no good reason
+    require('tokyodark')
   end)
 
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
