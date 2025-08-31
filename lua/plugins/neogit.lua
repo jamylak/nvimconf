@@ -12,7 +12,7 @@ return {
   commit = '75ee709d18625a94aef90d94ccac4e562c9a0046',
   keys = {
     {
-      '<c-g>',
+      '<leader>NG',
       function()
         -- Open neogit in a new tab
         -- but behind current tab so when it is

@@ -9,6 +9,13 @@ return {
       desc = "Open LazyGit"
     },
     {
+      "<c-g>",
+      function()
+        Snacks.lazygit()
+      end,
+      desc = "Open LazyGit"
+    },
+    {
       "<m-b>",
       function()
         Snacks.lazygit.log_file()
@@ -16,7 +23,15 @@ return {
       desc = "Open LazyGit"
     },
   },
+  cmd = { "LazyGit" },
   config = function()
+    -- Make a user command to open lazygit
+    vim.api.nvim_create_user_command("LazyGit", function()
+      Snacks.lazygit()
+      vim.schedule(function()
+        vim.cmd("startinsert")
+      end)
+    end, { desc = "Open LazyGit" })
     vim.api.nvim_create_autocmd("TermOpen", {
       pattern = "*lazygit*",
       callback = function(args)
