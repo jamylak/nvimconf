@@ -24,6 +24,8 @@ local function troubleAndNeotree()
 end
 
 -- https://github.com/folke/trouble.nvim/blob/dev/docs/examples.md#open-trouble-quickfix-when-the-qf-list-opens
+-- TODO: Other option to try is the recommended option eg.. leave the real quickfix open
+-- and then just make it so Trouble will close at same time...?
 vim.api.nvim_create_autocmd("BufRead", {
   callback = function(ev)
     if vim.bo[ev.buf].buftype == "quickfix" then
