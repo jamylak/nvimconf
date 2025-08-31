@@ -1,4 +1,3 @@
-
 local function telescope_tabs()
   local pickers = require("telescope.pickers")
   local finders = require("telescope.finders")
@@ -345,6 +344,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
             --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<M-space>', true, true, true), 'n', true)
             --   end, 200)
             -- end,
+            ['<C-k>'] = function(prompt_bufnr)
+              -- Get the current line and cursor position
+              local line = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              -- Keep text before cursor, remove after
+              local new_line = line:sub(1, col)
+              vim.api.nvim_buf_set_lines(prompt_bufnr, 0, 1, false, { new_line })
+            end,
             ['<C-space>'] = function(prompt_bufnr)
               -- TODO: Seems to be overriden in the word search one?
               -- Close telescope

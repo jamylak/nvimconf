@@ -102,14 +102,6 @@ return {
               vim.cmd(cmd)
             end
           end)
-          map('i', '<C-k>', function()
-            -- Get the current line and cursor position
-            local line = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
-            local col = vim.api.nvim_win_get_cursor(0)[2]
-            -- Keep text before cursor, remove after
-            local new_line = line:sub(1, col)
-            vim.api.nvim_buf_set_lines(prompt_bufnr, 0, 1, false, { new_line })
-          end)
           map('i', '<C-f>', function()
             -- Get the current input from the prompt buffer
             local current_input = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, -1, false)[1] or ""
