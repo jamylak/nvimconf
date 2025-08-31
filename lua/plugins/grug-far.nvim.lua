@@ -7,10 +7,30 @@ return {
     -- TODO: ast-grep?
   },
   keys = {
-    { 'S',         '<cmd>GrugFar<cr>', desc = 'Replace in text' },
+    {
+      '<leader>S',
+      function()
+        require('grug-far').open()
+      end,
+      desc = 'Replace within text',
+      mode = { 'v', 'n' }
+    },
+    -- NOTE: 'v' mode with normal 'S' doesn't work
+    {
+      'S',
+      function()
+        require('grug-far').open()
+      end,
+      desc = 'Replace within text',
+      mode = { 'v', 'n' }
+    },
   },
   cmd = { 'GrugFar', 'GrugFarWithin' },
   opts = {
+    keymaps = {
+      qflist = { n = 'q' },
+      close = { n = '<localleader>q' },
+    },
     prefills = {
       flags = '-i'
     }
