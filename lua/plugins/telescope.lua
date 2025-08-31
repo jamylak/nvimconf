@@ -384,7 +384,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
             end,
             ['<c-o>'] = openOil,
             ['<c-h>'] = require('telescope.actions').select_horizontal,
-            ['<c-;>'] = require('telescope.actions').send_to_qflist,
+            ['<c-;>'] = require('telescope.actions').send_to_qflist + require('telescope.actions').open_qflist,
             ['<c-enter>'] = 'to_fuzzy_refine',
             ['<c-j>'] = setCWDToPickerAndFindFiles,
             ['<c-g>'] = function(prompt_bufnr)
