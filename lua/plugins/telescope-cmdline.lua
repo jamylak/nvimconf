@@ -13,9 +13,30 @@ vim.api.nvim_create_autocmd("TermClose", {
   end,
 })
 
+
+-- Part of the enter remap but sometimes buffers start as empty buffer
+-- then change their type later, so in that case we need to unmap enter
+-- as it screws them up
+vim.api.nvim_create_autocmd("FileType", {
+  group = grp,
+  pattern = { "qf", "help" }, -- add more filetypes as needed
+  callback = function(args)
+    local maps = vim.api.nvim_buf_get_keymap(args.buf, "n")
+    if vim.b[args.buf].__enter_mapped then
+      for _, map in ipairs(maps) do
+        if map.lhs == "<CR>" and map.desc == "Run on Enter (files & [No Name], not q:)" then
+          vim.keymap.del("n", "<CR>", { buffer = args.buf })
+        end
+      end
+    end
+  end,
+})
+
 local function map_enter(buf)
   -- only real file buffers: buftype must be empty
-  if vim.bo[buf].buftype ~= "" then return end
+  -- Note that for "qf" this doesn't catch it... seems it starts with no filetype
+  -- and becomes "qf" later, see above autocommand which should catch that
+  if vim.bo[buf].buftype ~= "" or vim.bo[buf].filetype == "qf" then return end
   -- don't double-define
   if vim.b[buf].__enter_mapped then return end
   vim.b[buf].__enter_mapped = true
@@ -38,6 +59,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(args)
     -- If somehow triggered from cmdwin, just skip (extra safety)
     if vim.fn.getcmdwintype() ~= "" then return end
+    -- TODO: Maybe turn this off if there are too many problems
     map_enter(args.buf)
   end,
 })
