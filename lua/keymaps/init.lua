@@ -47,9 +47,11 @@ for _, mode in ipairs { 'n', 'i', 't' } do
     cmd = '<C-\\><C-n>'
   end
   vim.keymap.set(mode, 'gko', cmd .. ':tabn 1<CR>', {})
+  -- TODO: Make enter the 2nd?
   vim.keymap.set(mode, 'gk ', cmd .. ':tabn 2<CR>', {})
   vim.keymap.set(mode, 'gkg', cmd .. ':tabn 3<CR>', {})
   vim.keymap.set(mode, 'gkk', cmd .. ':tabn 4<CR>', {})
+  -- TODO: adjust these?
   vim.keymap.set(mode, 'gkd', cmd .. ':tabn 5<CR>', {})
   vim.keymap.set(mode, 'gke', cmd .. ':tabn 6<CR>', {})
   vim.keymap.set(mode, 'gkf', cmd .. ':tabn 7<CR>', {})
