@@ -352,6 +352,14 @@ return { -- Fuzzy Finder (files, lsp, etc)
               local new_line = line:sub(1, col)
               vim.api.nvim_buf_set_lines(prompt_bufnr, 0, 1, false, { new_line })
             end,
+            ['<C-f>'] = function(prompt_bufnr)
+              -- Get the current line and cursor position
+              local line = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
+              local col = vim.api.nvim_win_get_cursor(0)[2]
+              -- Move cursor one character forward, but not past end of line
+              local new_col = math.min(col + 1, #line)
+              vim.api.nvim_win_set_cursor(0, { 1, new_col })
+            end,
             ['<C-space>'] = function(prompt_bufnr)
               -- TODO: Seems to be overriden in the word search one?
               -- Close telescope
