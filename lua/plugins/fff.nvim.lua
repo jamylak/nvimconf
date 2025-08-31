@@ -1,3 +1,4 @@
+-- TODO: Fix for FFFFind not going to insert when run from telescope cmd, seems it just needs a vim.schedule? or i find telescopecmd?
 -- TODO: move in config or something
 -- FFF.nvim and Telescope swap through each other
 -- when needed with some keybindings

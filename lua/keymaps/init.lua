@@ -10,6 +10,9 @@ vim.keymap.set('n', '<C-s>', function()
   vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
 end, { silent = true, noremap = true })
 
+-- TODO: Keymap for [TAB] in normal mode?
+-- TODO: Maybe reconsider [ENTER] in normal mode?
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
