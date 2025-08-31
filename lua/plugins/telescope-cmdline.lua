@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 -- as it screws them up
 vim.api.nvim_create_autocmd("FileType", {
   group = grp,
-  pattern = { "qf", "help" }, -- add more filetypes as needed
+  pattern = { "netrw", "qf", "help" }, -- add more filetypes as needed
   callback = function(args)
     local maps = vim.api.nvim_buf_get_keymap(args.buf, "n")
     if vim.b[args.buf].__enter_mapped then
