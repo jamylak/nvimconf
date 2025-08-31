@@ -29,12 +29,35 @@ vim.api.nvim_create_autocmd("BufRead", {
     if vim.bo[ev.buf].buftype == "quickfix" then
       vim.schedule(function()
         vim.cmd([[cclose]])
+        -- Hacky Quickfix to close it where it was before
+        vim.cmd([[Trouble qflist close]])
         vim.cmd([[Trouble qflist open]])
-		-- TODO: Focus trouble qflist window? There may be many troubles..
       end)
     end
   end,
 })
+
+-- Doesn't seem to be a way to override the CCLOSE nicely
+vim.api.nvim_create_user_command("CCLOSE", function()
+  vim.cmd([[Trouble qflist close]])
+end, {})
+vim.api.nvim_create_user_command("COPEN", function()
+  -- vim.cmd([[Trouble qflist open new=true focus=true]])
+  vim.cmd([[Trouble qflist open focus=true]])
+end, {})
+vim.api.nvim_create_user_command("QCLOSE", function()
+  vim.cmd([[Trouble qflist close]])
+end, {})
+vim.api.nvim_create_user_command("QFCLOSE", function()
+  vim.cmd([[Trouble qflist close]])
+end, {})
+vim.api.nvim_create_user_command("QOPEN", function()
+  vim.cmd([[Trouble qflist open focus=true]])
+end, {})
+vim.api.nvim_create_user_command("QFOPEN", function()
+  vim.cmd([[Trouble qflist open focus=true]])
+end, {})
+
 
 return {
   'folke/trouble.nvim',
