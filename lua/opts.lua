@@ -59,3 +59,5 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 vim.opt.shada = "'500,s100,:1000,/500,@100,<200,f100"
+
+vim.g.python3_host_prog = '/usr/local/bin/python3'
