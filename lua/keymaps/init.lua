@@ -645,6 +645,8 @@ end, { desc = "Jump to window with search term" })
 -- TODO: Make it also search the titles that show up too
 -- TODO: Search the virtual text too?
 -- TODO: Should empty repeat last search?
+-- TODO: Maybe it waits to see when some basic title or something
+-- comes in eg. for Trouble to give it better titles
 local function searchAcrossWindows()
   local wins = vim.api.nvim_tabpage_list_wins(0)
   local term = vim.fn.input("Search across windows: ")
