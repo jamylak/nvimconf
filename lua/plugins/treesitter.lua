@@ -214,12 +214,16 @@ return { -- Highlight, edit, and navigate code
     -- cila = change last arg (if in cursor then before that)
     -- c2ila = change 2nd last arg
     for i = 1, 9 do
-      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ina', ':normal ]A' .. string.rep(']a', i) .. 'cia<CR>', { silent = true })
-      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ana', ':normal ]A' .. string.rep(']a', i) .. 'caa<CR>', { silent = true })
+      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ina', ':normal ]A' .. string.rep(']a', i) .. 'cia<CR>',
+        { silent = true })
+      vim.keymap.set('n', 'c' .. cinaIntToString(i + 1) .. 'ana', ':normal ]A' .. string.rep(']a', i) .. 'caa<CR>',
+        { silent = true })
     end
     for i = 1, 9 do
-      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ila', ':normal ' .. string.rep('[A', i) .. 'cia<CR>', { silent = true })
-      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ala', ':normal ' .. string.rep('[A', i) .. 'caa<CR>', { silent = true })
+      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ila', ':normal ' .. string.rep('[A', i) .. 'cia<CR>',
+        { silent = true })
+      vim.keymap.set('n', 'c' .. cilaIntToString(i) .. 'ala', ':normal ' .. string.rep('[A', i) .. 'caa<CR>',
+        { silent = true })
     end
 
     -- New function / call argument, only works with existing args
