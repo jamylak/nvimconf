@@ -34,6 +34,8 @@ return { -- Highlight, edit, and navigate code
     'nvim-treesitter/playground',
     'nvim-treesitter/nvim-treesitter-textobjects',
     'nvim-treesitter/nvim-treesitter-context',
+    "OXY2DEV/markview.nvim",
+
   },
   cmd = {
     'TSPlaygroundToggle',
