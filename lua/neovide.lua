@@ -159,15 +159,20 @@ if vim.g.neovide then
   end)
 end
 
+vim.g.neovide_confirm_quit = false
 vim.g.neovide_scroll_animation_length = 0.05
-vim.g.neovide_opacity = 0.7
+vim.g.neovide_opacity = 0.5
 vim.g.neovide_window_blurred = true
-vim.g.neovide_show_border = true -- Doesn't seem to do anything
+-- Doesn't seem to do anything
+vim.g.neovide_show_border = true
 vim.g.neovide_hide_mouse_when_typing = true
--- vim.g.neovide_cursor_animation_length = 0.05
 vim.g.neovide_cursor_antialiasing = true
 vim.g.neovide_cursor_animate_command_line = true
 vim.g.neovide_cursor_unfocused_outline_width = 0.18
+
+vim.g.neovide_floating_blur_amount_x = 15.0
+vim.g.neovide_floating_blur_amount_y = 15.0
+
 
 -- Railgun
 -- vim.g.neovide_cursor_vfx_mode = 'railgun'
