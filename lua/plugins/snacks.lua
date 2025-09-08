@@ -23,8 +23,17 @@ return {
       desc = "Open LazyGit"
     },
   },
+  opts = {
+    image = {},
+    input = {},
+    picker = {}
+  },
+  -- Could just make this a dependency of eg. everything
+  -- that should use it eg. molten instead of loading it
+  -- VeryLazy
+  event = "VeryLazy",
   cmd = { "LazyGit" },
-  config = function()
+  config = function(_, opts)
     -- Make a user command to open lazygit
     vim.api.nvim_create_user_command("LazyGit", function()
       Snacks.lazygit()
@@ -48,7 +57,6 @@ return {
         end
       end,
     })
-    require("snacks").setup({
-    })
+    require("snacks").setup(opts)
   end,
 }
