@@ -41,7 +41,7 @@ require('lazy').setup({
         'editorconfig',
         'man',
         'osc52',
-        -- 'rplugin',
+        'rplugin',
         'shada',
         'spellfile',
       },
