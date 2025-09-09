@@ -70,6 +70,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 add_executable({{project_name}} ]] .. filename .. [[)
+
+# Recommended warnings and safeguards
+target_compile_options({{project_name}} PRIVATE
+  -Wall -Wextra -Wpedantic -Werror
+  -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused
+  -Woverloaded-virtual -Wconversion -Wsign-conversion -Wmisleading-indentation
+  -Wnull-dereference -Wdouble-promotion -Wformat=2
+)
 ]]
   local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
@@ -90,6 +98,13 @@ set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
 add_executable({{project_name}} ]] .. filename .. [[)
+
+# Recommended warnings and safeguards
+target_compile_options({{project_name}} PRIVATE
+  -Wall -Wextra -Wpedantic -Werror -Wshadow -Wcast-align -Wunused
+  -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion
+  -Wformat=2
+)
 ]]
   local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
