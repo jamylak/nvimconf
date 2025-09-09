@@ -77,6 +77,7 @@ add_executable({{project_name}} ]] .. filename .. [[)
 
   --- TODO : Add sanitizers and fuzzing options for C & CPP
 end
+
 local function gen_c(filename)
   filename = filename or "main.c"
   local content = [[
@@ -95,13 +96,72 @@ add_executable({{project_name}} ]] .. filename .. [[)
   vim.notify("Generated C17 CMakeLists.txt in " .. vim.fn.getcwd())
 end
 
+local function setupGit()
+  -- 1. Setup .gitignore
+  -- Add build to .gitignore if it exists
+  -- else create it with build entry
+  local gitignore_path = ".gitignore"
+  local gitignore_exists = vim.fn.filereadable(gitignore_path) == 1
+  if gitignore_exists then
+    -- Just add it to the end
+    local gitignore_file = io.open(gitignore_path, "a")
+    if gitignore_file then
+      gitignore_file:write("\nbuild/\n")
+      gitignore_file:close()
+      vim.notify("Added 'build/' to existing .gitignore", vim.log.levels.INFO
+      )
+    else
+      vim.notify("Failed to open .gitignore for appending", vim.log.levels.ERROR)
+    end
+  else
+    -- Create a new .gitignore file
+    -- with build entry
+    -- and common ignores
+    local gitignore_file = io.open(gitignore_path, "w")
+    if gitignore_file then
+      gitignore_file:write([[
+# Ignore build directory
+build/
+# Ignore common temporary files
+*.swp
+*~
+.#*
+.DS_Store
+.cache/
+.undo/
+spectre*/
+]])
+      gitignore_file:close()
+      vim.notify("Created new .gitignore with 'build/' entry", vim.log.levels.INFO)
+    else
+      vim.notify("Failed to create .gitignore", vim.log.levels.ERROR)
+    end
+  end
+
+  -- 2. Now run git init if not already a git repo
+  local git_dir = ".git"
+  local git_repo_exists = vim.fn.isdirectory(git_dir) == 1
+  if not git_repo_exists then
+    -- Make sure output doesn't pullute nvim
+    local init_command = "git init > /dev/null 2>&1"
+    local result = os.execute(init_command)
+    if result == 0 then
+      vim.notify("Initialized new Git repository", vim.log.levels.INFO)
+    else
+      vim.notify("Failed to initialize Git repository", vim.log.levels.ERROR)
+    end
+  end
+end
+
 local function gen_cmake()
   local file_extension = vim.fn.expand('%:e')
   local filename = vim.fn.expand('%:t')
   if file_extension == 'cpp' then
     gen_cpp(filename)
+    setupGit()
   elseif file_extension == 'c' then
     gen_c(filename)
+    setupGit()
   else
     vim.notify("Current file is not a C, C++, .h, or .hpp file. Cannot generate CMakeLists.txt", vim.log.levels.ERROR)
   end
