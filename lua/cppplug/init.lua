@@ -129,7 +129,6 @@ build/
 .DS_Store
 .cache/
 .undo/
-spectre*/
 ]])
       gitignore_file:close()
       vim.notify("Created new .gitignore with 'build/' entry", vim.log.levels.INFO)
