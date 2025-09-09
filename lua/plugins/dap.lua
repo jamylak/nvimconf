@@ -111,7 +111,7 @@ return {
             require('telescope.pickers').new({}, {
               prompt_title = 'Select Executable',
               finder = require('telescope.finders').new_oneshot_job(
-                { 'fd', '--type', 'x', '--exec-batch', 'realpath' },
+                { 'fd', '--type', 'x', '--no-ignore', '--exec-batch', 'realpath' },
                 { cwd = cwd }
               ),
               sorter = require('telescope.config').values.generic_sorter({}),
