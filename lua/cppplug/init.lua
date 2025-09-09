@@ -58,7 +58,8 @@ endif()
   -- todo: memory, thread as well?
 end
 
-local function gen_cpp()
+local function gen_cpp(filename)
+  filename = filename or "main.cpp"
   local content = [[
 cmake_minimum_required(VERSION 3.20)
 project({{project_name}} LANGUAGES CXX)
@@ -68,7 +69,7 @@ set(CMAKE_CXX_STANDARD {{default_cpp_standard}})
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-add_executable({{project_name}} main.cpp)
+add_executable({{project_name}} ]] .. filename .. [[)
 ]]
   local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
@@ -76,8 +77,8 @@ add_executable({{project_name}} main.cpp)
 
   --- TODO : Add sanitizers and fuzzing options for C & CPP
 end
-
-local function gen_c()
+local function gen_c(filename)
+  filename = filename or "main.c"
   local content = [[
 cmake_minimum_required(VERSION 3.20)
 project({{project_name}} LANGUAGES C)
@@ -87,7 +88,7 @@ set(CMAKE_C_STANDARD {{default_c_standard}})
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_EXTENSIONS OFF)
 
-add_executable({{project_name}} main.c)
+add_executable({{project_name}} ]] .. filename .. [[)
 ]]
   local formatted_content = process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
@@ -96,10 +97,11 @@ end
 
 local function gen_cmake()
   local file_extension = vim.fn.expand('%:e')
-  if file_extension == 'cpp' or file_extension == 'hpp' then
-    gen_cpp()
-  elseif file_extension == 'c' or file_extension == 'h' then
-    gen_c()
+  local filename = vim.fn.expand('%:t')
+  if file_extension == 'cpp' then
+    gen_cpp(filename)
+  elseif file_extension == 'c' then
+    gen_c(filename)
   else
     vim.notify("Current file is not a C, C++, .h, or .hpp file. Cannot generate CMakeLists.txt", vim.log.levels.ERROR)
   end
