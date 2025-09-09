@@ -53,7 +53,7 @@ return {
     local fd = assert(io.open(config_file, "w"))
     fd:write(template)
     fd:close()
-    vim.notify("Created DAP config template at " .. config_file, vim.log.levels.INFO)
+    vim.notify("Created DAP config template at " .. config_file, vim.log.levels.DEBUG)
   end
 end
 
@@ -179,7 +179,7 @@ local function launch_python_debugger()
     -- Register a one-time listener
     local function on_terminated()
       dap.listeners.after.event_terminated["restart_and_run_python"] = nil
-      vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+      vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.DEBUG)
       setup_python_dapui_layouts()
       dap_run_python()
 
@@ -190,7 +190,7 @@ local function launch_python_debugger()
     vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
     dap.terminate()
   else
-    vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+    vim.notify("✅ Launching debugger", vim.log.levels.DEBUG)
     setup_python_dapui_layouts()
     dap_run_python()
 
@@ -235,7 +235,7 @@ local function launch_c_cpp_debugger()
   local cwd = vim.fn.getcwd()
 
   local function on_build_success()
-    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
+    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.DEBUG)
 
     local user_cfg = load_dap_project_config("cpp")
 
@@ -272,7 +272,7 @@ local function launch_c_cpp_debugger()
       -- Register a one-time listener
       local function on_terminated()
         dap.listeners.after.event_terminated["restart_and_run"] = nil
-        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.DEBUG)
         dap.run(config)
         pcall(dapui.open)
       end
@@ -281,7 +281,7 @@ local function launch_c_cpp_debugger()
       vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
       dap.terminate()
     else
-      vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+      vim.notify("✅ Launching debugger", vim.log.levels.DEBUG)
       dap.run(config)
       pcall(dapui.open)
     end
@@ -306,7 +306,7 @@ local function launch_rust_debugger()
   local cwd = vim.fn.getcwd()
 
   local function on_build_success()
-    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.INFO)
+    vim.notify("✅ Build succeeded, launching debugger", vim.log.levels.DEBUG)
 
     local user_cfg = load_dap_project_config("rust")
 
@@ -345,7 +345,7 @@ local function launch_rust_debugger()
       -- Register a one-time listener
       local function on_terminated()
         dap.listeners.after.event_terminated["restart_and_run"] = nil
-        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.INFO)
+        vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.DEBUG)
         dap.run(config)
         pcall(dapui.open)
       end
@@ -354,7 +354,7 @@ local function launch_rust_debugger()
       vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
       dap.terminate()
     else
-      vim.notify("✅ Launching debugger", vim.log.levels.INFO)
+      vim.notify("✅ Launching debugger", vim.log.levels.DEBUG)
       dap.run(config)
       pcall(dapui.open)
     end
@@ -404,7 +404,7 @@ local function launch_zig_debugger()
   if dap.session() then
     local function on_terminated()
       dap.listeners.after.event_terminated["restart_and_run_zig"] = nil
-      vim.notify("✅ Old DAP session terminated, launching new Zig debugger", vim.log.levels.INFO)
+      vim.notify("✅ Old DAP session terminated, launching new Zig debugger", vim.log.levels.DEBUG)
       dap.run(config)
       pcall(dapui.open)
     end
@@ -413,7 +413,7 @@ local function launch_zig_debugger()
     vim.notify("⏳ Terminating previous DAP session...", vim.log.levels.WARN)
     dap.terminate()
   else
-    vim.notify("✅ Launching Zig debugger", vim.log.levels.INFO)
+    vim.notify("✅ Launching Zig debugger", vim.log.levels.DEBUG)
     dap.run(config)
     pcall(dapui.open)
   end
