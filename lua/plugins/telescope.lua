@@ -63,9 +63,8 @@ local function telescope_tabs()
   }):find()
 end
 
-return { -- Fuzzy Finder (files, lsp, etc)
+return {
   'nvim-telescope/telescope.nvim',
-  -- event = 'VimEnter',
   cmd = { 'Telescope', 'SearchAllBuffers',
     'TelescopeResume', 'TelescopeFindFiles', 'TelescopeLiveGrep', 'TelescopeGrepString',
     'TelescopeGitFiles', 'TelescopeGitStatus', 'TelescopeGitBranches', 'TelescopeGitCommits',
