@@ -19,7 +19,7 @@ require('lazy').setup({
   },
   change_detection = {
     enabled = true,
-    notify = false, -- get a notification when changes are found
+    notify = false,
   },
   performance = {
     cache = {
