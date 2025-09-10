@@ -229,4 +229,16 @@ function M.switchToTabWithFile(filepath)
   return false
 end
 
+function M.toggleExplorer()
+  local e = Snacks.explorer()
+  if e then
+    -- means we switched to the picker
+    -- switch back
+    vim.defer_fn(function()
+      vim.cmd("wincmd p")
+      -- print("Switch back")
+    end, 10)
+  end
+end
+
 return M
