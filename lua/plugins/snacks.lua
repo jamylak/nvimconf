@@ -32,10 +32,16 @@ return {
     },
   },
   opts = {
-    -- explorer = {},
     image = {},
     input = {},
-    picker = {}
+    picker = {
+      sources = {
+        explorer = {
+          hidden = true,
+          ignored = true,
+        },
+      }
+    }
   },
   -- Could just make this a dependency of eg. everything
   -- that should use it eg. molten instead of loading it
