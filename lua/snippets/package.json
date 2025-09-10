@@ -7,6 +7,12 @@
           "glsl"
         ],
         "path": "./glsl.jsonc"
+      },
+      {
+        "language": [
+          "cpp"
+        ],
+        "path": "./cpp.json"
       }
     ]
   }
