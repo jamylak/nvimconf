@@ -47,7 +47,7 @@ return {
       end
     end, { 'i', 's' })
     require 'snippets'
-    -- require('luasnip.loaders.from_vscode').lazy_load { paths = { './snippets' } }
+    require('luasnip.loaders.from_vscode').lazy_load { paths = { vim.fn.stdpath("config") .. "/lua/snippets" } }
 
     -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
     -- cmp.setup.cmdline(':', {
