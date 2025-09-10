@@ -512,10 +512,6 @@ vim.keymap.set('n', '<leader>Y', openCurrentFileInHelix, { desc = 'Open current 
 vim.keymap.set('n', '<leader>H', openCurrentFileInHelix, { desc = 'Open current file in helix' })
 vim.keymap.set('n', '<leader><leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })
 
-vim.api.nvim_create_user_command('NT', ':Neotree', {})
-vim.api.nvim_create_user_command('J', ':Neotree', {})
-vim.api.nvim_create_user_command('L', ':Neotree', {})
-
 vim.keymap.set('i', '<C-f>', '<Right>', { silent = true })
 vim.keymap.set('i', '<C-a>', '<Home>', { silent = true })
 vim.keymap.set('i', '<C-e>', '<End>', { silent = true })
