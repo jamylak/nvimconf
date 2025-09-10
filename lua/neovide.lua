@@ -115,7 +115,7 @@ if vim.g.neovide then
       vim.cmd '-tabnew | term lazygit'
       vim.cmd 'startinsert'
     end, { noremap = true })
-    -- quick test: replicate <leader>i which does neotree reveal
+    -- quick test: replicate <leader>i which does explorer reveal
     vim.api.nvim_set_keymap(mode, '<D-i>', cmd .. ' i', { silent = true })
     -- quick test to open up IDE style diagnostics and symbols
     vim.api.nvim_set_keymap(mode, '<D-k>', cmd .. ' b', { silent = true })

@@ -22,8 +22,17 @@ return {
       end,
       desc = "Open LazyGit"
     },
+    {
+      "<leader>i",
+      function()
+        local utils = require 'utils'
+        utils.toggleExplorer()
+      end,
+      desc = "Open LazyGit"
+    },
   },
   opts = {
+    -- explorer = {},
     image = {},
     input = {},
     picker = {}
@@ -32,6 +41,7 @@ return {
   -- that should use it eg. molten instead of loading it
   -- VeryLazy
   event = "VeryLazy",
+  -- lazy = false,
   cmd = { "LazyGit" },
   config = function(_, opts)
     -- Make a user command to open lazygit

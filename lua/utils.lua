@@ -199,22 +199,6 @@ function M.lazygit()
   vim.cmd 'startinsert'
 end
 
-function M.neotreeToggle()
-  local manager = require 'neo-tree.sources.manager'
-  local renderer = require 'neo-tree.ui.renderer'
-
-  local state = manager.get_state 'filesystem'
-  local window_exists = renderer.window_exists(state)
-
-  -- If Neotree is visible ex
-  if window_exists then
-    vim.cmd 'Neotree close'
-  else
-    vim.cmd 'Neotree reveal'
-    vim.cmd 'wincmd p'
-  end
-end
-
 function M.switchToTabWithFile(filepath)
   for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do

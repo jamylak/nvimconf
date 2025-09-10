@@ -17,9 +17,9 @@ local function troublePreset1()
     -- vim.cmd 'Trouble diagnostics open new=true filter.buf=0'
   end
 end
-local function troubleAndNeotree()
+local function troubleAndExplorer()
   local utils = require 'utils'
-  utils.neotreeToggle()
+  utils.toggleExplorer()
   troublePreset1()
 end
 
@@ -73,18 +73,18 @@ return {
   keys = {
     {
       '<leader>xj',
-      troubleAndNeotree,
-      desc = 'Trouble and Neotree',
+      troubleAndExplorer,
+      desc = 'Trouble and Explorer',
     },
     {
       '<leader>,',
-      troubleAndNeotree,
-      desc = 'Trouble and Neotree',
+      troubleAndExplorer,
+      desc = 'Trouble and Explorer',
     },
     {
       '<leader>b',
-      troubleAndNeotree,
-      desc = 'Trouble and Neotree',
+      troubleAndExplorer,
+      desc = 'Trouble and Explorer',
     },
     {
       '<leader>xk',

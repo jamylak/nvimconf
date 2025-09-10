@@ -27,22 +27,6 @@ local function changeDirectory()
   local dir_path = vim.fn.fnamemodify(path, ':h')
   vim.api.nvim_set_current_dir(dir_path)
 end
-local function neoTreeExpandAllNodes()
-  local manager = require 'neo-tree.sources.manager'
-  local commands = require 'neo-tree.sources.filesystem.commands'
-  local state = manager.get_state 'filesystem'
-  commands.expand_all_nodes(state, nil)
-end
-local function loadNeotreeAndExpandNodes()
-  -- https://github.com/nvim-neo-tree/neo-tree.nvim/discussions/826#discussioncomment-5431757
-  local manager = require 'neo-tree.sources.manager'
-  manager.show 'filesystem'
-  -- 400 timeout to CD and expand neotree after keyboard
-  -- shortcut until i find a non hacky way to do it
-  vim.defer_fn(function()
-    neoTreeExpandAllNodes()
-  end, 400)
-end
 
 return {
   'stevearc/oil.nvim',
@@ -93,14 +77,6 @@ return {
       ['<leader>tc'] = {
         callback = tabChangeDirectory,
         desc = '[T]ab [C]hange [D]irectory',
-        mode = 'n',
-      },
-      ['<leader>x'] = {
-        callback = function()
-          changeDirectory()
-          loadNeotreeAndExpandNodes()
-        end,
-        desc = 'CD and reload neotree',
         mode = 'n',
       },
       ['<leader>e'] = {
