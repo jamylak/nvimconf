@@ -79,7 +79,7 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   end,
 })
 vim.api.nvim_create_autocmd({ "FileType" }, {
-  pattern = { "spectre_panel" },
+  pattern = { "spectre_panel", "snacks_picker_input" },
   callback = function()
     vim.b.copilot_suggestion_auto_trigger = false
   end,
