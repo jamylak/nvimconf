@@ -692,3 +692,19 @@ end
 -- Search all windows for a pattern and jump to the first match
 vim.keymap.set("n", "<leader>W", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
 vim.keymap.set("n", "H", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
+
+vim.api.nvim_create_user_command('KittyRunUVRight', function()
+  print("KittyRunUVRight")
+  local filename = vim.api.nvim_buf_get_name(0)
+  if filename == "" then
+    print("No file to run.")
+    return
+  end
+  print("RUN " .. filename .. " in new Kitty window on right")
+  local cmd = string.format(
+    "kitty @ launch --type=window --location=vsplit --cwd='%s' uv run '%s'",
+    vim.fn.getcwd(),
+    filename
+  )
+  os.execute(cmd)
+end, { desc = "Open Kitty window right and run 'uv run filename.py' in nvim cwd" })
