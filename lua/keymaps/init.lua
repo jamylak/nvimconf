@@ -694,15 +694,16 @@ vim.keymap.set("n", "<leader>W", searchAcrossWindows, { desc = "Search across al
 vim.keymap.set("n", "H", searchAcrossWindows, { desc = "Search across all windows and jump to match" })
 
 vim.api.nvim_create_user_command('KittyRunUVRight', function()
-  print("KittyRunUVRight")
   local filename = vim.api.nvim_buf_get_name(0)
   if filename == "" then
     print("No file to run.")
     return
   end
-  print("RUN " .. filename .. " in new Kitty window on right")
+  -- TODO: Fix space issues in path
+  -- TODO: Move to some fish functions which handle some of these issues
+  -- Make sure to send the text so it can be in the history and easily repeated
   local cmd = string.format(
-    "kitty @ launch --type=window --location=vsplit --cwd='%s' uv run '%s'",
+    "fish -c 'set id $(kitty @ launch --location=vsplit --cwd=%s --type=window fish); kitty @ send-text --match=id:$id \"uv run %s\n\"'",
     vim.fn.getcwd(),
     filename
   )
