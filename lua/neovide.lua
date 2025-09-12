@@ -171,8 +171,12 @@ vim.g.neovide_cursor_antialiasing = true
 vim.g.neovide_cursor_animate_command_line = true
 vim.g.neovide_cursor_unfocused_outline_width = 0.18
 
-vim.g.neovide_floating_blur_amount_x = 15.0
-vim.g.neovide_floating_blur_amount_y = 15.0
+--- Doesn't seem to work?
+vim.g.neovide_title_background_color = "red"
+vim.g.neovide_title_text_color = "pink"
+
+vim.g.neovide_floating_blur_amount_x = 8.0
+vim.g.neovide_floating_blur_amount_y = 8.0
 
 
 -- Railgun
