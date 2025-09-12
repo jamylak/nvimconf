@@ -18,6 +18,7 @@ return {
       },
       custom_highlights = {
         Terminal = { fg = p.white, bg = p.white },
+        Normal = { fg = "#FFFFFF" },
         Visual = { bg = p.yellow, fg = p.black },
         StatusLineNC = { fg = p.white, bg = p.bg1, bold = true },
         -- Comment = { fg = "#b0b0b0", italic = true },
