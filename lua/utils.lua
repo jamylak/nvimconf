@@ -225,4 +225,58 @@ function M.toggleExplorer()
   end
 end
 
+-- Should it have auto highlight as you type or something?
+-- Maybe not needed cause it's quick...
+-- TODO: Make it also search the titles that show up too
+-- TODO: Search the virtual text too?
+-- TODO: Should empty repeat last search?
+-- TODO: Maybe it waits to see when some basic title or something
+-- comes in eg. for Trouble to give it better titles
+function M.searchAcrossWindows()
+  local wins = vim.api.nvim_tabpage_list_wins(0)
+  local term = vim.fn.input("Search across windows: ")
+  if term == "" then
+    -- If no search term then get it from the slash register
+    term = vim.fn.getreg('/')
+  end
+
+  local cur_win = vim.api.nvim_get_current_win()
+
+  for _, win in ipairs(wins) do
+    -- If it is the current window skip it
+    if win == cur_win then
+      goto continue
+    end
+
+    local buf = vim.api.nvim_win_get_buf(win)
+
+    -- get top and bottom visible lines in this window
+    local top = vim.fn.line("w0", win)
+    local bot = vim.fn.line("w$", win)
+
+    local lines = vim.api.nvim_buf_get_lines(buf, top - 1, bot, false)
+
+    -- all lines
+    -- local lines = vim.api.nvim_buf_get_lines(buf, 0, -1, false)
+    --
+    for i, line in ipairs(lines) do
+      if line:lower():find(term:lower(), 1, true) then
+        -- Now that we found it save the search term
+        -- to the slash register in case we need to press n or N
+        -- to find next or previous match
+        vim.fn.setreg('/', term)
+
+        vim.api.nvim_set_current_win(win)
+        local col = line:lower():find(term:lower(), 1, true) - 1
+        vim.api.nvim_win_set_cursor(win, { top + i - 1, col })
+        return
+      end
+    end
+    ::continue::
+  end
+
+  print("No match for '" .. term .. "' in any window")
+  vim.api.nvim_set_current_win(cur_win)
+end
+
 return M
