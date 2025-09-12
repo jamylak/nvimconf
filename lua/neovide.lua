@@ -161,8 +161,9 @@ end
 
 vim.g.neovide_confirm_quit = false
 vim.g.neovide_scroll_animation_length = 0.05
-vim.g.neovide_opacity = 0.5
+vim.g.neovide_opacity = 0.8
 vim.g.neovide_window_blurred = true
+vim.g.neovide_normal_opacity = 0.05
 -- Doesn't seem to do anything
 vim.g.neovide_show_border = true
 vim.g.neovide_hide_mouse_when_typing = true
