@@ -64,7 +64,7 @@ return {
       -- just to make it look nicer
       -- and cause i lazy load theme
       -- for no good reason
-      require('tokyodark')
+      require('cyberdream')
       require("CopilotChat").setup(opts)
     end,
     -- See Commands section for default commands if you want to lazy load on them
