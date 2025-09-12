@@ -39,6 +39,41 @@ return {
         explorer = {
           hidden = true,
           ignored = true,
+          actions = {
+            quickfix = function(picker)
+              -- Remap this back to smart-splits for now
+              vim.cmd("stopinsert")
+              require('smart-splits').resize_left()
+            end,
+          },
+          win = {
+            input = {
+              keys = {
+                -- Just fixing up some common keybinds and conflicts
+                -- a-h one is a bit buggy
+                ["<a-h>"] = { "quickfix", mode = { "n", "i" } },
+                ["<leader>h"] = { "toggle_hidden", mode = { "n" } },
+                ["<a-.>"] = { "toggle_hidden", mode = { "n", "i" } },
+                ["q"] = { "qflist", mode = { "n" } },
+                ["H"] = {
+                  require("utils").searchAcrossWindows,
+                  mode = { "n" }
+                },
+              }
+            },
+            list = {
+              keys = {
+                ["<a-h>"] = { "quickfix", mode = { "n", "i" } },
+                ["q"] = { "qflist", mode = { "n" } },
+                ["<leader>h"] = { "toggle_hidden", mode = { "n" } },
+                ["<a-.>"] = { "toggle_hidden", mode = { "n" } },
+                ["H"] = {
+                  require("utils").searchAcrossWindows,
+                  mode = { "n" }
+                },
+              }
+            }
+          },
         },
       }
     }
@@ -64,7 +99,7 @@ return {
         local keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-space>", "<a-;>" }
         for _, key in ipairs(keys) do
           vim.keymap.set("t", key, function()
-            -- Quit neovim
+            -- Quit Lazygit
             vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('q', true, false, true), "t", false)
             vim.schedule(function()
               vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), "t", false)
