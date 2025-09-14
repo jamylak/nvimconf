@@ -30,6 +30,14 @@ return {
       end,
       desc = "Open LazyGit"
     },
+    {
+      "<leader>fi",
+      function()
+        local utils = require 'utils'
+        utils.searchExplorer()
+      end,
+      desc = "Open LazyGit"
+    },
   },
   opts = {
     image = {},

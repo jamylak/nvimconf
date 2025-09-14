@@ -213,6 +213,33 @@ function M.switchToTabWithFile(filepath)
   return false
 end
 
+local function focusExplorerInput()
+  -- Focus on filetype snacks_picker_input
+  -- in the current tabpage
+  local tab = vim.api.nvim_get_current_tabpage()
+  local wins = vim.api.nvim_tabpage_list_wins(tab)
+  for _, win in ipairs(wins) do
+    local buf = vim.api.nvim_win_get_buf(win)
+    local ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+    if ft == 'snacks_picker_input' then
+      vim.api.nvim_set_current_win(win)
+      vim.cmd 'startinsert'
+      return true
+    end
+  end
+  -- Didn't find it
+  return false
+end
+
+function M.searchExplorer()
+  if focusExplorerInput() then
+    return
+  end
+  -- No explorer input in tabpage, open one
+  Snacks.explorer.open()
+  vim.defer_fn(focusExplorerInput, 10)
+end
+
 function M.toggleExplorer()
   local e = Snacks.explorer()
   if e then
