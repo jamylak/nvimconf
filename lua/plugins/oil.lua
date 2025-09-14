@@ -93,6 +93,19 @@ return {
         desc = '[e]xa',
         mode = 'n',
       },
+      ['<leader>p'] = {
+        callback = function()
+          local oil = require("oil")
+          local filename = oil.get_cursor_entry().name
+          local dir = oil.get_current_dir()
+          oil.close()
+
+          local img_clip = require("img-clip")
+          img_clip.paste_image({}, dir .. filename)
+        end,
+        desc = 'Pase using imgclip',
+        mode = 'n',
+      },
       ['gp'] = {
         callback = function()
           -- if permissions is in columns then remove it to save space
