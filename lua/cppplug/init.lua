@@ -181,6 +181,7 @@ local function gen_cmake()
 end
 
 local function configure_cmake(on_success_cb, on_error_cb, build_type)
+  -- TODO: Support configure or build in current dir eg. for tests/
   build_type = build_type or "" -- Default to empty string
   local term_buf_nr = vim.api.nvim_create_buf(false, true)
 
@@ -189,7 +190,7 @@ local function configure_cmake(on_success_cb, on_error_cb, build_type)
   local win_id = vim.api.nvim_get_current_win()
   vim.api.nvim_set_current_buf(term_buf_nr)
 
-  local cmake_command = 'cmake -G Ninja -B build -S .'
+  local cmake_command = 'cmake -G Ninja -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON'
   if build_type ~= "" then
     cmake_command = cmake_command .. ' -DCMAKE_BUILD_TYPE=' .. build_type
   end
