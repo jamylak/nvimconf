@@ -93,6 +93,11 @@ return {
   -- lazy = false,
   cmd = { "LazyGit" },
   config = function(_, opts)
+    if vim.g.neovide then
+      -- disable image support in neovide for now
+      -- as it doesn't yet work
+      opts.image = nil
+    end
     -- Make a user command to open lazygit
     vim.api.nvim_create_user_command("LazyGit", function()
       Snacks.lazygit()
