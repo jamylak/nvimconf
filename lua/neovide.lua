@@ -13,7 +13,10 @@ if vim.g.neovide then
           -- TODO: Backup normal cd to the file if git didnt work
           utils.tcd_to_git_root()
           -- Hacky bug fix to stop LSP and formatter not working
-          vim.cmd 'edit'
+          if vim.loop.fs_stat(filename) and not vim.loop.fs_stat(filename).type == "directory" then
+            -- Fixes for file formatters, but don't run for a directory
+            vim.cmd 'edit'
+          end
           vim.defer_fn(function()
             -- hacky bug fix to stop it getting stuck in insert mode
             -- (i think from telescope just having been open)
