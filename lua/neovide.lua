@@ -27,6 +27,11 @@ if vim.g.neovide then
 
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
   vim.o.guifont = 'Fira Code Medium:h18'
+  -- Terminal colors
+  -- Fix for neovide to make the terminal blue color not as harsh
+  vim.g.terminal_color_4 = '#3498db'
+  vim.g.terminal_color_12 = '#3498db'
+
   -- Set current working directory to the project directory env var
   local projects_dir = os.getenv 'PROJECTS_DIR'
   vim.cmd('cd ' .. projects_dir)
@@ -173,8 +178,8 @@ vim.g.neovide_cursor_unfocused_outline_width = 0.18
 vim.g.neovide_title_background_color = "red"
 vim.g.neovide_title_text_color = "pink"
 
-vim.g.neovide_floating_blur_amount_x = 8.0
-vim.g.neovide_floating_blur_amount_y = 8.0
+vim.g.neovide_floating_blur_amount_x = 12.0
+vim.g.neovide_floating_blur_amount_y = 12.0
 
 
 -- Railgun
