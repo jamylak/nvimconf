@@ -139,8 +139,12 @@ function M.fzfDir()
                 vim.cmd 'tabnew'
               end
               vim.cmd('tcd ' .. path)
-              -- vim.cmd 'Telescope find_files'
-              M.fff()
+              if vim.g.neovide then
+                -- Some weird delay for fff in neovide
+                vim.cmd 'Telescope find_files'
+              else
+                M.fff()
+              end
             end
           end
           map('i', '<CR>', function(prompt_bufnr)
