@@ -293,8 +293,10 @@ local function launch_c_cpp_debugger()
 
   -- Check if CMakeLists.txt exists
   if vim.fn.filereadable(cwd .. "/CMakeLists.txt") == 1 then
-    cppplug.build_cmake_once_debug(on_build_success, on_build_failure)
+    -- Assume already configured, just build once
+    cppplug.build_cmake_once(on_build_success, on_build_failure)
   else
+    -- This will setup a new project in debug config
     cppplug.setup_new_project(on_build_success, on_build_failure)
   end
 end

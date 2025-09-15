@@ -255,7 +255,7 @@ local function build_cmake_once(on_success_cb, on_error_cb)
   -- Return focus to original window
 end
 
-local function build_cmake_once_debug(on_success_cb, on_error_cb)
+local function configure_and_build_cmake_once_debug(on_success_cb, on_error_cb)
   configure_cmake(
     function()
       build_cmake_once(on_success_cb, on_error_cb)
@@ -266,6 +266,7 @@ local function build_cmake_once_debug(on_success_cb, on_error_cb)
 end
 
 local function setup_new_project(on_success_cb, on_error_cb)
+  -- Setup a new project, with debug on
   vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
   gen_cmake()
 
@@ -273,7 +274,7 @@ local function setup_new_project(on_success_cb, on_error_cb)
   configure_cmake(
     function() -- configure_cmake doesn't return output_path
       vim.notify("CMake configure successful. Building project...", vim.log.levels.INFO)
-      build_cmake_once_debug(
+      build_cmake_once(
         function(output_path) -- build_cmake_once now returns output_path
           vim.notify("New CMake project setup and build complete!", vim.log.levels.INFO)
           if type(on_success_cb) == 'function' then
@@ -293,7 +294,8 @@ local function setup_new_project(on_success_cb, on_error_cb)
       if type(on_error_cb) == 'function' then
         on_error_cb(error_output)
       end
-    end
+    end,
+    "Debug"
   )
 end
 
@@ -388,8 +390,8 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeBuildOnce", function(opts) build_cmake_once(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
 
-  vim.api.nvim_create_user_command("CMakeBuildOnceDebug",
-    function(opts) build_cmake_once_debug(opts.fargs[1], opts.fargs[2]) end,
+  vim.api.nvim_create_user_command("CMakeConfigureAndBuildOnceDebug",
+    function(opts) configure_and_build_cmake_once_debug(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
 end
 
@@ -398,6 +400,6 @@ M.gen_c = gen_c
 M.gen_cmake = gen_cmake
 M.setup_new_project = setup_new_project
 M.build_cmake_once = build_cmake_once
-M.build_cmake_once_debug = build_cmake_once_debug
+M.configure_and_build_cmake_once_debug = configure_and_build_cmake_once_debug
 
 return M
