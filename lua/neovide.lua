@@ -29,7 +29,7 @@ if vim.g.neovide then
   end)
 
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
-  vim.o.guifont = 'Fira Code Medium:h20'
+  vim.o.guifont = 'Fira Code Medium:h19'
   -- Terminal colors
   -- Fix for neovide to make the terminal blue color not as harsh
   vim.g.terminal_color_4 = '#3498db'
