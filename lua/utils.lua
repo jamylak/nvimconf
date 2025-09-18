@@ -121,6 +121,97 @@ function M.fff()
 end
 
 function M.fzfDir()
+  local function projTabFindFiles(path)
+    if path and path ~= '' then
+      if IsNonEmptyBuffer() then
+        vim.cmd 'tabnew'
+      end
+      vim.cmd('tcd ' .. path)
+      if vim.g.neovide then
+        -- Some weird delay for fff in neovide
+        M.fff()
+        -- vim.cmd 'Telescope find_files'
+      else
+        M.fff()
+      end
+    end
+  end
+
+  local function passthru(keys)
+    return function(picker, item)
+      -- close the picker and pass keys through to normal mode
+      picker:close()
+      -- Avoid recursive call to same thing
+      vim.schedule(function()
+        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), "m", false)
+      end)
+    end
+  end
+
+  if vim.g.neovide then
+    -- if true then
+    -- Neovide is slow at the system call
+    -- Probably the system call was bad anyway
+    -- and may move this to snacks anyway
+    local picker = require 'snacks.picker'
+    picker.projects({
+      -- Not working yet
+      matcher = {
+        history_bonus = true,
+        frecency = false,
+      },
+      -- for the moment just use snacks only for the project listing
+      confirm = function(picker, item)
+        picker:close()
+        projTabFindFiles(item.file)
+      end,
+      dev = { "~/bar", "~/proj" },
+      actions = {
+        new_proj_dir = function(picker, _)
+          -- Make a new project dir in ~/bar based
+          -- off pikcer input
+          local input = picker.input.filter.pattern
+
+          if input and input ~= '' then
+            local dir = vim.fn.expand('~/bar/' .. input)
+            picker:close()
+            -- vim.schedule(function()
+            vim.fn.mkdir(dir, 'p')
+            if IsNonEmptyBuffer() then
+              vim.cmd 'tabnew'
+            end
+            vim.cmd('tcd ' .. dir)
+            -- M.fff()
+            vim.cmd 'Telescope find_files'
+          end
+        end
+      },
+      win = {
+        preview = { minimal = true },
+        input = {
+          keys = vim.tbl_extend("force", {
+            ["<C-w>"] = { "<c-s-w>", mode = { "i" }, expr = true, desc = "delete word" },
+            ["<C-a>"] = { "<c-o>0", mode = { "i" }, expr = true, desc = "goto start" },
+            ["<C-k>"] = { "<c-o>D", mode = { "i" }, expr = true, desc = "delete rest" },
+            -- has issues going to the end of the line
+            ["<a-f>"] = { "<c-o>w", mode = { "i" }, expr = true, desc = "word forward" },
+            ["<s-enter>"] = { "new_proj_dir", mode = { "i" }, desc = "New project" },
+          }, (function()
+            -- Pass through these keys to normal mode
+            local passthru_keys = { "<a-i>", "<a-u>", "<a-y>", "<a-space>", "<a-o>", "<a-g>", "<a-n>", "<c-g>", "<a-;>" }
+            local t = {}
+            for _, k in ipairs(passthru_keys) do
+              t[k] = { passthru(k), mode = { "i" }, expr = true, desc = "passthru" }
+            end
+            return t
+          end)())
+        }
+      }
+    }
+    )
+    return
+  end
+
   -- TODO: /tmp and then it will do CD instead of git root?
   local dirs = vim.fn.split(vim.fn.system [[ls -dt /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]],
     '\n')
@@ -133,20 +224,6 @@ function M.fzfDir()
         },
         sorter = require('telescope.config').values.generic_sorter {},
         attach_mappings = function(_, map)
-          local function projTabFindFiles(path)
-            if path and path ~= '' then
-              if IsNonEmptyBuffer() then
-                vim.cmd 'tabnew'
-              end
-              vim.cmd('tcd ' .. path)
-              if vim.g.neovide then
-                -- Some weird delay for fff in neovide
-                vim.cmd 'Telescope find_files'
-              else
-                M.fff()
-              end
-            end
-          end
           map('i', '<CR>', function(prompt_bufnr)
             local selection = require('telescope.actions.state').get_selected_entry()
             require('telescope.actions').close(prompt_bufnr)
