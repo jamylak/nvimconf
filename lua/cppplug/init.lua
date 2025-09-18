@@ -53,7 +53,8 @@ if (ENABLE_FUZZING)
   target_compile_options(fuzz_target PRIVATE -fsanitize=fuzzer,address,undefined -O1 -g)
   target_link_options(fuzz_target PRIVATE -fsanitize=fuzzer,address,undefined)
 endif()
-  ]]
+
+]]
 
   -- todo: memory, thread as well?
 end
@@ -79,7 +80,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
   -Wnull-dereference -Wdouble-promotion -Wformat=2
 )
 ]]
-  local formatted_content = process_cmake_template(content)
+  local formatted_content = fuzzsan_template() .. process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
   vim.notify("Generated C++ CMakeLists.txt in " .. vim.fn.getcwd())
 
@@ -118,6 +119,7 @@ local function setupGit()
   local gitignore_path = ".gitignore"
   local gitignore_exists = vim.fn.filereadable(gitignore_path) == 1
   if gitignore_exists then
+    -- TODO: update to search for it first before adding to the end
     -- Just add it to the end
     -- local gitignore_file = io.open(gitignore_path, "a")
     -- if gitignore_file then
