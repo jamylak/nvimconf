@@ -119,15 +119,15 @@ local function setupGit()
   local gitignore_exists = vim.fn.filereadable(gitignore_path) == 1
   if gitignore_exists then
     -- Just add it to the end
-    local gitignore_file = io.open(gitignore_path, "a")
-    if gitignore_file then
-      gitignore_file:write("\nbuild/\n")
-      gitignore_file:close()
-      vim.notify("Added 'build/' to existing .gitignore", vim.log.levels.INFO
-      )
-    else
-      vim.notify("Failed to open .gitignore for appending", vim.log.levels.ERROR)
-    end
+    -- local gitignore_file = io.open(gitignore_path, "a")
+    -- if gitignore_file then
+    --   gitignore_file:write("\nbuild/\n")
+    --   gitignore_file:close()
+    --   vim.notify("Added 'build/' to existing .gitignore", vim.log.levels.INFO
+    --   )
+    -- else
+    --   vim.notify("Failed to open .gitignore for appending", vim.log.levels.ERROR)
+    -- end
   else
     -- Create a new .gitignore file
     -- with build entry
