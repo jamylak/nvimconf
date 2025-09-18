@@ -465,7 +465,11 @@ return {
                 vim.cmd 'Telescope find_files'
               end
             end,
-            -- ['<m-n>'] = require('telescope.actions.layout').cycle_layout_next,
+            ['<m-n>'] = function(prompt_bufnr)
+              require('telescope.actions').close(prompt_bufnr)
+              local utils = require 'utils'
+              utils.fzfDir()
+            end,
             -- vim.keymap.set('n', '<m-o>', builtin.oldfiles, { silent = true, desc = '[F]ind Recent' })
             ['<m-y>'] = function()
               local utils = require 'utils'
