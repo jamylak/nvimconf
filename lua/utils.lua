@@ -13,7 +13,7 @@ function M.get_git_root(path)
   end
 
   -- Execute the git command to find the root
-  local handle = io.popen('git -C ' .. path .. ' rev-parse --show-toplevel')
+  local handle = io.popen('git -C ' .. path .. ' rev-parse --show-toplevel 2>/dev/null')
   local result = handle:read '*a'
   handle:close()
 
@@ -30,7 +30,7 @@ end
 function M.cd_to_git_root(path)
   path = M.get_git_root(path)
   if path == '' then
-    print 'Not a git repository or some other error occurred'
+    -- print 'Not a git repository or some other error occurred'
   else
     -- Change the directory
     vim.cmd('cd ' .. path)
