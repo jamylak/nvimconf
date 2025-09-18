@@ -1,5 +1,13 @@
 -- Neovide settings
 if vim.g.neovide then
+  local function closeAllFloatingWindows()
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+      if vim.api.nvim_win_get_config(win).relative ~= '' then
+        vim.api.nvim_win_close(win, true)
+      end
+    end
+  end
+
   vim.schedule(function()
     -- https://github.com/neovide/neovide/blob/db41b205200aff74530910bb5f9d666b8ffcde55/lua/init.lua#L131
     -- https://github.com/neovide/neovide/blob/db41b205200aff74530910bb5f9d666b8ffcde55/src/bridge/ui_commands.rs#L209
@@ -7,6 +15,7 @@ if vim.g.neovide then
     if _G.neovide and _G.neovide.private and _G.neovide.private.dropfile then
       local orig = _G.neovide.private.dropfile
       _G.neovide.private.dropfile = function(filename, tabs)
+        closeAllFloatingWindows()
         vim.schedule(function()
           local utils = require 'utils'
           -- Make sure to tcd for new files
@@ -54,25 +63,11 @@ if vim.g.neovide then
   -- opening a file from Finder or Spotlight
   -- Since i put an auto telescope on app startup but files get sent in soon after
   vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-    callback = function()
-      for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.bo[buf].filetype == "TelescopePrompt" then
-          require("telescope.actions").close(require("telescope.actions.state").get_current_picker(buf).prompt_bufnr)
-        end
-      end
-    end,
+    callback = closeAllFloatingWindows,
   })
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "netrw",
-    callback = function()
-      for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.bo[buf].filetype == "TelescopePrompt" then
-          require("telescope.actions").close(require("telescope.actions.state").get_current_picker(buf).prompt_bufnr)
-        end
-      end
-    end,
+    callback = closeAllFloatingWindows,
   })
 
 
@@ -97,7 +92,7 @@ if vim.g.neovide then
       cmd = '<ESC>'
     end
     -- Terminal shortcut
-    vim.api.nvim_set_keymap(mode, '<D-j>', cmd .. ' te', { silent = true })
+    vim.api.nvim_set_keymap(mode, '<D-j>', '<ESC>' .. cmd .. ' te', { silent = true })
     -- Set D-0 to D-9 to escape then switch to the corresponding tab
     for i = 0, 9 do
       vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>',
