@@ -256,12 +256,14 @@ local function launch_c_cpp_debugger()
     local config = vim.tbl_deep_extend("force", defaults, user_cfg or {})
     if config.request == 'attach' then
       config.program = nil
-      config.pid = function()
-        return coroutine.create(function(co)
-          pick_process(function(pid)
-            coroutine.resume(co, pid)
+      if not config.connect then
+        config.pid = function()
+          return coroutine.create(function(co)
+            pick_process(function(pid)
+              coroutine.resume(co, pid)
+            end)
           end)
-        end)
+        end
       end
     end
 
