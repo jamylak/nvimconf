@@ -59,12 +59,6 @@ if vim.g.neovide then
     vim.api.nvim_chan_send(vim.b[current_buf].terminal_job_id, clipboard_content)
   end
 
-  -- Hacky bugfix to close any open telescope windows when
-  -- opening a file from Finder or Spotlight
-  -- Since i put an auto telescope on app startup but files get sent in soon after
-  vim.api.nvim_create_autocmd({ "BufReadPost" }, {
-    callback = closeAllFloatingWindows,
-  })
   vim.api.nvim_create_autocmd("FileType", {
     pattern = "netrw",
     callback = closeAllFloatingWindows,
