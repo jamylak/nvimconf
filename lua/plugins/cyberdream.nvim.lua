@@ -2,7 +2,7 @@ return {
   "scottmckendry/cyberdream.nvim",
   -- event = { 'BufReadPost', 'BufWritePost' },
   event = "VeryLazy",
-  priority = 1000,
+  priority = 100000,
   config = function(_, opts)
     local orange = "#efbd5e"
     local black = "#000000"
