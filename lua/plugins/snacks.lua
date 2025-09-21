@@ -43,6 +43,13 @@ return {
     image = {},
     input = {},
     picker = {
+      win = {
+        input = {
+          keys = {
+            -- ["<C-a>"] = { "<c-o>0", mode = { "i" }, expr = true, desc = "goto start" },
+          }
+        }
+      },
       sources = {
         explorer = {
           hidden = true,
