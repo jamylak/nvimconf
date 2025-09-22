@@ -38,7 +38,7 @@ if vim.g.neovide then
   end)
 
   -- vim.api.nvim_set_keymap('n', '<D-v>', '"*p', { noremap = true })
-  vim.o.guifont = 'Fira Code Medium:h19'
+  vim.o.guifont = 'Fira Code Medium:h19.5'
   -- Terminal colors
   -- Fix for neovide to make the terminal blue color not as harsh
   vim.g.terminal_color_4 = '#3498db'
@@ -189,3 +189,8 @@ vim.g.neovide_cursor_vfx_opacity = 1000.0
 vim.g.neovide_cursor_vfx_particle_lifetime = 0.5
 vim.g.neovide_cursor_vfx_particle_density = 100.0
 vim.g.neovide_cursor_vfx_particle_speed = 10.0
+
+local alpha = function()
+  return string.format("%x", math.floor(255 * 0.3))
+end
+vim.g.neovide_background_color = "#002450" .. alpha()
