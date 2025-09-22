@@ -1,8 +1,14 @@
 return {
   "scottmckendry/cyberdream.nvim",
+  -- cond = function()
+  --   return not vim.g.neovide
+  -- end,
   -- event = { 'BufReadPost', 'BufWritePost' },
   event = "VeryLazy",
   priority = 100000,
+  keys = {
+    { "<leader>tt", ":CyberdreamToggleMode<CR>", desc = "Toggle Cyberdream Mode" },
+  },
   config = function(_, opts)
     local orange = "#efbd5e"
     local black = "#000000"
@@ -10,7 +16,8 @@ return {
       transparent = true,
       -- Improve start up time by caching highlights. Generate cache with :CyberdreamBuildCache and clear with :CyberdreamClearCache
       -- Currently it's having issues
-      cache = true,
+      cache = not vim.g.neovide,
+      borderless_pickers = false,
       terminal_colors = false,
       highlights = {
         Visual = { bg = orange, fg = black },
