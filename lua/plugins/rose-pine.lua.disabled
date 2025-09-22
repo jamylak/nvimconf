@@ -1,0 +1,17 @@
+-- lua/plugins/rose-pine.lua
+return {
+  "rose-pine/neovim",
+  cond = function()
+    return vim.g.neovide
+  end,
+  event = "VeryLazy",
+  priority = 10000,
+  config = function(_, opts)
+    require("rose-pine").setup({
+      styles = {
+        transparency = true,
+      },
+    })
+    vim.cmd("colorscheme rose-pine")
+  end
+}
