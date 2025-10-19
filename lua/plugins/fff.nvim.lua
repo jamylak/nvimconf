@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 return {
   "dmtrKovalenko/fff.nvim",
+  commit = "51f3259",
   build = "cargo build --release",
   cmd = {
     "FFF",
