@@ -488,6 +488,41 @@ return {
       },
     })
 
+    local repl_only_mode = false
+    vim.api.nvim_create_user_command("DapToggleREPLOnly", function()
+      local filetype = vim.bo.filetype
+
+      repl_only_mode = not repl_only_mode
+
+      if dap.session() then
+        dapui.close()
+      end
+
+      if repl_only_mode then
+        dapui.setup({
+          layouts = { {
+            elements = { { id = "repl", size = 1 } },
+            position = "right",
+            size = 80,
+          } },
+        })
+      else
+        if filetype == 'python' then
+          setup_python_dapui_layouts()
+        elseif filetype == 'cpp' or filetype == 'c' or filetype == 'zig' or filetype == 'rust' then
+          setup_cpp_dapui_layouts()
+        else
+          setup_python_dapui_layouts() -- fallback
+        end
+      end
+
+      if dap.session() then
+        dapui.open()
+      end
+    end, {
+      desc = "Toggle DAP REPL only mode",
+    })
+
     dap.listeners.after.event_initialized['dapui_config'] = function()
       dapui.open()
     end
