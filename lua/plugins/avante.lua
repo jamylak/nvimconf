@@ -31,7 +31,24 @@ return {
   opts = {
     -- add any opts here
     -- for example
-    provider = "vertex",
+    provider = "copilot",
+    acp_providers = {
+      ["gemini-cli"] = {
+        command = "gemini",
+        args = { "--experimental-acp" },
+        env = {
+          NODE_NO_WARNINGS = "1",
+          GEMINI_API_KEY = os.getenv("GEMINI_API_KEY"),
+        },
+      },
+      ["codex"] = {
+        command = "codex-acp",
+        env = {
+          NODE_NO_WARNINGS = "1",
+          -- OPENAI_API_KEY = os.getenv("OPENAI_API_KEY"),
+        },
+      },
+    },
     providers = {
       vertex = {
         endpoint = "https://aiplatform.googleapis.com/v1/projects/PROJECT_ID/locations/LOCATION/publishers/google/models",
