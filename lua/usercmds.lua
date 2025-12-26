@@ -1,0 +1,6 @@
+vim.api.nvim_create_user_command('LeftMargin', function()
+  vim.cmd('vnew')
+  vim.cmd('wincmd H')
+  vim.cmd('vertical resize 30')
+  vim.cmd('wincmd W')
+end, { desc = 'Create an empty vertical split to the left of the current window' })
