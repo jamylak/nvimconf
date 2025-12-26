@@ -60,7 +60,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 return {
   "dmtrKovalenko/fff.nvim",
-  commit = "51f3259",
   build = "cargo build --release",
   cmd = {
     "FFF",
@@ -92,6 +91,13 @@ return {
     },
     {
       "<c-space>",
+      function()
+        require("utils").fff()
+      end,
+      desc = "Open file picker",
+    },
+    {
+      "<c-return>",
       function()
         require("utils").fff()
       end,
