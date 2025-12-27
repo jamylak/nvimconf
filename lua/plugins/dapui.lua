@@ -4,6 +4,19 @@
 -- TODO:
 -- 1. Assembly link EACH op code -> Description / Docs
 -- 2. Attach to dap disasm view and shift K = doc lookup above
+
+local repl_only_mode = false
+
+local function setup_repl_only_layout()
+  require('dapui').setup({
+    layouts = { {
+      elements = { { id = "repl", size = 1 } },
+      position = "right",
+      size = 80,
+    } },
+  })
+end
+
 local function ensure_dap_config()
   local config_dir = vim.fn.getcwd() .. "/.nvim"
   local config_file = config_dir .. "/dap.lua"
@@ -180,7 +193,11 @@ local function launch_python_debugger()
     local function on_terminated()
       dap.listeners.after.event_terminated["restart_and_run_python"] = nil
       vim.notify("✅ Old DAP session terminated, launching new debugger", vim.log.levels.DEBUG)
-      setup_python_dapui_layouts()
+      if repl_only_mode then
+        setup_repl_only_layout()
+      else
+        setup_python_dapui_layouts()
+      end
       dap_run_python()
 
       pcall(dapui.open)
@@ -191,7 +208,11 @@ local function launch_python_debugger()
     dap.terminate()
   else
     vim.notify("✅ Launching debugger", vim.log.levels.DEBUG)
-    setup_python_dapui_layouts()
+    if repl_only_mode then
+      setup_repl_only_layout()
+    else
+      setup_python_dapui_layouts()
+    end
     dap_run_python()
 
     pcall(dapui.open)
@@ -267,7 +288,11 @@ local function launch_c_cpp_debugger()
       end
     end
 
-    setup_cpp_dapui_layouts()
+    if repl_only_mode then
+      setup_repl_only_layout()
+    else
+      setup_cpp_dapui_layouts()
+    end
 
     -- Check if a session is active
     if dap.session() then
@@ -342,7 +367,11 @@ local function launch_rust_debugger()
       end
     end
 
-    setup_cpp_dapui_layouts()
+    if repl_only_mode then
+      setup_repl_only_layout()
+    else
+      setup_cpp_dapui_layouts()
+    end
 
     -- Check if a session is active
     if dap.session() then
@@ -403,7 +432,11 @@ local function launch_zig_debugger()
     end
   end
 
-  setup_cpp_dapui_layouts()
+  if repl_only_mode then
+    setup_repl_only_layout()
+  else
+    setup_cpp_dapui_layouts()
+  end
 
   if dap.session() then
     local function on_terminated()
@@ -488,7 +521,6 @@ return {
       },
     })
 
-    local repl_only_mode = false
     vim.api.nvim_create_user_command("DapToggleREPLOnly", function()
       local filetype = vim.bo.filetype
 
@@ -499,13 +531,7 @@ return {
       end
 
       if repl_only_mode then
-        dapui.setup({
-          layouts = { {
-            elements = { { id = "repl", size = 1 } },
-            position = "right",
-            size = 80,
-          } },
-        })
+        setup_repl_only_layout()
       else
         if filetype == 'python' then
           setup_python_dapui_layouts()
