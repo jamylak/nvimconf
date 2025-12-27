@@ -1,1 +1,1 @@
-{"contributes":{"snippets":[{"path":"./glsl.jsonc","language":["glsl"]},{"path":"./cpp.json","language":["cpp"]},{"path":"./lua.json","language":["lua"]}]},"name":"my-snippets2"}
+{"contributes":{"snippets":[{"language":["glsl"],"path":"./glsl.jsonc"},{"language":["cpp"],"path":"./cpp.json"},{"language":["lua"],"path":"./lua.json"},{"language":["rust"],"path":"./rust.json"}]},"name":"my-snippets2"}
