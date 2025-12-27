@@ -267,6 +267,36 @@ local function configure_and_build_cmake_once_debug(on_success_cb, on_error_cb)
   )
 end
 
+local function run_cmake_once(executable_path)
+  local term_buf_nr = vim.api.nvim_create_buf(false, true)
+
+  -- Open a new split window
+  vim.cmd('sp')
+  local win_id = vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_buf(term_buf_nr)
+
+  vim.fn.termopen(executable_path, {
+    on_exit = function(job_id, exit_code, event)
+      vim.schedule(function()
+        if exit_code == 0 then
+          vim.notify('Program exited successfully.', vim.log.levels.INFO)
+        else
+          vim.notify('Program exited with errors. Terminal left open for inspection.', vim.log.levels.ERROR)
+        end
+        scroll_buffer_to_bottom(term_buf_nr)
+        vim.api.nvim_set_current_win(win_id)
+        vim.cmd('startinsert')
+      end)
+    end
+  })
+  vim.cmd('wincmd p')
+  scroll_buffer_to_bottom(term_buf_nr)
+end
+
+local function build_and_run_once_cmake(on_success_cb, on_error_cb)
+  build_cmake_once(run_cmake_once, on_error_cb)
+end
+
 local function setup_new_project(on_success_cb, on_error_cb)
   -- Setup a new project, with debug on
   vim.notify("Generating CMakeLists.txt for project...", vim.log.levels.INFO)
@@ -395,6 +425,9 @@ function M.setup(opts)
   vim.api.nvim_create_user_command("CMakeConfigureAndBuildOnceDebug",
     function(opts) configure_and_build_cmake_once_debug(opts.fargs[1], opts.fargs[2]) end,
     { nargs = '*' })
+
+  vim.api.nvim_create_user_command("CMakeBuildAndRunOnce", function(opts) build_and_run_once_cmake(opts.fargs[1], opts.fargs[2]) end,
+    { nargs = '*' })
 end
 
 M.gen_cpp = gen_cpp
@@ -403,5 +436,6 @@ M.gen_cmake = gen_cmake
 M.setup_new_project = setup_new_project
 M.build_cmake_once = build_cmake_once
 M.configure_and_build_cmake_once_debug = configure_and_build_cmake_once_debug
+M.build_and_run_once_cmake = build_and_run_once_cmake
 
 return M
