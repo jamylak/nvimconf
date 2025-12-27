@@ -193,9 +193,10 @@ return {
           name = 'nvim_lsp',
           -- https://stackoverflow.com/questions/73092651/neovim-how-to-filter-out-text-snippets-from-nvim-lspconfig-nvim-cmp
           -- Filter only for lua?
-          entry_filter = function(entry, ctx)
-            return require('cmp').lsp.CompletionItemKind.Text ~= entry:get_kind()
-          end,
+          -- entry_filter = function(entry, ctx)
+          -- local kind = entry:get_kind()
+          -- return kind == nil or kind ~= require('cmp').lsp.CompletionItemKind.Text
+          -- end,
         },
         { name = 'path', option = {
           get_cwd = function(param)
