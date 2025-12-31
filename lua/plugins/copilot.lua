@@ -6,6 +6,8 @@ return {
   -- And now it will give error
   -- [Copilot.lua] RPC[Error] code_name = InvalidParams, message = "Document for URI could not be found: file:///private/tmp/gloo.lua"
   -- But if you do :e it fixes it...
+  -- Quickfix for https://github.com/tonisives/ovim/issues/19 for now
+  enabled = vim.env.SHELL ~= "/bin/zsh",
   event = 'VeryLazy',
   cmd = 'Copilot',
   opts = {
