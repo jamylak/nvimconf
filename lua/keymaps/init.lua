@@ -167,19 +167,6 @@ end
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
-
--- Allow jk and ji escape in terminal mode but not in yazi or lazygit
--- to allow easy navigation
-vim.api.nvim_create_autocmd('TermOpen', {
-  pattern = '*',
-  callback = function()
-    if not vim.api.nvim_buf_get_name(0):match 'yazi' and not vim.api.nvim_buf_get_name(0):match 'lazygit' then
-      vim.keymap.set('t', 'jk', '<C-\\><C-n>', { buffer = true, silent = true })
-      vim.keymap.set('t', 'ji', '<C-\\><C-n>', { buffer = true, silent = true })
-    end
-  end,
-})
 
 -- Testing escape keys
 local mapping = { 'ji', 'jk' }
