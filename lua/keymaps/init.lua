@@ -17,8 +17,8 @@ end, { silent = true, noremap = true })
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 -- Next quickfix eg. like :cn or :cp but for ]q and [q
-vim.keymap.set('n', ']q', ':cnext<CR>', { desc = 'Go to next [Q]uickfix' })
-vim.keymap.set('n', '[q', ':cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
+vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
+vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
 
 -- [t and ]t to navigate between buffers
 vim.keymap.set('n', '[b', ':bprev<CR>', { desc = 'Go to previous [B]uffer' })
