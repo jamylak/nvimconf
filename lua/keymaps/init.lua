@@ -1,5 +1,5 @@
 local utils = require 'utils'
-require('keymaps.terminal').setup()
+require 'keymaps.terminal'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
