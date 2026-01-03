@@ -1,5 +1,6 @@
 local utils = require 'utils'
 require 'keymaps.terminal'
+require 'keymaps.tabs'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -211,22 +212,9 @@ function ExecuteVisualSelectionAsLua()
   vim.api.nvim_win_set_cursor(0, save_cursor)
 end
 
-vim.keymap.set('n', '<leader>tr', ':tabclose<CR>', { desc = 'Tab Remove' })
-vim.keymap.set('n', '<leader>tl', ':tablast<CR>', { desc = 'Tab Last' })
-vim.keymap.set('n', '<leader>tf', ':tabfirst<CR>', { desc = 'Tab First' })
-vim.keymap.set('n', '<leader>to', ':tabonly <CR>', { desc = 'Tab Only' })
-vim.keymap.set('n', '<leader>tb', '<C-W>T', { desc = 'Move window into tab' })
 vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
-vim.keymap.set('n', '<t', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
-vim.keymap.set('n', '>t', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
-vim.keymap.set('n', '<R', ':tabmove-1<CR>', { desc = 'Move tab to the left' })
-vim.keymap.set('n', '>R', ':tabmove+1<CR>', { desc = 'Move tab to the right' })
-vim.keymap.set('n', '<T', ':tabmove 0<CR>', { desc = 'Move tab to the far left' })
-vim.keymap.set('n', '>T', ':tabmove $<CR>', { desc = 'Move tab to the far right' })
 
 vim.keymap.set('n', '<leader>lc', changeDirWindow, { desc = 'Window Change [C]urrent Directory to parent of curfile' })
-vim.api.nvim_create_user_command('T', ':-tabnew', {})
-vim.api.nvim_create_user_command('TC', ':tabclose', {})
 vim.api.nvim_create_user_command('WQ', function()
   vim.cmd 'wq!'
 end, {})
