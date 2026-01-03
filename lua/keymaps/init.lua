@@ -166,34 +166,6 @@ end
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 
-local function openLazyGitFloating()
-  local width = vim.api.nvim_get_option 'columns'
-  local height = vim.api.nvim_get_option 'lines'
-
-  local win_height = math.ceil(height * 0.8 - 4)
-  local win_width = math.ceil(width * 0.8)
-  local row = math.ceil((height - win_height) / 2 - 1)
-  local col = math.ceil((width - win_width) / 2)
-
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_open_win(buf, true, {
-    relative = 'editor',
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-    style = 'minimal',
-  })
-
-  vim.api.nvim_command 'term lazygit'
-  vim.api.nvim_command 'startinsert'
-end
-local function cdOpenLazyGitFloating()
-  -- run cd
-  -- vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('cd', true, true, true), 'n', true)
-  openLazyGitFloating()
-end
-
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 
 -- Allow jk and ji escape in terminal mode but not in yazi or lazygit
