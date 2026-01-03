@@ -609,13 +609,8 @@ vim.api.nvim_create_user_command('F', utils.fzfDir, {})
 
 -- I should be able to do a search eg. /foo
 -- and then it takes me to whatever window that terms is in
-vim.keymap.set('n', '<leader>W', function()
-
-end, { desc = "Jump to window with search term" })
-
--- Search all windows for a pattern and jump to the first match
-vim.keymap.set("n", "<leader>W", utils.searchAcrossWindows, { desc = "Search across all windows and jump to match" })
-vim.keymap.set("n", "H", utils.searchAcrossWindows, { desc = "Search across all windows and jump to match" })
+vim.keymap.set('n', '<leader>W', utils.searchAcrossWindows, { desc = 'Search across all windows and jump to match' })
+vim.keymap.set('n', 'H', utils.searchAcrossWindows, { desc = 'Search across all windows and jump to match' })
 
 vim.api.nvim_create_user_command('KittyRunUVRight', function()
   local filename = vim.api.nvim_buf_get_name(0)
