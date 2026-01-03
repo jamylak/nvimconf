@@ -176,14 +176,6 @@ end, { silent = true, desc = 'Yazi - Vertical Split' })
 vim.keymap.set('n', '<leader>I', function()
   vim.fn.system('fish -c "yazi_new_tab ' .. vim.fn.expand '%:p' .. '"')
 end, { silent = true, desc = 'Yazi - Tab' })
-vim.keymap.set('n', '<C-\\>', function()
-  vim.cmd ':split | term'
-  vim.cmd 'startinsert'
-end, { silent = true, desc = 'Vertical Split' })
-vim.keymap.set('n', '<C-S-\\>', function()
-  vim.cmd ':vsplit | term'
-  vim.cmd 'startinsert'
-end, { silent = true, desc = 'Horizontal Split' })
 
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
   { noremap = true, desc = 'Execute lua' })

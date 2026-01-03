@@ -28,6 +28,14 @@ vim.keymap.set('n', '<S-CR>', terminalNewTab, { desc = 'Terminal - New Tab' })
 vim.keymap.set('n', '<leader>tv', terminalVertical, { desc = 'Terminal - Vertical' })
 vim.keymap.set('n', '<leader>tj', terminalVertical, { desc = 'Terminal - Vertical' })
 vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horizontal' })
+vim.keymap.set('n', '<C-\\>', function()
+  vim.cmd ':split | term'
+  vim.cmd 'startinsert'
+end, { silent = true, desc = 'Vertical Split' })
+vim.keymap.set('n', '<C-S-\\>', function()
+  vim.cmd ':vsplit | term'
+  vim.cmd 'startinsert'
+end, { silent = true, desc = 'Horizontal Split' })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 
