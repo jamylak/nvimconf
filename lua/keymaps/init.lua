@@ -237,13 +237,6 @@ vim.keymap.set('n', '>T', ':tabmove $<CR>', { desc = 'Move tab to the far right'
 vim.keymap.set('n', '<leader>lc', changeDirWindow, { desc = 'Window Change [C]urrent Directory to parent of curfile' })
 vim.api.nvim_create_user_command('T', ':-tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
-vim.api.nvim_create_user_command('TT', terminalNewTab, {})
-vim.api.nvim_create_user_command('TV', terminalVertical, {})
-vim.api.nvim_create_user_command('TH', terminalHorizontal, {})
--- Custom command to start a new terminal with tmux attach
-vim.api.nvim_create_user_command('TA', function()
-  vim.cmd 'new | term tmux a'
-end, {})
 vim.api.nvim_create_user_command('WQ', function()
   vim.cmd 'wq!'
 end, {})

@@ -31,6 +31,14 @@ vim.keymap.set('n', '<leader>th', terminalHorizontal, { desc = 'Terminal - Horiz
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 
+vim.api.nvim_create_user_command('TT', terminalNewTab, {})
+vim.api.nvim_create_user_command('TV', terminalVertical, {})
+vim.api.nvim_create_user_command('TH', terminalHorizontal, {})
+-- Custom command to start a new terminal with tmux attach
+vim.api.nvim_create_user_command('TA', function()
+  vim.cmd 'new | term tmux a'
+end, {})
+
 -- Allow jk and ji escape in terminal mode but not in yazi or lazygit
 vim.api.nvim_create_autocmd('TermOpen', {
   pattern = '*',
