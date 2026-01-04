@@ -7,6 +7,10 @@ vim.keymap.set('v', '<c-e>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', '<c-a>', '0', { desc = 'End of line', silent = true })
 vim.keymap.set('v', '<c-a>', '0', { desc = 'Start of line', silent = true })
 
+-- [+Space and ]+Space to insert newline above or below cursor
+vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
+vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
+
 -- TODO: Give <c-h> something useful
 vim.keymap.set('n', '<c-h>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', 'qi', '>>', { desc = 'Indent', silent = true })

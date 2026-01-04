@@ -110,9 +110,6 @@ vim.api.nvim_create_user_command('S', function()
   vim.cmd('e ' .. new_file_path)
 end, {})
 
--- [+Space and ]+Space to insert newline above or below cursor
-vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
-vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })
 
 
 -- Ctrl Insert key combos
