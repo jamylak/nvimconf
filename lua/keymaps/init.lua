@@ -11,6 +11,7 @@ require 'keymaps.helix'
 require 'keymaps.fzf'
 require 'keymaps.kitty'
 require 'keymaps.yazi'
+require 'keymaps.insert'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -214,22 +215,6 @@ vim.keymap.set('i', '<C-b>', '<Left>', { silent = true })
 vim.keymap.set('i', '<C-p>', '<Up>', { silent = true })
 vim.keymap.set('i', '<C-n>', '<Down>', { silent = true })
 vim.keymap.set('i', '<C-d>', '<Del>', { silent = true })
--- vim.keymap.set('i', '<C-k>', '<c-o>D', { silent = true })
--- Define the Lua function to handle the key mapping logic
-local function check_and_delete()
-  local col = vim.fn.col '.'
-  local line = vim.fn.getline '.'
-  if col <= #line then
-    -- If the cursor is not at the end of the line, delete the characters after the cursor
-    return '<C-o>D'
-  else
-    -- If the cursor is at the end of the line, join with the next line
-    return '<C-o>J'
-  end
-end
-
--- Set the key mapping for Ctrl-K in insert mode
-vim.keymap.set('i', '<C-k>', check_and_delete, { expr = true, noremap = true })
 vim.keymap.set('i', '<A-b>', '<c-o>b', { silent = true })
 vim.keymap.set('i', '<A-f>', '<c-o>w', { silent = true })
 vim.keymap.set('i', '<A-d>', '<c-o>dw', { silent = true })
@@ -240,5 +225,4 @@ vim.keymap.set('i', '<A-S-[>', '<C-o>{', { silent = true })
 vim.keymap.set('i', '<A-S-]>', '<C-o>}', { silent = true })
 vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
 vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
-
 
