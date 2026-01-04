@@ -1,5 +1,9 @@
 local utils = require 'utils'
 
+vim.keymap.set('n', '<a-d>', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
+vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to prev Window', silent = true })
+vim.keymap.set('n', 'M', '<C-W>W', { desc = 'Go to previously active Window', silent = true })
+
 -- [t and ]t to navigate between tabs
 vim.keymap.set('n', '[t', '<cmd>tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', ']t', '<cmd>tabnext<CR>', { desc = 'Go to next [T]ab' })

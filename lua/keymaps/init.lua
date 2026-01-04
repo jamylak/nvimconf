@@ -1,6 +1,6 @@
 local utils = require 'utils'
 require 'keymaps.terminal'
-require 'keymaps.tabs'
+require 'keymaps.navigation'
 require 'keymaps.splits'
 require 'keymaps.clipboard'
 require 'keymaps.lua_tools'
@@ -26,9 +26,6 @@ vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
 vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
 
 -- [t and ]t to navigate between buffers
-vim.keymap.set('n', '<a-d>', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
-vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to prev Window', silent = true })
-vim.keymap.set('n', 'M', '<C-W>W', { desc = 'Go to previously active Window', silent = true })
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
 
 
