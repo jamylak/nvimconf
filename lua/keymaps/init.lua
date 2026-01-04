@@ -1,6 +1,7 @@
 local utils = require 'utils'
 require 'keymaps.terminal'
 require 'keymaps.tabs'
+require 'keymaps.splits'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -116,21 +117,6 @@ end
 -- vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
 vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irectory to parent of curfile' })
 
--- Useful keymaps
-vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
-
-vim.keymap.set('n', '<leader>K', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
-vim.keymap.set('n', '<leader>k', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
-vim.keymap.set('n', '<leader>\\', function()
-  vim.fn.system('fish -c "yazi_hsplit ' .. vim.fn.expand '%:p' .. '"')
-end, { silent = true, desc = 'Yazi - Vertical Split' })
-vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
-vim.keymap.set('n', '<leader>|', function()
-  vim.fn.system('fish -c "yazi_vsplit ' .. vim.fn.expand '%:p' .. '"')
-end, { silent = true, desc = 'Yazi - Vertical Split' })
-vim.keymap.set('n', '<leader>I', function()
-  vim.fn.system('fish -c "yazi_new_tab ' .. vim.fn.expand '%:p' .. '"')
-end, { silent = true, desc = 'Yazi - Tab' })
 
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
   { noremap = true, desc = 'Execute lua' })
