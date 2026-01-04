@@ -1,3 +1,5 @@
+local utils = require 'utils'
+
 function HasNonTelescopeBuf()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     local name = vim.api.nvim_buf_get_name(buf)
@@ -28,12 +30,11 @@ function DoesCurrentWindowHaveNonEmptyBuffer()
   return false
 end
 
-local utils = require 'utils'
 vim.keymap.set('n', '<m-n>', utils.fzfDir)
 vim.keymap.set('i', '<m-n>', utils.fzfDir)
 vim.api.nvim_create_user_command('F', utils.fzfDir, {})
 
 -- I should be able to do a search eg. /foo
--- and then it takes me to whatever window that terms is in
+-- and then it takes me to whatever window that term is in
 vim.keymap.set('n', '<leader>W', utils.searchAcrossWindows, { desc = 'Search across all windows and jump to match' })
 vim.keymap.set('n', 'H', utils.searchAcrossWindows, { desc = 'Search across all windows and jump to match' })
