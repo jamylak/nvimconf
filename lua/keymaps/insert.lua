@@ -14,3 +14,39 @@ end
 
 -- Set the key mapping for Ctrl-K in insert mode
 vim.keymap.set('i', '<C-k>', check_and_delete, { expr = true, noremap = true })
+
+-- Ctrl Insert key combos
+-- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
+-- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
+vim.keymap.set('i', '<C-s>', '<c-o>^', { silent = true })
+vim.keymap.set('i', '<C-h>', '<c-o><leader>w', { silent = true })
+vim.keymap.set('i', '<C-y>', '<C-r>+', { silent = true })
+
+-- Paste with alt m
+vim.keymap.set('i', '<a-m>', '<C-r>+', { silent = true })
+vim.keymap.set('n', '<a-m>', '"+p', { silent = true })
+vim.keymap.set('v', '<a-m>', '"+p', { silent = true })
+-- Faster way to do common symbols
+-- vim.keymap.set('i', '<C-i><C-i>', ',', { silent = true })
+vim.keymap.set('i', '<C-9>', ',', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-0>', '.', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-i>', ';', { silent = true, noremap = true })
+vim.keymap.set('i', '<C-->', ';', { silent = true, noremap = true })
+
+vim.keymap.set('i', '<C-f>', '<Right>', { silent = true })
+vim.keymap.set('i', '<C-a>', '<Home>', { silent = true })
+vim.keymap.set('i', '<C-e>', '<End>', { silent = true })
+vim.keymap.set('i', '<C-b>', '<Left>', { silent = true })
+vim.keymap.set('i', '<C-p>', '<Up>', { silent = true })
+vim.keymap.set('i', '<C-n>', '<Down>', { silent = true })
+vim.keymap.set('i', '<C-d>', '<Del>', { silent = true })
+vim.keymap.set('i', '<A-b>', '<c-o>b', { silent = true })
+vim.keymap.set('i', '<A-f>', '<c-o>w', { silent = true })
+vim.keymap.set('i', '<A-d>', '<c-o>dw', { silent = true })
+vim.keymap.set('i', '<C-/>', '<c-o>u', { silent = true })
+vim.keymap.set('i', '<C-S-/>', '<c-o><C-r>', { silent = true })
+vim.keymap.set('i', '<C-v>', '<PageDown>', { silent = true })
+vim.keymap.set('i', '<A-S-[>', '<C-o>{', { silent = true })
+vim.keymap.set('i', '<A-S-]>', '<C-o>}', { silent = true })
+vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
+vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
