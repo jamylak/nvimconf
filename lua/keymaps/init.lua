@@ -15,7 +15,3 @@ require 'keymaps.buffer_ops'
 require 'keymaps.motions'
 require 'keymaps.comments'
 require 'keymaps.cpp'
-
-
--- [t and ]t to navigate between buffers
-vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
