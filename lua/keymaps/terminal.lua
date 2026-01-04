@@ -37,6 +37,7 @@ vim.keymap.set('n', '<C-S-\\>', function()
   vim.cmd 'startinsert'
 end, { silent = true, desc = 'Horizontal Split' })
 
+
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
 vim.keymap.set('t', '90w', '<C-W>', { silent = true })
 

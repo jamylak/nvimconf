@@ -2,7 +2,7 @@
 -- Function to copy yanked text to system clipboard
 local function yank_to_clipboard()
   local yanked_text = vim.fn.getreg '"' -- Get the last yanked text
-  vim.fn.setreg('+', yanked_text)       -- Set the yanked text to the clipboard register
+  vim.fn.setreg('+', yanked_text) -- Set the yanked text to the clipboard register
 end
 
 -- Command to call the Lua function
