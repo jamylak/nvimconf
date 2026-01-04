@@ -12,6 +12,7 @@ require 'keymaps.fzf'
 require 'keymaps.kitty'
 require 'keymaps.yazi'
 require 'keymaps.insert'
+require 'keymaps.comments'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -79,17 +80,6 @@ vim.keymap.set('i', 'jfd', '.', { silent = true })
 vim.keymap.set('i', 'jfg', '>', { silent = true })
 vim.keymap.set('i', 'jfq', '?', { silent = true })
 vim.keymap.set('i', 'jfs', '/', { silent = true })
-
--- Faster comment line
-vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
-vim.api.nvim_set_keymap('n', '<C-c>', 'gcc', { silent = true })
--- vim.api.nvim_set_keymap('n', '<leader>c', 'gcc', { silent = true })
-vim.api.nvim_set_keymap('v', '<leader>c', 'gc', { silent = true })
-vim.api.nvim_set_keymap('v', '<C-c>', 'gc', { silent = true })
-
-
-
-
 
 vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
