@@ -1,12 +1,24 @@
 local utils = require 'utils'
 
+-- Window Navigation
 vim.keymap.set('n', '<a-d>', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
 vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to prev Window', silent = true })
 vim.keymap.set('n', 'M', '<C-W>W', { desc = 'Go to previously active Window', silent = true })
 vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
 vim.keymap.set('n', 'qw', '<C-W><C-O>', { silent = true })
 
--- [t and ]t to navigate between tabs
+-- Buffer Navigation
+vim.api.nvim_create_user_command('B', ':b#', {})
+vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
+vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent = true })
+vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })
+vim.keymap.set('n', '[b', '<cmd>bprev<CR>', { desc = 'Go to previous [B]uffer' })
+vim.keymap.set('n', ']b', '<cmd>bnext<CR>', { desc = 'Go to next [B]uffer' })
+vim.keymap.set('n', 'L', ':b#<CR>', { desc = 'Go to last active buffer', silent = true })
+
+-- TAB Navigation
 vim.keymap.set('n', '[t', '<cmd>tabprev<CR>', { desc = 'Go to previous [T]ab' })
 vim.keymap.set('n', ']t', '<cmd>tabnext<CR>', { desc = 'Go to next [T]ab' })
 vim.keymap.set('n', '<a-[>', '<cmd>tabprev<CR>', { desc = 'Go to previous [T]ab' })
@@ -67,5 +79,4 @@ vim.keymap.set('n', '>T', ':tabmove $<CR>', { desc = 'Move tab to the far right'
 vim.api.nvim_create_user_command('T', ':-tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
 
--- [t and ]t to navigate between buffers
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
