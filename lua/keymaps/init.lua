@@ -18,9 +18,5 @@ require 'keymaps.comments'
 require 'keymaps.cpp'
 
 
--- TODO: Keymap for [TAB] in normal mode?
--- TODO: Maybe reconsider [ENTER] in normal mode?
-
-
 -- [t and ]t to navigate between buffers
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
