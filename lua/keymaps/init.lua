@@ -2,6 +2,7 @@ local utils = require 'utils'
 require 'keymaps.terminal'
 require 'keymaps.tabs'
 require 'keymaps.splits'
+require 'keymaps.clipboard'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -74,18 +75,6 @@ vim.keymap.set('i', 'jfg', '>', { silent = true })
 vim.keymap.set('i', 'jfq', '?', { silent = true })
 vim.keymap.set('i', 'jfs', '/', { silent = true })
 
--- System clipboard
--- Function to copy yanked text to system clipboard
-local function yank_to_clipboard()
-  local yanked_text = vim.fn.getreg '"' -- Get the last yanked text
-  vim.fn.setreg('+', yanked_text)       -- Set the yanked text to the clipboard register
-end
-
--- Command to call the Lua function
-vim.api.nvim_create_user_command('Y', yank_to_clipboard, {})
-
-vim.api.nvim_set_keymap('v', '<S-y>', '"+y', { noremap = true, silent = true })
-
 -- Faster write
 -- Only with function it doesn't come up as double write
 vim.keymap.set('n', '<leader>w', function()
@@ -121,11 +110,6 @@ vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irecto
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
   { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })
--- Leader Y to yank whole file to clipboard
-vim.api.nvim_set_keymap('n', '<leader>y', 'ggVG"+y',
-  { noremap = true, silent = true, desc = 'Yank whole file to clipboard' })
--- vim.api.nvim_set_keymap('n', '<leader>y', 'gv"+y', { noremap = true, silent = true })
--- vim.api.nvim_set_keymap('v', '<leader>y', '"+y', { noremap = true, silent = true })
 
 -- Keymapping to run code inside of a visual selection
 -- using :lua (visually selected code)
