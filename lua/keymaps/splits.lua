@@ -1,6 +1,4 @@
--- Useful keymaps
 vim.keymap.set('n', '\\', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
-
 vim.keymap.set('n', '<leader>K', ':split<CR>', { silent = true, desc = 'Horizontal Split' })
 vim.keymap.set('n', '<leader>k', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', function()
