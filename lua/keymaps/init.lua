@@ -26,11 +26,8 @@ vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
 vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
 
 -- [t and ]t to navigate between buffers
-vim.keymap.set('n', '[b', '<cmd>bprev<CR>', { desc = 'Go to previous [B]uffer' })
-vim.keymap.set('n', ']b', '<cmd>bnext<CR>', { desc = 'Go to next [B]uffer' })
 vim.keymap.set('n', '<a-d>', '<C-W><C-W>', { desc = 'Go to next Window', silent = true })
 vim.keymap.set('n', 'm', '<C-W><C-W>', { desc = 'Go to prev Window', silent = true })
-vim.keymap.set('n', 'L', ':b#<CR>', { desc = 'Go to last active buffer', silent = true })
 vim.keymap.set('n', 'M', '<C-W>W', { desc = 'Go to previously active Window', silent = true })
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
 
