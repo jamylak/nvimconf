@@ -1,7 +1,7 @@
 vim.api.nvim_create_user_command('KittyRunUVRight', function()
   local filename = vim.api.nvim_buf_get_name(0)
-  if filename == "" then
-    print("No file to run.")
+  if filename == '' then
+    print 'No file to run.'
     return
   end
   -- TODO: Fix space issues in path
