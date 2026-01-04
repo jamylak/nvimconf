@@ -4,6 +4,7 @@ require 'keymaps.tabs'
 require 'keymaps.splits'
 require 'keymaps.clipboard'
 require 'keymaps.lua_tools'
+require 'keymaps.cwd'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -89,30 +90,9 @@ vim.api.nvim_set_keymap('n', '<C-c>', 'gcc', { silent = true })
 vim.api.nvim_set_keymap('v', '<leader>c', 'gc', { silent = true })
 vim.api.nvim_set_keymap('v', '<C-c>', 'gc', { silent = true })
 
-local changeDir = function()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.api.nvim_set_current_dir(dir_path)
-end
-local changeDirWindow = function()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.cmd('lcd ' .. dir_path)
-end
-local changeDirTab = function()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.cmd('tcd ' .. dir_path)
-end
--- vim.keymap.set('n', 'cd', changeDir, { desc = 'Change [C]urrent [D]irectory to parent of curfile' })
-vim.keymap.set('n', 'cd', changeDirTab, { desc = 'Tab Change [C]urrent [D]irectory to parent of curfile' })
 
 
 
-
-vim.keymap.set('n', '<leader>tc', changeDirTab, { desc = '[T]ab Change [C]urrent Directory to parent of curfile' })
-
-vim.keymap.set('n', '<leader>lc', changeDirWindow, { desc = 'Window Change [C]urrent Directory to parent of curfile' })
 vim.api.nvim_create_user_command('WQ', function()
   vim.cmd 'wq!'
 end, {})
