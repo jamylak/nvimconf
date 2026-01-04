@@ -1,11 +1,9 @@
 local utils = require 'utils'
 
 function GitHubURL()
-  local utils = require 'utils'
   utils.cd_to_git_root()
   local file = vim.fn.expand '%'
   local line = vim.fn.line '.'
-  local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
   local rel_path = vim.fn.fnamemodify(file, ':.')
 
   local remote_url = vim.fn.systemlist('git config --get remote.origin.url')[1]
