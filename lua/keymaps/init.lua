@@ -26,12 +26,6 @@ require 'keymaps.comments'
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
 
 
--- Testing escape keys
-local mapping = { 'ji', 'jk' }
-for _, key in ipairs(mapping) do
-  vim.keymap.set('i', key, '<Esc>', { silent = true })
-end
-
 vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
 vim.keymap.set('i', '90w', '<C-W>', { silent = true })
 vim.keymap.set('i', 'JF', ';', { silent = true })

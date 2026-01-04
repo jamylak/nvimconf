@@ -15,6 +15,12 @@ end
 -- Set the key mapping for Ctrl-K in insert mode
 vim.keymap.set('i', '<C-k>', check_and_delete, { expr = true, noremap = true })
 
+-- Testing escape keys
+local mapping = { 'ji', 'jk' }
+for _, key in ipairs(mapping) do
+  vim.keymap.set('i', key, '<Esc>', { silent = true })
+end
+
 -- Ctrl Insert key combos
 -- vim.keymap.set('i', '<C-j>', '<c-o>w', { silent = true })
 -- vim.keymap.set('i', '<C-d>', '<c-o>b', { silent = true })
