@@ -21,9 +21,6 @@ require 'keymaps.comments'
 -- TODO: Keymap for [TAB] in normal mode?
 -- TODO: Maybe reconsider [ENTER] in normal mode?
 
--- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 -- Next quickfix eg. like :cn or :cp but for ]q and [q
 vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
 vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
@@ -48,8 +45,6 @@ for ch = 97, 122 do
   vim.keymap.set('n', 'gm' .. char, ':normal! `' .. char:upper() .. '<CR>', {})
 end
 
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
-vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
 
 
 -- Testing escape keys

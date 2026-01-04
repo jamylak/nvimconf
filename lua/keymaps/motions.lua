@@ -54,3 +54,9 @@ vim.keymap.set('n', 'qm', 'v$', { desc = 'Visual Select Until $', silent = true 
 
 vim.keymap.set('n', '<C-;>', 'g;', { desc = 'Previous change', silent = true })
 vim.keymap.set('n', '<C-,>', 'g,', { desc = 'Next change', silent = true })
+
+-- Diagnostic keymaps
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
+vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open Diagnostic [Q]uickfix list' })
