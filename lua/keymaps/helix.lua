@@ -8,6 +8,7 @@ local function openCurrentFileInHelix()
   vim.fn.system(cmd)
 end
 
+
 vim.keymap.set('n', '<leader><leader>y', ':let @+ = expand("%:p")<CR>',
   { desc = 'Yank filename to clipboard', noremap = true, silent = true })
 vim.keymap.set('n', '<leader>Y', openCurrentFileInHelix, { desc = 'Open current file in helix' })

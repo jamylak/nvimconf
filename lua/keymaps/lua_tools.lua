@@ -23,6 +23,7 @@ function ExecuteVisualSelectionAsLua()
   vim.api.nvim_win_set_cursor(0, save_cursor)
 end
 
+
 vim.api.nvim_set_keymap('v', '<leader><leader>r', ':lua ExecuteVisualSelectionAsLua()<CR>',
   { noremap = true, desc = 'Execute lua' })
 vim.api.nvim_set_keymap('n', '<leader><leader>s', ':source %<CR>', { noremap = true, desc = '[S]ource Lua File' })

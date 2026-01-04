@@ -57,6 +57,7 @@ vim.keymap.set('i', '<A-S-]>', '<C-o>}', { silent = true })
 vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
 vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
 
+
 vim.keymap.set('i', '90w', '<C-W>', { silent = true })
 vim.keymap.set('i', 'JF', ';', { silent = true })
 vim.keymap.set('i', 'jfe', ';', { silent = true })

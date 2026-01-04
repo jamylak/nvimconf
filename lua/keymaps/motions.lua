@@ -65,6 +65,7 @@ vim.keymap.set('n', '<leader><c-q>', vim.diagnostic.setloclist, { desc = 'Open D
 vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
 vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
 
+
 -- For letter in a-z make a keymapping
 -- gm<char> in normal mode to go to the upper case mark
 -- <CHAR>

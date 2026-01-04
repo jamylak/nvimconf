@@ -1,7 +1,7 @@
 -- Switch from header file to source file and vice versa
 -- This is useful when you are working with C/C++ projects
--- For example if i'm in include/abc.h it will go to src/abc.cpp
--- If i'm in src/abc.cpp it will go to include/abc.h
+-- For example if I'm in include/abc.h it will go to src/abc.cpp
+-- If I'm in src/abc.cpp it will go to include/abc.h
 vim.api.nvim_create_user_command('S', function()
   local file_path = vim.fn.expand '%:p:h'
   local file_name = vim.fn.expand '%:t'
