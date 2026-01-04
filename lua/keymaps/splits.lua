@@ -3,7 +3,7 @@ vim.keymap.set('n', '<leader>K', ':split<CR>', { silent = true, desc = 'Horizont
 vim.keymap.set('n', '<leader>k', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>\\', function()
   vim.fn.system('fish -c "yazi_hsplit ' .. vim.fn.expand '%:p' .. '"')
-end, { silent = true, desc = 'Yazi - Vertical Split' })
+end, { silent = true, desc = 'Yazi - Horizontal Split' })
 vim.keymap.set('n', '|', ':vsplit<CR>', { silent = true, desc = 'Vertical Split' })
 vim.keymap.set('n', '<leader>|', function()
   vim.fn.system('fish -c "yazi_vsplit ' .. vim.fn.expand '%:p' .. '"')
