@@ -80,12 +80,6 @@ vim.keymap.set('i', 'jfg', '>', { silent = true })
 vim.keymap.set('i', 'jfq', '?', { silent = true })
 vim.keymap.set('i', 'jfs', '/', { silent = true })
 
--- Faster write
--- Only with function it doesn't come up as double write
-vim.keymap.set('n', '<leader>w', function()
-  vim.cmd 'w'
-end, { silent = true })
-
 -- Faster comment line
 vim.api.nvim_set_keymap('n', 'co', 'gcc', { silent = true })
 vim.api.nvim_set_keymap('n', '<C-c>', 'gcc', { silent = true })
@@ -225,4 +219,3 @@ vim.keymap.set('i', '<A-S-[>', '<C-o>{', { silent = true })
 vim.keymap.set('i', '<A-S-]>', '<C-o>}', { silent = true })
 vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
 vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
-
