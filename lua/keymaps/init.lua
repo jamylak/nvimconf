@@ -6,6 +6,7 @@ require 'keymaps.clipboard'
 require 'keymaps.lua_tools'
 require 'keymaps.cwd'
 require 'keymaps.commands'
+require 'keymaps.git_url'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -251,40 +252,6 @@ vim.keymap.set('i', '<A-S-]>', '<C-o>}', { silent = true })
 vim.keymap.set('i', '<A-S-,>', '<C-o>go', { silent = true })
 vim.keymap.set('i', '<A-S-.>', '<Esc>G$a', { silent = true })
 
-function GitHubURL()
-  local utils = require 'utils'
-  utils.cd_to_git_root()
-  local file = vim.fn.expand '%'
-  local line = vim.fn.line '.'
-  local git_root = vim.fn.systemlist('git rev-parse --show-toplevel')[1]
-  local rel_path = vim.fn.fnamemodify(file, ':.')
-
-  local remote_url = vim.fn.systemlist('git config --get remote.origin.url')[1]
-  if remote_url:find 'git@' then
-    remote_url = remote_url:gsub(':', '/'):gsub('git@', 'https://'):gsub('%.git$', '')
-  elseif remote_url:find 'https://' then
-    remote_url = remote_url:gsub('%.git$', '')
-  end
-
-  local branch = vim.fn.systemlist('git rev-parse --abbrev-ref HEAD')[1]
-
-  return string.format('%s/blob/%s/%s#L%d', remote_url, branch, rel_path, line)
-end
-
-function CopyGitHubURLToClipboard()
-  local url = GitHubURL()
-  vim.fn.setreg('+', url) -- Copies URL to clipboard
-  print 'GH URL copied'
-  return url
-end
-
-function launchGitHubUrl()
-  local url = CopyGitHubURLToClipboard()
-  vim.fn.system('open ' .. url)
-end
-
-vim.keymap.set('n', '<leader><leader>G', CopyGitHubURLToClipboard, { desc = 'Copy GitHub URL' })
-vim.keymap.set('n', '<leader><leader>g', launchGitHubUrl, { desc = 'Launch GitHub URL' })
 
 -- Yazi
 -- Based off this https://www.reddit.com/r/HelixEditor/comments/1j72tmr/use_yazi_file_manager_directly_in_helix_without/
