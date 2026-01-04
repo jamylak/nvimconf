@@ -167,7 +167,8 @@ local function snacksFzfDir()
       picker:close()
       projTabFindFiles(item.file)
     end,
-    dev = { "~/bar", "~/proj" },
+    -- dev = { "~/bar", "~/proj", },
+    dev = { "~/bar", "~/proj", "~.config" },
     actions = {
       new_proj_dir = function(picker, _)
         -- Make a new project dir in ~/bar based
