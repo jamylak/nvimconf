@@ -5,6 +5,7 @@ require 'keymaps.splits'
 require 'keymaps.clipboard'
 require 'keymaps.lua_tools'
 require 'keymaps.cwd'
+require 'keymaps.commands'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
@@ -35,10 +36,6 @@ vim.keymap.set('n', 'L', ':b#<CR>', { desc = 'Go to last active buffer', silent 
 vim.keymap.set('n', 'M', '<C-W>W', { desc = 'Go to previously active Window', silent = true })
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
 
-vim.keymap.set('n', '<leader>m', ':make<CR>', { silent = true, desc = 'Run [M]ake' })
-vim.keymap.set('n', '<leader>q', ':q!<CR>', { silent = true })
-vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { silent = true })
-vim.keymap.set('n', 'Q', ':qall!<CR>', { silent = true })
 
 -- For letter in a-z make a keymapping
 -- gm<char> in normal mode to go to the upper case mark
@@ -93,12 +90,6 @@ vim.api.nvim_set_keymap('v', '<C-c>', 'gc', { silent = true })
 
 
 
-vim.api.nvim_create_user_command('WQ', function()
-  vim.cmd 'wq!'
-end, {})
-vim.api.nvim_create_user_command('Q', function()
-  vim.cmd 'qall!'
-end, {})
 
 vim.api.nvim_create_user_command('B', ':b#', {})
 vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
