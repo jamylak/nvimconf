@@ -66,3 +66,6 @@ vim.keymap.set('n', '>T', ':tabmove $<CR>', { desc = 'Move tab to the far right'
 
 vim.api.nvim_create_user_command('T', ':-tabnew', {})
 vim.api.nvim_create_user_command('TC', ':tabclose', {})
+
+-- [t and ]t to navigate between buffers
+vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
