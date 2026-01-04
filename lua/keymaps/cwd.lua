@@ -1,10 +1,3 @@
-local function changeDir()
-  local file_path = vim.fn.expand '%:p'
-  local dir_path = vim.fn.fnamemodify(file_path, ':h')
-  vim.api.nvim_set_current_dir(dir_path)
-end
-
-local function changeDirWindow()
   local file_path = vim.fn.expand '%:p'
   local dir_path = vim.fn.fnamemodify(file_path, ':h')
   vim.cmd('lcd ' .. dir_path)
