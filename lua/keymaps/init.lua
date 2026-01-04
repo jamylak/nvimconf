@@ -25,21 +25,3 @@ require 'keymaps.cpp'
 
 -- [t and ]t to navigate between buffers
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
-
-
-vim.keymap.set('n', 'gw', '<C-W><C-W>', { silent = true })
-vim.keymap.set('i', '90w', '<C-W>', { silent = true })
-vim.keymap.set('i', 'JF', ';', { silent = true })
-vim.keymap.set('i', 'jfe', ';', { silent = true })
-vim.keymap.set('i', 'jgr', ';', { silent = true })
-vim.keymap.set('i', '902', '>', { silent = true })
-vim.keymap.set('i', '903', '->', { silent = true })
-vim.keymap.set('i', '904', ');', { silent = true })
-vim.keymap.set('t', '90w', '<C-W>', { silent = true })
-vim.keymap.set('n', 'qw', '<C-W><C-O>', { silent = true })
-
-vim.keymap.set('i', 'jfj', ';', { silent = true })
-vim.keymap.set('i', 'jfd', '.', { silent = true })
-vim.keymap.set('i', 'jfg', '>', { silent = true })
-vim.keymap.set('i', 'jfq', '?', { silent = true })
-vim.keymap.set('i', 'jfs', '/', { silent = true })

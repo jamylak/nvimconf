@@ -38,6 +38,7 @@ vim.keymap.set('n', '<C-S-\\>', function()
 end, { silent = true, desc = 'Horizontal Split' })
 
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { silent = true })
+vim.keymap.set('t', '90w', '<C-W>', { silent = true })
 
 vim.api.nvim_set_keymap('n', '<leader><leader>v', ':vsplit | term fish -c "cb; rn;"<CR>',
   { noremap = true, desc = '[c]make build and run vertical ' })
