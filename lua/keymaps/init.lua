@@ -21,24 +21,9 @@ require 'keymaps.comments'
 -- TODO: Keymap for [TAB] in normal mode?
 -- TODO: Maybe reconsider [ENTER] in normal mode?
 
--- Next quickfix eg. like :cn or :cp but for ]q and [q
-vim.keymap.set('n', ']q', '<cmd>cnext<CR>', { desc = 'Go to next [Q]uickfix' })
-vim.keymap.set('n', '[q', '<cmd>cprev<CR>', { desc = 'Go to previous [Q]uickfix' })
 
 -- [t and ]t to navigate between buffers
 vim.keymap.set('n', '<a-q>', ':q!<cr>', { desc = 'Close nvim', silent = true })
-
-
--- For letter in a-z make a keymapping
--- gm<char> in normal mode to go to the upper case mark
--- <CHAR>
-
--- Iterate through the lowercase alphabet
-for ch = 97, 122 do
-  local char = string.char(ch)
-  vim.keymap.set('n', 'gm' .. char, ':normal! `' .. char:upper() .. '<CR>', {})
-end
-
 
 
 -- Testing escape keys
