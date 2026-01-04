@@ -7,6 +7,16 @@ vim.keymap.set('v', '<c-e>', '$', { desc = 'End of line', silent = true })
 vim.keymap.set('n', '<c-a>', '0', { desc = 'End of line', silent = true })
 vim.keymap.set('v', '<c-a>', '0', { desc = 'Start of line', silent = true })
 
+-- Set highlight on search, but clear on pressing <Esc> in normal mode
+vim.opt.hlsearch = true
+vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
+
+-- Keymap to do search with <c-s> eg. same as / but with <c-s>
+-- vim.keymap.set('n', '<C-s>', '/', { silent = true })
+vim.keymap.set('n', '<C-s>', function()
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
+end, { silent = true, noremap = true })
+
 -- [+Space and ]+Space to insert newline above or below cursor
 vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
 vim.keymap.set('n', ']<Space>', 'o<Esc>k', { desc = 'Insert newline below cursor', silent = true })

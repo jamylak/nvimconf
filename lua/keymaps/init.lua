@@ -17,15 +17,6 @@ require 'keymaps.motions'
 require 'keymaps.git_root'
 require 'keymaps.comments'
 
--- Set highlight on search, but clear on pressing <Esc> in normal mode
-vim.opt.hlsearch = true
-vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
-
--- Keymap to do search with <c-s> eg. same as / but with <c-s>
--- vim.keymap.set('n', '<C-s>', '/', { silent = true })
-vim.keymap.set('n', '<C-s>', function()
-  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
-end, { silent = true, noremap = true })
 
 -- TODO: Keymap for [TAB] in normal mode?
 -- TODO: Maybe reconsider [ENTER] in normal mode?
@@ -109,4 +100,3 @@ vim.api.nvim_create_user_command('S', function()
   new_file_path = new_file_path .. '/' .. new_file_name
   vim.cmd('e ' .. new_file_path)
 end, {})
-
