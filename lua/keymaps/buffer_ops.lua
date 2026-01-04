@@ -1,0 +1,6 @@
+vim.api.nvim_create_user_command('B', ':b#', {})
+vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
+vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
+vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent = true })
+vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })

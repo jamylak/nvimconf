@@ -12,6 +12,7 @@ require 'keymaps.fzf'
 require 'keymaps.kitty'
 require 'keymaps.yazi'
 require 'keymaps.insert'
+require 'keymaps.buffer_ops'
 require 'keymaps.comments'
 
 -- Set highlight on search, but clear on pressing <Esc> in normal mode
@@ -81,12 +82,6 @@ vim.keymap.set('i', 'jfg', '>', { silent = true })
 vim.keymap.set('i', 'jfq', '?', { silent = true })
 vim.keymap.set('i', 'jfs', '/', { silent = true })
 
-vim.api.nvim_create_user_command('B', ':b#', {})
-vim.keymap.set('n', '<leader>bd', ':bd!<CR>', { desc = '[B]uffer [D]elete', silent = true })
-vim.keymap.set('n', 'sb', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
-vim.keymap.set('n', 'sj', ':b#<CR>', { desc = '[S]wap [B]uffer', silent = true })
-vim.keymap.set('n', 'sk', ':tabnext#<CR>', { desc = '[S]wap Tab - Next', silent = true })
-vim.keymap.set('n', 'qj', '<C-W>p', { desc = 'Swap Window', silent = true })
 vim.keymap.set('n', 'qb', '<cmd>normal sfb<CR>', { desc = 'Surrounding bracket', silent = true })
 vim.keymap.set('n', 'qv', '<cmd>normal sfnb<CR>', { desc = 'Next surrounding bracket', silent = true })
 vim.keymap.set('n', 'qo', '<cmd>normal vxov<CR>', { desc = 'Cursor to root TS node', silent = true })
