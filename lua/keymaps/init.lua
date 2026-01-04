@@ -1,4 +1,3 @@
-local utils = require 'utils'
 require 'keymaps.terminal'
 require 'keymaps.navigation'
 require 'keymaps.splits'
