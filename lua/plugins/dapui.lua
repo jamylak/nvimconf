@@ -497,6 +497,9 @@ return {
     })
     local dap, dapui = require 'dap', require 'dapui'
 
+    -- needs a default layout as a hack fix for rustaceanvim
+    setup_cpp_dapui_layouts()
+
     require('nvim-dap-virtual-text').setup({
       commented = true
     })
