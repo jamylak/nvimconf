@@ -8,7 +8,8 @@ return {
     "nvim-lua/plenary.nvim",
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
-    "nvim-neotest/neotest-python"
+    "nvim-neotest/neotest-python",
+    "nvim-neotest/neotest-rust",
   },
   opts = {
     -- General options
@@ -74,6 +75,7 @@ return {
     require("neotest").setup({
       adapters = {
         require("neotest-python"),
+        require("neotest-rust"),
       },
     })
   end,

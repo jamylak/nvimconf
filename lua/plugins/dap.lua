@@ -59,11 +59,11 @@ return {
       name = 'lldb',
     }
 
-    dap.adapters.codelldb = {
-      type = 'executable',
-      command = '/usr/local/bin/codelldb',
-      name = 'codelldb',
-    }
+    -- dap.adapters.codelldb = {
+    --   type = 'executable',
+    --   command = '/usr/local/bin/codelldb',
+    --   name = 'codelldb',
+    -- }
 
     local pythonPath = function()
       -- TODO: Needs to be from root of github?? maybe maybe not
