@@ -75,7 +75,7 @@ return {
     require("neotest").setup({
       adapters = {
         require("neotest-python"),
-        require("neotest-rust"),
+        require('rustaceanvim.neotest'),
       },
     })
   end,
