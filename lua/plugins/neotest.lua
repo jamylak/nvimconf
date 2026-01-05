@@ -9,7 +9,6 @@ return {
     "antoinemadec/FixCursorHold.nvim",
     "nvim-treesitter/nvim-treesitter",
     "nvim-neotest/neotest-python",
-    "nvim-neotest/neotest-rust",
   },
   opts = {
     -- General options
