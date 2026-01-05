@@ -331,7 +331,6 @@ end
 local function launch_rust_debugger()
   local dap = require('dap')
   local dapui = require('dapui')
-  local cppplug = require('cppplug')
   local cwd = vim.fn.getcwd()
 
   local function on_build_success()
