@@ -59,7 +59,13 @@ return {
 --     initCommands = { "breakpoint set --name main" },
   },
 --   rust = {
---     args = { "--port", "8080" }
+--     request = 'launch',
+--     program = "target/debug/my-bin",
+--     stopOnEntry = false,
+--     args = { "--port", "8080" },
+--     initCommands = { "breakpoint set --name main" },
+--     -- request = 'attach',
+--     -- connect = { host = 'localhost', port = 1234 },
 --   }
 }
 ]]
@@ -357,12 +363,14 @@ local function launch_rust_debugger()
     local config = vim.tbl_deep_extend("force", defaults, user_cfg or {})
     if config.request == 'attach' then
       config.program = nil
-      config.pid = function()
-        return coroutine.create(function(co)
-          pick_process(function(pid)
-            coroutine.resume(co, pid)
+      if not config.connect then
+        config.pid = function()
+          return coroutine.create(function(co)
+            pick_process(function(pid)
+              coroutine.resume(co, pid)
+            end)
           end)
-        end)
+        end
       end
     end
 
