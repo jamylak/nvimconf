@@ -1,5 +1,6 @@
 vim.keymap.set('n', '<leader>m', ':make<CR>', { silent = true, desc = 'Run [M]ake' })
 vim.keymap.set('n', '<leader>q', ':q!<CR>', { silent = true })
+vim.keymap.set('n', '<leader><leader>q', ':qall!<CR>', { silent = true })
 vim.keymap.set('n', '<leader>Q', ':qall!<CR>', { silent = true })
 vim.keymap.set('n', 'Q', ':qall!<CR>', { silent = true })
 
