@@ -27,7 +27,7 @@ vim.keymap.set('i', '<a-[>', '<esc><cmd>tabprev<CR>', { desc = 'Go to previous [
 vim.keymap.set('i', '<a-]>', '<esc><cmd>tabnext<CR>', { desc = 'Go to next [T]ab' })
 -- gh to do the same as gt -- switch tabs
 vim.keymap.set('n', 'gy', ':tabnext<CR>', { desc = 'Go to next [T]ab' })
-vim.keymap.set('n', 'gh', ':tabprev<CR>', { desc = 'Go to previous [T]ab' })
+vim.keymap.set('n', 'gh', ']g', { desc = 'Go to previous [T]ab', silent = true, remap = true })
 -- Quick  ways to get to certain tabs
 
 -- Iterate through modes: ['n', 'i', 't']
