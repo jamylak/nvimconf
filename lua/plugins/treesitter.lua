@@ -31,14 +31,14 @@ return { -- Highlight, edit, and navigate code
   },
   lazy = true,
   dependencies = {
-    'nvim-treesitter/playground',
+    -- 'nvim-treesitter/playground',
     'nvim-treesitter/nvim-treesitter-textobjects',
     'nvim-treesitter/nvim-treesitter-context',
     "OXY2DEV/markview.nvim",
 
   },
   cmd = {
-    'TSPlaygroundToggle',
+    -- 'TSPlaygroundToggle',
     'TSUpdate',
     'TSInstall',
   },
