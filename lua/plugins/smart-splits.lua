@@ -3,7 +3,9 @@
 -- useful on a-j or a-k
 return {
   'mrjones2014/smart-splits.nvim',
-  build = './kitty/install-kittens.bash',
+  build = (vim.env.KITTY_WINDOW_ID and vim.env.KITTY_WINDOW_ID ~= '')
+      and './kitty/install-kittens.bash'
+      or false,
   keys = {
     -- recommended mappings
     -- resizing splits
