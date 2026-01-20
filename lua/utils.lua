@@ -167,16 +167,15 @@ local function snacksFzfDir()
       picker:close()
       projTabFindFiles(item.file)
     end,
-    -- dev = { "~/bar", "~/proj", },
-    dev = { "~/bar", "~/proj", "~.config" },
+    dev = { "~/proj", },
     actions = {
       new_proj_dir = function(picker, _)
-        -- Make a new project dir in ~/bar based
+        -- Make a new project dir in ~/proj based
         -- off pikcer input
         local input = picker.input.filter.pattern
 
         if input and input ~= '' then
-          local dir = vim.fn.expand('~/bar/' .. input)
+          local dir = vim.fn.expand('~/proj/' .. input)
           picker:close()
           -- vim.schedule(function()
           vim.fn.mkdir(dir, 'p')
@@ -224,7 +223,7 @@ function M.fzfDir()
   end
 
   -- TODO: /tmp and then it will do CD instead of git root?
-  local dirs = vim.fn.split(vim.fn.system [[ls -dt /tmp ~/bar/* ~/proj/* ~/.config/dotfiles ~/.config/nvim 2>/dev/null]],
+  local dirs = vim.fn.split(vim.fn.system [[ls -dt /tmp ~/proj/* 2>/dev/null]],
     '\n')
 
   require('telescope.pickers')
@@ -268,7 +267,7 @@ function M.fzfDir()
             local actions = require 'telescope.actions'
             local input = action_state.get_current_line()
             if input and input ~= '' then
-              local dir = vim.fn.expand('~/bar/' .. input)
+              local dir = vim.fn.expand('~/proj/' .. input)
               actions.close(prompt_bufnr)
               -- vim.schedule(function()
               vim.fn.mkdir(dir, 'p')
