@@ -45,7 +45,15 @@ local function build_capabilities()
 end
 
 local function default_root(bufnr, markers)
-  return vim.fs.root(bufnr, markers) or vim.fn.getcwd()
+  local root = vim.fs.root(bufnr, markers)
+  if root then
+    return root
+  end
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  if name ~= '' then
+    return vim.fn.fnamemodify(name, ':p:h')
+  end
+  return vim.fn.getcwd()
 end
 
 local function setup_hardcoded_servers()
