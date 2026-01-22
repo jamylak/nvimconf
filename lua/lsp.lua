@@ -190,9 +190,9 @@ local function setup_hardcoded_servers()
     },
     {
       name = 'fish_lsp',
-      cmd = { 'fish-lsp' },
+      cmd = { 'fish-lsp', 'start' },
       filetypes = { 'fish' },
-      root_markers = { '.git' },
+      root_markers = { 'config.fish', '.git' },
       install_hint = 'Install: brew install fish-lsp',
     },
     {
