@@ -205,7 +205,7 @@ local function setup_hardcoded_servers()
     {
       name = 'yamlls',
       cmd = { 'yaml-language-server', '--stdio' },
-      filetypes = { 'yaml', 'yml' },
+      filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab', 'yaml.helm-values' },
       root_markers = { '.git' },
       install_hint = 'Install: npm i -g yaml-language-server',
     },
