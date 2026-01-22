@@ -147,41 +147,6 @@ local function setup_hardcoded_servers()
       install_hint = 'Install: brew install lua-language-server',
     },
     {
-      name = 'rust_analyzer',
-      cmd = { 'rust-analyzer' },
-      filetypes = { 'rust' },
-      root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
-      root_dir = function(bufnr)
-        local bufname = vim.api.nvim_buf_get_name(bufnr)
-        local startpath = bufname ~= '' and vim.fn.fnamemodify(bufname, ':p:h') or vim.fn.getcwd()
-        local cargo_toml = vim.fs.find('Cargo.toml', { upward = true, path = startpath })[1]
-        if cargo_toml then
-          if vim.fn.executable('cargo') == 1 then
-            local out = vim.fn.system({
-              'cargo',
-              'metadata',
-              '--no-deps',
-              '--format-version',
-              '1',
-              '--manifest-path',
-              cargo_toml,
-            })
-            local ok, data = pcall(vim.json.decode, out)
-            if ok and data and data.workspace_root then
-              return data.workspace_root
-            end
-          end
-          return vim.fn.fnamemodify(cargo_toml, ':p:h')
-        end
-        local rust_project = vim.fs.find('rust-project.json', { upward = true, path = startpath })[1]
-        if rust_project then
-          return vim.fn.fnamemodify(rust_project, ':p:h')
-        end
-        return default_root(bufnr, { '.git' })
-      end,
-      install_hint = 'Install: rustup component add rust-analyzer (or brew install rust-analyzer)',
-    },
-    {
       name = 'asm_lsp',
       cmd = { 'asm-lsp' },
       filetypes = { 'asm', 'nasm', 'masm', 'gas', 's', 'vmasm' },
