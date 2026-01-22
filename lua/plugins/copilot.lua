@@ -8,7 +8,8 @@ return {
   -- But if you do :e it fixes it...
   -- Quickfix for https://github.com/tonisives/ovim/issues/19 for now
   enabled = vim.env.SHELL ~= "/bin/zsh",
-  event = 'VeryLazy',
+  -- Defer startup cost until you actually start typing.
+  event = 'InsertEnter',
   cmd = 'Copilot',
   opts = {
     suggestion = {
