@@ -181,6 +181,27 @@ local function setup_hardcoded_servers()
       root_markers = { '.git' },
       install_hint = 'Install: npm i -g vscode-langservers-extracted',
     },
+    {
+      name = 'html',
+      cmd = { 'vscode-html-language-server', '--stdio' },
+      filetypes = { 'html' },
+      root_markers = { '.git' },
+      install_hint = 'Install: npm i -g vscode-langservers-extracted',
+    },
+    {
+      name = 'taplo',
+      cmd = { 'taplo', 'lsp', 'stdio' },
+      filetypes = { 'toml' },
+      root_markers = { 'taplo.toml', '.git' },
+      install_hint = 'Install: brew install taplo (or: cargo install taplo-cli --locked)',
+    },
+    {
+      name = 'tsserver',
+      cmd = { 'typescript-language-server', '--stdio' },
+      filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+      root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+      install_hint = 'Install: npm i -g typescript typescript-language-server',
+    },
   }
 
   local function start_for_buf(bufnr)
