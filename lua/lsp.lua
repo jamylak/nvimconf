@@ -97,7 +97,7 @@ local function setup_hardcoded_servers()
     },
     {
       name = 'ty',
-      cmd = { 'ty' },
+      cmd = { 'ty', 'server' },
       filetypes = { 'python' },
       root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
       install_hint = 'Install: brew install ty',
