@@ -91,8 +91,8 @@ local function setup_hardcoded_servers()
     {
       name = 'zls',
       cmd = { 'zls' },
-      filetypes = { 'zig' },
-      root_markers = { 'build.zig', '.git' },
+      filetypes = { 'zig', 'zir' },
+      root_markers = { 'zls.json', 'build.zig', '.git' },
       install_hint = 'Install: brew install zls (or your OS package manager)',
     },
     {
