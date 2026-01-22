@@ -198,7 +198,7 @@ local function setup_hardcoded_servers()
     {
       name = 'lemminx',
       cmd = { 'lemminx' },
-      filetypes = { 'xml' },
+      filetypes = { 'xml', 'xsd', 'xsl', 'xslt', 'svg' },
       root_markers = { '.git' },
       install_hint = 'Install: brew install lemminx (or: sdk install lemminx)',
     },
