@@ -184,8 +184,8 @@ local function setup_hardcoded_servers()
     {
       name = 'asm_lsp',
       cmd = { 'asm-lsp' },
-      filetypes = { 'asm', 'nasm', 'masm', 'gas', 's' },
-      root_markers = { '.git' },
+      filetypes = { 'asm', 'nasm', 'masm', 'gas', 's', 'vmasm' },
+      root_markers = { '.asm-lsp.toml', '.git' },
       install_hint = 'Install: brew install asm-lsp',
     },
     {
