@@ -23,4 +23,19 @@ return {
   'mrcjkb/rustaceanvim',
   version = '^6', -- Recommended
   lazy = false,   -- This plugin is already lazy
+  init = function()
+    vim.g.rustaceanvim = function()
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      local ok, blink = pcall(require, 'blink.cmp')
+      if ok and type(blink.get_lsp_capabilities) == 'function' then
+        capabilities = blink.get_lsp_capabilities(capabilities)
+      end
+
+      return {
+        server = {
+          capabilities = capabilities,
+        },
+      }
+    end
+  end,
 }
