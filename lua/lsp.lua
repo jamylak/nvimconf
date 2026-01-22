@@ -105,8 +105,16 @@ local function setup_hardcoded_servers()
     {
       name = 'clangd',
       cmd = { 'clangd' },
-      filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-      root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
+      filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+      root_markers = {
+        '.clangd',
+        '.clang-tidy',
+        '.clang-format',
+        'compile_commands.json',
+        'compile_flags.txt',
+        'configure.ac',
+        '.git',
+      },
       install_hint = 'Install: brew install llvm (clangd is included)',
     },
     {
