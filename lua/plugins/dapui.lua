@@ -513,24 +513,6 @@ return {
     })
 
     require("dap-disasm").setup({})
-    -- Setup DAP REPL with cmp autocomplete
-    local cmp = require 'cmp'
-    cmp.setup {
-      -- Normally, nvim-cmp disables itself inside "prompt" buffers to avoid interfering with UIs like Telescope prompts.
-      -- But the DAP REPL is a "prompt" buffer — and we do want completions there.
-      -- So this line re-enables it only when the buffer is related to debugging.
-      enabled = function()
-        return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt"
-            or require("cmp_dap").is_dap_buffer()
-      end,
-    }
-
-    cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
-      sources = {
-        { name = "dap" },
-      },
-    })
-
     vim.api.nvim_create_user_command("DapToggleREPLOnly", function()
       local filetype = vim.bo.filetype
 
