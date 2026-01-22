@@ -51,6 +51,16 @@ end
 local function setup_hardcoded_servers()
   local capabilities = build_capabilities()
   local missing = {}
+  local function notify_missing(server, bin)
+    if vim.g.hardcoded_lsp_notify_missing == false then
+      return
+    end
+    local msg = 'LSP not found in PATH: ' .. bin
+    if server.install_hint then
+      msg = msg .. '\n' .. server.install_hint
+    end
+    vim.notify(msg, vim.log.levels.WARN, { title = 'LSP Missing', timeout = 3000 })
+  end
 
   local function get_clients(opts)
     if vim.lsp.get_clients then
@@ -75,18 +85,28 @@ local function setup_hardcoded_servers()
       cmd = { 'zls' },
       filetypes = { 'zig' },
       root_markers = { 'build.zig', '.git' },
+      install_hint = 'Install: brew install zls (or your OS package manager)',
     },
     {
       name = 'ty',
       cmd = { 'ty' },
       filetypes = { 'python' },
       root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
+      install_hint = 'Install: brew install ty',
     },
     {
       name = 'clangd',
       cmd = { 'clangd' },
       filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
       root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
+      install_hint = 'Install: brew install llvm (clangd is included)',
+    },
+    {
+      name = 'gopls',
+      cmd = { 'gopls' },
+      filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+      root_markers = { 'go.work', 'go.mod', '.git' },
+      install_hint = 'Install: brew install gopls (or: go install golang.org/x/tools/gopls@latest)',
     },
     {
       name = 'lua_ls',
@@ -98,24 +118,49 @@ local function setup_hardcoded_servers()
           completion = { callSnippet = 'Replace' },
         },
       },
+      install_hint = 'Install: brew install lua-language-server',
     },
     {
       name = 'rust_analyzer',
       cmd = { 'rust-analyzer' },
       filetypes = { 'rust' },
       root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
+      install_hint = 'Install: rustup component add rust-analyzer (or brew install rust-analyzer)',
+    },
+    {
+      name = 'asm_lsp',
+      cmd = { 'asm-lsp' },
+      filetypes = { 'asm', 'nasm', 'masm', 'gas', 's' },
+      root_markers = { '.git' },
+      install_hint = 'Install: brew install asm-lsp',
+    },
+    {
+      name = 'fish_lsp',
+      cmd = { 'fish-lsp' },
+      filetypes = { 'fish' },
+      root_markers = { '.git' },
+      install_hint = 'Install: brew install fish-lsp',
+    },
+    {
+      name = 'lemminx',
+      cmd = { 'lemminx' },
+      filetypes = { 'xml' },
+      root_markers = { '.git' },
+      install_hint = 'Install: brew install lemminx (or: sdk install lemminx)',
     },
     {
       name = 'yamlls',
       cmd = { 'yaml-language-server', '--stdio' },
       filetypes = { 'yaml', 'yml' },
       root_markers = { '.git' },
+      install_hint = 'Install: npm i -g yaml-language-server',
     },
     {
       name = 'jsonls',
       cmd = { 'vscode-json-language-server', '--stdio' },
       filetypes = { 'json', 'jsonc' },
       root_markers = { 'package.json', '.git' },
+      install_hint = 'Install: npm i -g vscode-json-languageserver',
     },
   }
 
@@ -131,7 +176,7 @@ local function setup_hardcoded_servers()
           if not missing[server.name] then
             missing[server.name] = true
             vim.schedule(function()
-              vim.notify('LSP not found in PATH: ' .. server.cmd[1], vim.log.levels.WARN)
+              notify_missing(server, server.cmd[1])
             end)
           end
           return
@@ -185,6 +230,31 @@ local function setup_hardcoded_servers()
 
   vim.api.nvim_create_user_command('LspStart', function()
     start_for_buf(vim.api.nvim_get_current_buf())
+  end, {})
+
+  vim.api.nvim_create_user_command('LspCheck', function()
+    local lines = { 'LSP binaries on PATH:' }
+    local missing_bins = {}
+    for _, server in ipairs(servers) do
+      local bin = server.cmd[1]
+      if vim.fn.executable(bin) == 1 then
+        table.insert(lines, string.format('✓ %s (%s)', server.name, bin))
+      else
+        table.insert(lines, string.format('✗ %s (%s)', server.name, bin))
+        table.insert(missing_bins, server)
+      end
+    end
+
+    if #missing_bins > 0 then
+      table.insert(lines, '')
+      table.insert(lines, 'Missing:')
+      for _, server in ipairs(missing_bins) do
+        local hint = server.install_hint and (' - ' .. server.install_hint) or ''
+        table.insert(lines, string.format('• %s (%s)%s', server.name, server.cmd[1], hint))
+      end
+    end
+
+    vim.notify(table.concat(lines, '\n'), vim.log.levels.INFO, { title = 'LspCheck', timeout = 5000 })
   end, {})
 end
 
