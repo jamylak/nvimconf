@@ -236,10 +236,14 @@ local function setup_hardcoded_servers()
           return
         end
 
+        local root_dir = server.root_dir
+            and server.root_dir(bufnr)
+            or default_root(bufnr, server.root_markers or { '.git' })
+
         vim.lsp.start({
           name = server.name,
           cmd = server.cmd,
-          root_dir = default_root(bufnr, server.root_markers or { '.git' }),
+          root_dir = root_dir,
           settings = server.settings,
           init_options = server.init_options,
           capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
