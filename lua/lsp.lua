@@ -128,7 +128,17 @@ local function setup_hardcoded_servers()
       name = 'lua_ls',
       cmd = { 'lua-language-server' },
       filetypes = { 'lua' },
-      root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
+      root_markers = {
+        '.emmyrc.json',
+        '.luarc.json',
+        '.luarc.jsonc',
+        '.luacheckrc',
+        '.stylua.toml',
+        'stylua.toml',
+        'selene.toml',
+        'selene.yml',
+        '.git',
+      },
       settings = {
         Lua = {
           completion = { callSnippet = 'Replace' },
