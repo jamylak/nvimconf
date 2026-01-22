@@ -213,8 +213,8 @@ local function setup_hardcoded_servers()
       name = 'jsonls',
       cmd = { 'vscode-json-language-server', '--stdio' },
       filetypes = { 'json', 'jsonc' },
-      root_markers = { 'package.json', '.git' },
-      install_hint = 'Install: npm i -g vscode-json-languageserver',
+      root_markers = { '.git' },
+      install_hint = 'Install: npm i -g vscode-langservers-extracted',
     },
   }
 
