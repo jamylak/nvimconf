@@ -45,7 +45,15 @@ local function build_capabilities()
 end
 
 local function default_root(bufnr, markers)
-  return vim.fs.root(bufnr, markers) or vim.fn.getcwd()
+  local root = vim.fs.root(bufnr, markers)
+  if root then
+    return root
+  end
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  if name ~= '' then
+    return vim.fn.fnamemodify(name, ':p:h')
+  end
+  return vim.fn.getcwd()
 end
 
 local function setup_hardcoded_servers()
@@ -83,22 +91,30 @@ local function setup_hardcoded_servers()
     {
       name = 'zls',
       cmd = { 'zls' },
-      filetypes = { 'zig' },
-      root_markers = { 'build.zig', '.git' },
+      filetypes = { 'zig', 'zir' },
+      root_markers = { 'zls.json', 'build.zig', '.git' },
       install_hint = 'Install: brew install zls (or your OS package manager)',
     },
     {
       name = 'ty',
-      cmd = { 'ty' },
+      cmd = { 'ty', 'server' },
       filetypes = { 'python' },
-      root_markers = { 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
+      root_markers = { 'ty.toml', 'pyproject.toml', 'setup.py', 'setup.cfg', 'requirements.txt', '.git' },
       install_hint = 'Install: brew install ty',
     },
     {
       name = 'clangd',
       cmd = { 'clangd' },
-      filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda', 'proto' },
-      root_markers = { 'compile_commands.json', 'compile_flags.txt', '.git' },
+      filetypes = { 'c', 'cpp', 'objc', 'objcpp', 'cuda' },
+      root_markers = {
+        '.clangd',
+        '.clang-tidy',
+        '.clang-format',
+        'compile_commands.json',
+        'compile_flags.txt',
+        'configure.ac',
+        '.git',
+      },
       install_hint = 'Install: brew install llvm (clangd is included)',
     },
     {
@@ -112,7 +128,17 @@ local function setup_hardcoded_servers()
       name = 'lua_ls',
       cmd = { 'lua-language-server' },
       filetypes = { 'lua' },
-      root_markers = { '.luarc.json', '.luarc.jsonc', '.git' },
+      root_markers = {
+        '.emmyrc.json',
+        '.luarc.json',
+        '.luarc.jsonc',
+        '.luacheckrc',
+        '.stylua.toml',
+        'stylua.toml',
+        'selene.toml',
+        'selene.yml',
+        '.git',
+      },
       settings = {
         Lua = {
           completion = { callSnippet = 'Replace' },
@@ -125,33 +151,61 @@ local function setup_hardcoded_servers()
       cmd = { 'rust-analyzer' },
       filetypes = { 'rust' },
       root_markers = { 'Cargo.toml', 'rust-project.json', '.git' },
+      root_dir = function(bufnr)
+        local bufname = vim.api.nvim_buf_get_name(bufnr)
+        local startpath = bufname ~= '' and vim.fn.fnamemodify(bufname, ':p:h') or vim.fn.getcwd()
+        local cargo_toml = vim.fs.find('Cargo.toml', { upward = true, path = startpath })[1]
+        if cargo_toml then
+          if vim.fn.executable('cargo') == 1 then
+            local out = vim.fn.system({
+              'cargo',
+              'metadata',
+              '--no-deps',
+              '--format-version',
+              '1',
+              '--manifest-path',
+              cargo_toml,
+            })
+            local ok, data = pcall(vim.json.decode, out)
+            if ok and data and data.workspace_root then
+              return data.workspace_root
+            end
+          end
+          return vim.fn.fnamemodify(cargo_toml, ':p:h')
+        end
+        local rust_project = vim.fs.find('rust-project.json', { upward = true, path = startpath })[1]
+        if rust_project then
+          return vim.fn.fnamemodify(rust_project, ':p:h')
+        end
+        return default_root(bufnr, { '.git' })
+      end,
       install_hint = 'Install: rustup component add rust-analyzer (or brew install rust-analyzer)',
     },
     {
       name = 'asm_lsp',
       cmd = { 'asm-lsp' },
-      filetypes = { 'asm', 'nasm', 'masm', 'gas', 's' },
-      root_markers = { '.git' },
+      filetypes = { 'asm', 'nasm', 'masm', 'gas', 's', 'vmasm' },
+      root_markers = { '.asm-lsp.toml', '.git' },
       install_hint = 'Install: brew install asm-lsp',
     },
     {
       name = 'fish_lsp',
-      cmd = { 'fish-lsp' },
+      cmd = { 'fish-lsp', 'start' },
       filetypes = { 'fish' },
-      root_markers = { '.git' },
+      root_markers = { 'config.fish', '.git' },
       install_hint = 'Install: brew install fish-lsp',
     },
     {
       name = 'lemminx',
       cmd = { 'lemminx' },
-      filetypes = { 'xml' },
+      filetypes = { 'xml', 'xsd', 'xsl', 'xslt', 'svg' },
       root_markers = { '.git' },
       install_hint = 'Install: brew install lemminx (or: sdk install lemminx)',
     },
     {
       name = 'yamlls',
       cmd = { 'yaml-language-server', '--stdio' },
-      filetypes = { 'yaml', 'yml' },
+      filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab', 'yaml.helm-values' },
       root_markers = { '.git' },
       install_hint = 'Install: npm i -g yaml-language-server',
     },
@@ -159,8 +213,8 @@ local function setup_hardcoded_servers()
       name = 'jsonls',
       cmd = { 'vscode-json-language-server', '--stdio' },
       filetypes = { 'json', 'jsonc' },
-      root_markers = { 'package.json', '.git' },
-      install_hint = 'Install: npm i -g vscode-json-languageserver',
+      root_markers = { '.git' },
+      install_hint = 'Install: npm i -g vscode-langservers-extracted',
     },
   }
 
@@ -182,10 +236,14 @@ local function setup_hardcoded_servers()
           return
         end
 
+        local root_dir = server.root_dir
+            and server.root_dir(bufnr)
+            or default_root(bufnr, server.root_markers or { '.git' })
+
         vim.lsp.start({
           name = server.name,
           cmd = server.cmd,
-          root_dir = default_root(bufnr, server.root_markers or { '.git' }),
+          root_dir = root_dir,
           settings = server.settings,
           init_options = server.init_options,
           capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
