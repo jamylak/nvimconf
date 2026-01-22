@@ -44,7 +44,7 @@ return {
         end,
       },
       ['<C-y>'] = { 'select_and_accept' },
-      ['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+      ['<C-space>'] = { 'hide', 'show' },
       ['<C-l>'] = { 'snippet_forward', 'fallback' },
       ['<C-h>'] = { 'snippet_backward', 'fallback' },
       ['JH'] = { 'snippet_backward', 'fallback' },
