@@ -32,14 +32,26 @@ return {
       ['<C-n>'] = {
         'select_next',
         function()
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, false, true), 'n', true)
+          if vim.bo.filetype == 'dap-repl' then
+            vim.schedule(function()
+              require('dap.repl').on_down()
+            end)
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Down>', true, false, true), 'n', true)
+          end
           return true
         end,
       },
       ['<C-p>'] = {
         'select_prev',
         function()
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, false, true), 'n', true)
+          if vim.bo.filetype == 'dap-repl' then
+            vim.schedule(function()
+              require('dap.repl').on_up()
+            end)
+          else
+            vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Up>', true, false, true), 'n', true)
+          end
           return true
         end,
       },
