@@ -12,19 +12,11 @@ function M.get_git_root(path)
     path = vim.fn.fnamemodify(path, ':h')
   end
 
-  -- Execute the git command to find the root
-  local handle = io.popen('git -C ' .. path .. ' rev-parse --show-toplevel 2>/dev/null')
-  local result = handle:read '*a'
-  handle:close()
-
-  -- Trim whitespace from the result
-  result = string.gsub(result, '%s+$', '')
-
-  if result == '' then
+  local root = vim.fs.root(path, { '.git' })
+  if not root or root == '' then
     return ''
-  else
-    return vim.fn.fnameescape(result)
   end
+  return vim.fn.fnameescape(root)
 end
 
 function M.cd_to_git_root(path)
