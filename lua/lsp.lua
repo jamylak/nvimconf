@@ -65,7 +65,7 @@ local function setup_hardcoded_servers()
     end
     local msg = 'LSP not found in PATH: ' .. bin
     if server.install_hint then
-      msg = msg .. '\n' .. server.install_hint
+      msg = msg .. ' — ' .. server.install_hint
     end
     vim.notify(msg, vim.log.levels.WARN, { title = 'LSP Missing', timeout = 3000 })
   end
