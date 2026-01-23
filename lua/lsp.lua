@@ -202,6 +202,13 @@ local function setup_hardcoded_servers()
       root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
       install_hint = 'Install: npm i -g typescript typescript-language-server',
     },
+    {
+      name = 'nixd',
+      cmd = { 'nixd' },
+      filetypes = { 'nix' },
+      root_markers = { 'flake.nix', 'default.nix', 'shell.nix', '.git' },
+      install_hint = 'Install: nix profile install nixpkgs#nixd (or: brew install nixd)',
+    },
   }
 
   local function start_for_buf(bufnr)
