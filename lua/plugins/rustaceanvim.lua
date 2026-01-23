@@ -30,8 +30,19 @@ return {
       if ok and type(blink.get_lsp_capabilities) == 'function' then
         capabilities = blink.get_lsp_capabilities(capabilities)
       end
+      local this_os = vim.uv.os_uname().sysname
+      local dap = nil
+      if this_os == "Darwin" then
+        local codelldb_path = "/Users/james/apps/codelldb-darwin-arm64/extension/adapter/codelldb"
+        local liblldb_path = "/opt/homebrew/opt/llvm/lib/liblldb.dylib"
+        local cfg = require('rustaceanvim.config')
+        dap = {
+          adapter = cfg.get_codelldb_adapter(codelldb_path, liblldb_path),
+        }
+      end
 
       return {
+        dap = dap,
         server = {
           capabilities = capabilities,
         },
