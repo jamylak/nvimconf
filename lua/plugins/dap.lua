@@ -19,11 +19,25 @@ return {
     -- eg. =require('dap').set_breakpoint("key == 96")
   },
   config = function()
-    if vim.loop.os_uname().sysname ~= 'Darwin' then
-      return
-    end
-
     local dap = require 'dap'
+
+    local function resolve_executable(candidates)
+      for _, candidate in ipairs(candidates) do
+        if candidate:sub(1, 1) == "/" then
+          if vim.fn.executable(candidate) == 1 or vim.fn.filereadable(candidate) == 1 then
+            return candidate
+          end
+        else
+          local resolved = vim.fn.exepath(candidate)
+          if resolved ~= "" then
+            return resolved
+          end
+          if vim.fn.executable(candidate) == 1 then
+            return candidate
+          end
+        end
+      end
+    end
 
     -- https://github.com/mfussenegger/nvim-dap-python/blob/65ccab83fb3d0b29ead6c765c1c52a1ed49592e8/lua/dap-python.lua#L136
     -- Do i need to use this plugin?
@@ -53,17 +67,30 @@ return {
       end
     end
 
-    dap.adapters.lldb = {
-      type = 'executable',
-      command = '/opt/homebrew/opt/llvm/bin/lldb-dap',
-      name = 'lldb',
-    }
+    local lldb_dap = resolve_executable({
+      "lldb-dap",
+      "/opt/homebrew/opt/llvm/bin/lldb-dap",
+      "/usr/local/opt/llvm/bin/lldb-dap",
+    })
+    if lldb_dap then
+      dap.adapters.lldb = {
+        type = 'executable',
+        command = lldb_dap,
+        name = 'lldb',
+      }
+    end
 
-    -- dap.adapters.codelldb = {
-    --   type = 'executable',
-    --   command = '/usr/local/bin/codelldb',
-    --   name = 'codelldb',
-    -- }
+    local codelldb = resolve_executable({
+      "codelldb",
+      "/usr/local/bin/codelldb",
+    })
+    if codelldb then
+      dap.adapters.codelldb = {
+        type = 'executable',
+        command = codelldb,
+        name = 'codelldb',
+      }
+    end
 
     local pythonPath = function()
       -- TODO: Needs to be from root of github?? maybe maybe not
@@ -92,10 +119,20 @@ return {
       },
     }
 
+    local function pick_cpp_adapter()
+      if dap.adapters.lldb then
+        return 'lldb'
+      end
+      if dap.adapters.codelldb then
+        return 'codelldb'
+      end
+      return 'lldb'
+    end
+
     dap.configurations.cpp = {
       {
         name = 'Launch',
-        type = 'lldb',
+        type = pick_cpp_adapter(),
         request = 'launch',
         program = function()
           return coroutine.create(function(coro)
