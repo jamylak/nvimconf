@@ -23,13 +23,13 @@ if vim.g.neovide then
           utils.tcd_to_git_root()
           -- Hacky bug fix to stop LSP and formatter not working
           -- print("Dropped file: " .. filename)
-          if vim.loop.fs_stat(filename) and vim.loop.fs_stat(filename) ~= "directory" then
+          if vim.loop.fs_stat(filename) and vim.loop.fs_stat(filename) ~= 'directory' then
             vim.cmd('edit ' .. filename)
           end
           vim.defer_fn(function()
             -- hacky bug fix to stop it getting stuck in insert mode
             -- (i think from telescope just having been open)
-            vim.cmd "stopinsert"
+            vim.cmd 'stopinsert'
           end, 100)
         end)
         return orig(filename, tabs)
@@ -48,7 +48,7 @@ if vim.g.neovide then
   local projects_dir = os.getenv 'PROJECTS_DIR'
   vim.cmd('cd ' .. projects_dir)
   -- vim.api.nvim_set_keymap('i', '<D-v>', '<cmd><ESC> "*P<cr>', { noremap = true })
-  vim.keymap.set('i', '<D-v>', '<C-r>*')            -- Paste insert mode
+  vim.keymap.set('i', '<D-v>', '<C-r>*') -- Paste insert mode
   vim.keymap.set('t', '<D-v>', '<C-\\><C-n>l"+Pli') -- Paste insert mode
 
   local function paste_in_terminal()
@@ -59,15 +59,14 @@ if vim.g.neovide then
     vim.api.nvim_chan_send(vim.b[current_buf].terminal_job_id, clipboard_content)
   end
 
-  vim.api.nvim_create_autocmd("FileType", {
-    pattern = "netrw",
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'netrw',
     callback = closeAllFloatingWindows,
   })
 
-
   vim.keymap.set('t', '<D-v>', paste_in_terminal)
-  vim.keymap.set('n', '<D-v>', '"+P')    -- Paste normal mode
-  vim.keymap.set('v', '<D-v>', '"+P')    -- Paste visual mode
+  vim.keymap.set('n', '<D-v>', '"+P') -- Paste normal mode
+  vim.keymap.set('v', '<D-v>', '"+P') -- Paste visual mode
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
   vim.g.neovide_input_macos_option_key_is_meta = 'both'
   vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
@@ -87,8 +86,7 @@ if vim.g.neovide then
     vim.api.nvim_set_keymap(mode, '<D-j>', '<ESC>' .. cmd .. ' te', { silent = true })
     -- Set D-0 to D-9 to escape then switch to the corresponding tab
     for i = 0, 9 do
-      vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>',
-        { noremap = true, silent = true })
+      vim.api.nvim_set_keymap(mode, '<D-' .. i .. '>', cmd .. ':' .. i .. 'tabnext<CR>', { noremap = true, silent = true })
     end
 
     -- Set D-Shift-[ to D-Shift-] to switch to the previous/next tab
@@ -165,12 +163,11 @@ vim.g.neovide_cursor_animate_command_line = true
 vim.g.neovide_cursor_unfocused_outline_width = 0.18
 
 --- Doesn't seem to work?
-vim.g.neovide_title_background_color = "red"
-vim.g.neovide_title_text_color = "pink"
+vim.g.neovide_title_background_color = 'red'
+vim.g.neovide_title_text_color = 'pink'
 
 vim.g.neovide_floating_blur_amount_x = 12.0
 vim.g.neovide_floating_blur_amount_y = 12.0
-
 
 -- Railgun
 -- vim.g.neovide_cursor_vfx_mode = 'railgun'
@@ -189,6 +186,6 @@ vim.g.neovide_cursor_vfx_particle_density = 100.0
 vim.g.neovide_cursor_vfx_particle_speed = 10.0
 
 local alpha = function()
-  return string.format("%x", math.floor(255 * 0.3))
+  return string.format('%x', math.floor(255 * 0.3))
 end
-vim.g.neovide_background_color = "#002450" .. alpha()
+vim.g.neovide_background_color = '#002450' .. alpha()
