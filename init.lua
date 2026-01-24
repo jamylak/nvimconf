@@ -12,6 +12,13 @@ if not vim.loop.fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+local config_dir = vim.fn.stdpath 'config'
+local lockfile_path = config_dir .. '/lazy-lock.json'
+-- If config is read-only (common with NixOS symlinked configs), write lockfile elsewhere.
+if vim.fn.filewritable(config_dir) ~= 2 then
+  lockfile_path = vim.fn.stdpath 'state' .. '/lazy-lock.json'
+end
+
 require('lazy').setup({
   spec = {
     { import = "plugins" },
@@ -19,6 +26,7 @@ require('lazy').setup({
   defaults = {
     lazy = true,
   },
+  lockfile = lockfile_path,
   change_detection = {
     enabled = true,
     notify = false,
