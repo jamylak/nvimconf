@@ -296,12 +296,31 @@ local function setup_hardcoded_servers()
       end
     end
 
-    if #missing_bins > 0 then
+    local formatters = {
+      { name = 'stylua', bin = 'stylua', hint = 'Install: brew install stylua (or: cargo install stylua)' },
+    }
+    local missing_formatters = {}
+    table.insert(lines, '')
+    table.insert(lines, 'Formatters on PATH:')
+    for _, tool in ipairs(formatters) do
+      if vim.fn.executable(tool.bin) == 1 then
+        table.insert(lines, string.format('✓ %s (%s)', tool.name, tool.bin))
+      else
+        table.insert(lines, string.format('✗ %s (%s)', tool.name, tool.bin))
+        table.insert(missing_formatters, tool)
+      end
+    end
+
+    if #missing_bins > 0 or #missing_formatters > 0 then
       table.insert(lines, '')
       table.insert(lines, 'Missing:')
       for _, server in ipairs(missing_bins) do
         local hint = server.install_hint and (' - ' .. server.install_hint) or ''
         table.insert(lines, string.format('• %s (%s)%s', server.name, server.cmd[1], hint))
+      end
+      for _, tool in ipairs(missing_formatters) do
+        local hint = tool.hint and (' - ' .. tool.hint) or ''
+        table.insert(lines, string.format('• %s (%s)%s', tool.name, tool.bin, hint))
       end
     end
 
