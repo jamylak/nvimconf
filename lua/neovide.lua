@@ -71,8 +71,6 @@ if vim.g.neovide then
   vim.keymap.set('c', '<D-v>', '<C-R>+') -- Paste command mode
   vim.g.neovide_input_macos_option_key_is_meta = 'both'
   vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
-  -- Set ENV var SHELL to fish
-  vim.o.shell = '/opt/homebrew/bin/fish'
 
   -- For mode in Normal, Terminal, and Visual
   for _, mode in ipairs { 'i', 'n', 't', 'v' } do
