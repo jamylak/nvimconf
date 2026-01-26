@@ -58,18 +58,19 @@ end
 
 local function setup_hardcoded_servers()
   local capabilities = build_capabilities()
-  local missing = {}
-  local function notify_missing(server, bin)
-    if vim.g.hardcoded_lsp_notify_missing == false then
-      return
+  local function pick_nix_formatter()
+    local candidates = {
+      { name = 'nixfmt', cmd = { 'nixfmt' } },
+      { name = 'nixfmt-rfc-style', cmd = { 'nixfmt-rfc-style' } },
+      { name = 'alejandra', cmd = { 'alejandra' } },
+    }
+    for _, candidate in ipairs(candidates) do
+      if vim.fn.executable(candidate.cmd[1]) == 1 then
+        return candidate
+      end
     end
-    local msg = 'LSP not found in PATH: ' .. bin
-    if server.install_hint then
-      msg = msg .. ' — ' .. server.install_hint
-    end
-    vim.notify(msg, vim.log.levels.WARN, { title = 'LSP Missing', timeout = 3000 })
+    return nil
   end
-
   local function get_clients(opts)
     if vim.lsp.get_clients then
       return vim.lsp.get_clients(opts or {})
@@ -207,6 +208,12 @@ local function setup_hardcoded_servers()
       cmd = { 'nixd' },
       filetypes = { 'nix' },
       root_markers = { 'flake.nix', 'default.nix', 'shell.nix', '.git' },
+      on_attach = function(client, _)
+        if not pick_nix_formatter() then
+          client.server_capabilities.documentFormattingProvider = false
+          client.server_capabilities.documentRangeFormattingProvider = false
+        end
+      end,
       install_hint = 'Install: nix profile install nixpkgs#nixd (or: brew install nixd)',
     },
   }
@@ -220,13 +227,18 @@ local function setup_hardcoded_servers()
     for _, server in ipairs(servers) do
       if vim.tbl_contains(server.filetypes or {}, ft) then
         if vim.fn.executable(server.cmd[1]) ~= 1 then
-          if not missing[server.name] then
-            missing[server.name] = true
-            vim.schedule(function()
-              notify_missing(server, server.cmd[1])
-            end)
-          end
           return
+        end
+        local settings = server.settings
+        if server.name == 'nixd' then
+          local nix_formatter = pick_nix_formatter()
+          settings = nix_formatter and {
+            nixd = {
+              formatting = {
+                command = nix_formatter.cmd,
+              },
+            },
+          } or nil
         end
 
         local root_dir = server.root_dir
@@ -237,8 +249,9 @@ local function setup_hardcoded_servers()
           name = server.name,
           cmd = server.cmd,
           root_dir = root_dir,
-          settings = server.settings,
+          settings = settings,
           init_options = server.init_options,
+          on_attach = server.on_attach,
           capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {}),
         }, { bufnr = bufnr })
       end
@@ -298,6 +311,13 @@ local function setup_hardcoded_servers()
 
     local formatters = {
       { name = 'stylua', bin = 'stylua', hint = 'Install: brew install stylua (or: cargo install stylua)' },
+      { name = 'nixfmt', bin = 'nixfmt', hint = 'Install: nix profile install nixpkgs#nixfmt (or: brew install nixfmt)' },
+      {
+        name = 'nixfmt-rfc-style',
+        bin = 'nixfmt-rfc-style',
+        hint = 'Install: nix profile install nixpkgs#nixfmt-rfc-style',
+      },
+      { name = 'alejandra', bin = 'alejandra', hint = 'Install: nix profile install nixpkgs#alejandra' },
     }
     local missing_formatters = {}
     table.insert(lines, '')
