@@ -204,6 +204,13 @@ local function setup_hardcoded_servers()
       install_hint = 'Install: npm i -g typescript typescript-language-server',
     },
     {
+      name = 'terraformls',
+      cmd = { 'terraform-ls', 'serve' },
+      filetypes = { 'terraform', 'hcl', 'tf', 'tfvars' },
+      root_markers = { '.terraform', '.git' },
+      install_hint = 'Install: brew install terraform-ls (or: go install github.com/hashicorp/terraform-ls@latest)',
+    },
+    {
       name = 'nixd',
       cmd = { 'nixd' },
       filetypes = { 'nix' },
