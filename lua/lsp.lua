@@ -223,6 +223,13 @@ local function setup_hardcoded_servers()
       end,
       install_hint = 'Install: nix profile install nixpkgs#nixd (or: brew install nixd)',
     },
+    {
+      name = 'glsl-lsp',
+      cmd = { 'glslls' },
+      filetypes = { 'glsl', 'vert', 'frag', 'geom', 'comp', 'tesc', 'tese' },
+      root_markers = { '.git' },
+      install_hint = 'Install: cargo install glsl-lsp (or your OS package manager)',
+    },
   }
 
   local function start_for_buf(bufnr)
