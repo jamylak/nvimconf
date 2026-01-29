@@ -8,21 +8,29 @@ return {
   },
   keys = {
     {
+      '<leader><leader>S',
+      function()
+        require('grug-far').open { visualSelectionUsage = 'operate-within-range' }
+      end,
+      desc = 'grug-far: Search within range',
+      mode = { 'v', 'n', 'x' },
+    },
+    {
       '<leader>S',
       function()
         require('grug-far').open()
       end,
-      desc = 'Replace within text',
-      mode = { 'v', 'n' }
+      desc = 'Grug',
+      mode = { 'n', 'x' },
     },
-    -- NOTE: 'v' mode with normal 'S' doesn't work
+    -- NOTE: 'v' mode with normal 'S' doesn't work cause of vim surround
     {
       'S',
       function()
         require('grug-far').open()
       end,
-      desc = 'Replace within text',
-      mode = { 'v', 'n' }
+      desc = 'Grug',
+      mode = { 'n' },
     },
   },
   cmd = { 'GrugFar', 'GrugFarWithin' },
@@ -32,7 +40,7 @@ return {
       close = { n = '<localleader>q' },
     },
     prefills = {
-      flags = '-i'
-    }
+      flags = '-i',
+    },
   },
 }
