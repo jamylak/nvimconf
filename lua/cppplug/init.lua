@@ -12,6 +12,23 @@ local function write_file(path, content)
   fd:close()
 end
 
+local function ensure_clang_format_file()
+  local clang_format_path = ".clang-format"
+  if vim.fn.filereadable(clang_format_path) == 1 then
+    -- .clang-format already exists, leaving it unchanged
+    return
+  end
+
+  local clang_format_content = [[
+BasedOnStyle: LLVM
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+]]
+  write_file(clang_format_path, clang_format_content)
+  vim.notify("Created .clang-format", vim.log.levels.INFO)
+end
+
 local function get_safe_project_name()
   local cwd = vim.fn.getcwd()
   local project_folder_name = vim.fn.fnamemodify(cwd, ":t")
@@ -82,6 +99,7 @@ target_compile_options(${PROJECT_NAME} PRIVATE
 ]]
   local formatted_content = fuzzsan_template() .. process_cmake_template(content)
   write_file("CMakeLists.txt", formatted_content)
+  ensure_clang_format_file()
   vim.notify("Generated C++ CMakeLists.txt in " .. vim.fn.getcwd())
 
   --- TODO : Add sanitizers and fuzzing options for C & CPP
