@@ -178,6 +178,19 @@ local function snacksFzfDir()
           -- M.fff()
           vim.cmd 'Telescope find_files'
         end
+      end,
+      use_selected_project_name = function(picker, item)
+        local path = item and item.file or nil
+        if not path or path == '' then
+          return
+        end
+        local project_name = vim.fn.fnamemodify(path, ':t')
+        if project_name == '' then
+          return
+        end
+        picker.input:set(project_name, '')
+        picker.input:update()
+        picker:find({ refresh = false })
       end
     },
     win = {
@@ -186,6 +199,7 @@ local function snacksFzfDir()
         keys = vim.tbl_extend("force", {
           ["<C-w>"] = { "<c-s-w>", mode = { "i" }, expr = true, desc = "delete word" },
           ["<C-a>"] = { "<c-o>0", mode = { "i" }, expr = true, desc = "goto start" },
+          ["<C-e>"] = { "use_selected_project_name", mode = { "i" }, desc = "Use selected project name" },
           ["<C-k>"] = { "<c-o>D", mode = { "i" }, expr = true, desc = "delete rest" },
           -- has issues going to the end of the line
           ["<a-f>"] = { "<c-o>w", mode = { "i" }, expr = true, desc = "word forward" },
@@ -270,6 +284,19 @@ function M.fzfDir()
               -- vim.cmd 'Telescope find_files'
               M.fff()
             end
+          end)
+          map('i', '<C-e>', function(prompt_bufnr)
+            local action_state = require 'telescope.actions.state'
+            local selection = action_state.get_selected_entry()
+            local path = selection and selection[1] or nil
+            if not path or path == '' then
+              return
+            end
+            local project_name = vim.fn.fnamemodify(path, ':t')
+            if project_name == '' then
+              return
+            end
+            action_state.get_current_picker(prompt_bufnr):set_prompt(project_name)
           end)
           return true
         end,
