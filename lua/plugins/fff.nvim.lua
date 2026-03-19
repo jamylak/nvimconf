@@ -116,6 +116,15 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 return {
   'dmtrKovalenko/fff.nvim',
+  init = function()
+    vim.api.nvim_create_user_command('FFFGrep', function(opts)
+      require('lazy').load({ plugins = { 'fff.nvim' } })
+      open_fuzzy_live_grep(opts.args ~= '' and opts.args or nil)
+    end, {
+      desc = 'Open FFF live grep',
+      nargs = '?',
+    })
+  end,
   build = function()
     -- this will download prebuild binary or try to use existing rustup toolchain to build from source
     -- (if you are using lazy you can use gb for rebuilding a plugin if needed)
