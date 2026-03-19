@@ -1,12 +1,54 @@
--- TODO: Fix for FFFFind not going to insert when run from telescope cmd, seems it just needs a vim.schedule? or i find telescopecmd?
--- TODO: move in config or something
--- FFF.nvim and Telescope swap through each other
--- when needed with some keybindings
+local function reopen_fff(fn)
+  local ok, picker_ui = pcall(require, 'fff.picker_ui')
+  if ok and picker_ui.state and picker_ui.state.active then picker_ui.close() end
+
+  vim.schedule(function()
+    fn()
+    vim.schedule(function()
+      vim.cmd 'startinsert'
+    end)
+  end)
+end
+
+local function open_fuzzy_file_picker()
+  reopen_fff(function()
+    require('fff').find_files()
+  end)
+end
+
+local function open_fuzzy_live_grep(query, cwd)
+  reopen_fff(function()
+    require('fff').live_grep({
+      cwd = cwd,
+      query = query or '',
+      grep = {
+        modes = { 'fuzzy', 'plain' },
+      },
+    })
+  end)
+end
+
+local function open_telescope_all_grep(query, cwd)
+  local ok, picker_ui = pcall(require, 'fff.picker_ui')
+  if ok and picker_ui.state and picker_ui.state.active then picker_ui.close() end
+
+  vim.schedule(function()
+    require('telescope.builtin').live_grep({
+      cwd = cwd,
+      prompt_title = 'Live Grep - Global',
+      default_text = query or '',
+      additional_args = function()
+        return { '--hidden', '--no-ignore' }
+      end,
+    })
+  end)
+end
+
 vim.api.nvim_create_autocmd('FileType', {
   pattern = 'fff_input',
   callback = function(args)
     -- Feed through these to telescope
-    local keys = { '<a-i>', '<a-u>', '<a-y>', '<a-space>', '<a-o>', '<a-g>', '<a-n>', '<c-g>', '<a-;>' }
+    local keys = { '<a-i>', '<a-y>', '<a-space>', '<a-o>', '<a-g>', '<a-n>', '<c-g>', '<a-;>' }
     for _, key in ipairs(keys) do
       vim.keymap.set('i', key, function()
         vim.cmd 'stopinsert'
@@ -14,6 +56,18 @@ vim.api.nvim_create_autocmd('FileType', {
         vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'm', false)
       end, { buffer = args.buf, noremap = true, silent = true, desc = 'Close FFF and feed keys' })
     end
+    vim.keymap.set('i', '<a-u>', function()
+      local picker_ui = require 'fff.picker_ui'
+      local query = picker_ui.state.query
+      local cwd = picker_ui.state.config and picker_ui.state.config.base_path or vim.uv.cwd()
+
+      vim.cmd 'stopinsert'
+      if picker_ui.state.mode == 'grep' then
+        open_telescope_all_grep(query, cwd)
+      else
+        open_fuzzy_live_grep(query, cwd)
+      end
+    end, { buffer = args.buf, noremap = true, silent = true, desc = 'FFF live grep' })
     -- For shift enter capture and get the prompt
     -- Then make a new file with that name
     vim.keymap.set('i', '<s-enter>', function()
@@ -90,21 +144,21 @@ return {
     {
       '<leader>F',
       function()
-        require('utils').fff()
+        open_fuzzy_file_picker()
       end,
       desc = 'Open file picker',
     },
     {
       '<c-space>',
       function()
-        require('utils').fff()
+        open_fuzzy_file_picker()
       end,
       desc = 'Open file picker',
     },
     {
       '<c-return>',
       function()
-        require('utils').fff()
+        open_fuzzy_file_picker()
       end,
       desc = 'Open file picker',
     },
@@ -114,6 +168,13 @@ return {
         require('fff').live_grep()
       end,
       desc = 'LiFFFe grep',
+    },
+    {
+      '<m-u>',
+      function()
+        open_fuzzy_live_grep()
+      end,
+      desc = 'FFF find word',
     },
   },
 }

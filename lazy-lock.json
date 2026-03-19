@@ -40,7 +40,7 @@
   "nvim-scissors": { "branch": "main", "commit": "7eb3a7ebcbbbaceb78cf4da69edc865864186b62" },
   "nvim-treesitter": { "branch": "main", "commit": "42fc28ba918343ebfd5565147a42a26580579482" },
   "nvim-treesitter-context": { "branch": "master", "commit": "dca8726fea2c14e1ce6adbaa76a04816fbfaff61" },
-  "nvim-treesitter-textobjects": { "branch": "master", "commit": "71385f191ec06ffc60e80e6b0c9a9d5daed4824c" },
+  "nvim-treesitter-textobjects": { "branch": "main", "commit": "71385f191ec06ffc60e80e6b0c9a9d5daed4824c" },
   "nvim-various-textobjs": { "branch": "main", "commit": "237763835b65bdc64f0e19a31c040321813e4333" },
   "nvim-web-devicons": { "branch": "master", "commit": "6e51ca170563330e063720449c21f43e27ca0bc1" },
   "nvim-window": { "branch": "feature/disable-hints", "commit": "8dc9f9c42dc148a3d7cd53d4bb69e85b0f814495" },

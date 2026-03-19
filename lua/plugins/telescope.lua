@@ -106,7 +106,6 @@ return {
     'si',
     '<m-o>',
     '<m-i>',
-    '<m-u>',
     '<m-CR>',
     '<leader>j',
     '<leader>J',
@@ -401,24 +400,30 @@ return {
             end,
             ['<m-return>'] = setCWDToPickerAndOpen,
             ['<m-u>'] = function(prompt_bufnr)
-              local builtin = require('telescope.builtin')
               local actions_state = require('telescope.actions.state')
               local current_picker = actions_state.get_current_picker(vim.api.nvim_get_current_buf())
               local current_input = ""
-              if current_picker and current_picker._get_prompt and current_picker.prompt_title:find("Grep") then
+              local current_cwd = nil
+              if current_picker and current_picker._get_prompt then
                 current_input = current_picker:_get_prompt() or ""
               end
-              if current_picker and current_picker.prompt_title == "Live Grep" then
-                builtin.live_grep {
-                  prompt_title = 'Live Grep - Global',
-                  default_text = current_input,
-                  additional_args = function(opts)
-                    return { '--hidden', '--no-ignore' }
-                  end,
-                }
-              else
-                builtin.live_grep { default_text = current_input }
+              if current_picker and current_picker.cwd and current_picker.cwd ~= '' then
+                current_cwd = current_picker.cwd
               end
+
+              require('telescope.actions').close(prompt_bufnr)
+              vim.schedule(function()
+                require('fff').live_grep({
+                  cwd = current_cwd,
+                  query = current_input,
+                  grep = {
+                    modes = { 'fuzzy', 'plain' },
+                  },
+                })
+                vim.schedule(function()
+                  vim.cmd 'startinsert'
+                end)
+              end)
             end,
             ['<m-o>'] = function()
               vim.cmd 'Telescope oldfiles'
@@ -573,7 +578,6 @@ return {
     end, { desc = '[F]ind current [W]ord (cwd)' })
     vim.keymap.set('n', '<leader>fC', builtin.command_history, { desc = '[F]ind [C]ommands' })
     vim.keymap.set('n', '<leader>fw', builtin.live_grep, { desc = '[F]ind [W]ord' })
-    vim.keymap.set('n', '<m-u>', builtin.live_grep, { desc = '[F]ind [W]ord' })
     vim.keymap.set('n', '<leader>/', builtin.live_grep, { desc = 'Find Word' })
     -- Git status
     vim.keymap.set('n', '<leader>fg', builtin.git_status, { desc = '[G]it [S]tatus' })
