@@ -16,6 +16,22 @@ return {
         enabled = false,
       }
     },
+    routes = {
+      {
+        filter = {
+          event = "notify",
+          find = "^Client .- quit with exit code",
+        },
+        opts = { skip = true },
+      },
+      {
+        filter = {
+          event = "notify",
+          find = "^clangd: %-?%d+: failed to decode textDocument/documentHighlight request:",
+        },
+        opts = { skip = true },
+      },
+    },
     -- https://github.com/folke/noice.nvim/blob/main/lua/noice/config/views.lua#L166
     views = {
       mini = {
