@@ -27,7 +27,7 @@ return {
       {
         filter = {
           event = "notify",
-          find = "^clangd: %-?%d+: failed to decode textDocument/documentHighlight request:",
+          find = "^.-: %-?%d+: failed to decode textDocument/documentHighlight request:",
         },
         opts = { skip = true },
       },
