@@ -7,6 +7,24 @@ vim.api.nvim_set_keymap('n', '<c-9>', '[l', { desc = 'Next call', silent = true 
 
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
+  keys = {
+    {
+      '<A-g>',
+      function()
+        require('nvim-treesitter.textobjects.move').goto_next_start '@function.outer'
+      end,
+      desc = 'Next function',
+      mode = { 'n', 'v' },
+    },
+    {
+      '<A-v>',
+      function()
+        require('nvim-treesitter.textobjects.move').goto_previous_start '@function.outer'
+      end,
+      desc = 'Previous function',
+      mode = { 'n', 'v' },
+    },
+  },
   lazy = true,
   dependencies = {
     -- 'nvim-treesitter/playground',
