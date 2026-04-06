@@ -2,33 +2,11 @@
 -- if done in textobjects keymaps
 vim.api.nvim_set_keymap('n', '<c-[>', '[a', { silent = true })
 vim.api.nvim_set_keymap('n', '<c-]>', ']a', { silent = true })
--- Replace <c-f> <c-b> forward and back 1 page with forward
--- and back 1 function
--- NOTE: Could we make these only activate if treesitter
--- is able to navigate functions in this file?
 vim.api.nvim_set_keymap('n', '<c-0>', ']l', { desc = 'Next call', silent = true })
 vim.api.nvim_set_keymap('n', '<c-9>', '[l', { desc = 'Next call', silent = true })
 
 return { -- Highlight, edit, and navigate code
   'nvim-treesitter/nvim-treesitter',
-  keys = {
-    {
-      '<c-f>',
-      function()
-        require('nvim-treesitter.textobjects.move').goto_next_start '@function.outer'
-      end,
-      desc = 'Next function',
-      mode = { 'n', 'v' },
-    },
-    {
-      '<c-b>',
-      function()
-        require('nvim-treesitter.textobjects.move').goto_previous_start '@function.outer'
-      end,
-      desc = 'Previous function',
-      mode = { 'n', 'v' },
-    },
-  },
   lazy = true,
   dependencies = {
     -- 'nvim-treesitter/playground',

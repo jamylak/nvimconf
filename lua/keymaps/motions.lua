@@ -16,6 +16,12 @@ vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 vim.keymap.set('n', '<C-s>', function()
   vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
 end, { silent = true, noremap = true })
+vim.keymap.set('n', '<C-f>', function()
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('/', true, true, true), 'n')
+end, { silent = true, noremap = true })
+vim.keymap.set('n', '<C-b>', function()
+  vim.fn.feedkeys(vim.api.nvim_replace_termcodes('?', true, true, true), 'n')
+end, { silent = true, noremap = true })
 
 -- [+Space and ]+Space to insert newline above or below cursor
 vim.keymap.set('n', '[<Space>', 'O<Esc>j', { desc = 'Insert newline above cursor', silent = true })
