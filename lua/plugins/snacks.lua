@@ -2,13 +2,6 @@ return {
   "folke/snacks.nvim",
   keys = {
     {
-      "<m-g>",
-      function()
-        Snacks.lazygit()
-      end,
-      desc = "Open LazyGit"
-    },
-    {
       "<c-g>",
       function()
         Snacks.lazygit()

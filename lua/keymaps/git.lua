@@ -40,7 +40,6 @@ end, {})
 
 vim.keymap.set('n', '<leader>v', utils.tcd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader>V', utils.cd_to_git_root, { noremap = true })
-vim.keymap.set('n', '<m-v>', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader>bc', utils.cd_to_git_root, { noremap = true })
 vim.keymap.set('n', '<leader><leader>G', CopyGitHubURLToClipboard, { desc = 'Copy GitHub URL' })
 vim.keymap.set('n', '<leader><leader>g', launchGitHubUrl, { desc = 'Launch GitHub URL' })
