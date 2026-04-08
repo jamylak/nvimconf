@@ -32,7 +32,9 @@ end
 
 vim.keymap.set('n', '<m-n>', utils.fzfDir)
 vim.keymap.set('i', '<m-n>', utils.fzfDir)
-vim.api.nvim_create_user_command('F', utils.fzfDir, {})
+vim.api.nvim_create_user_command('F', function()
+  vim.schedule(utils.fzfDir)
+end, {})
 
 -- I should be able to do a search eg. /foo
 -- and then it takes me to whatever window that term is in
