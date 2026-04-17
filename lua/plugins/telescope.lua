@@ -334,14 +334,6 @@ return {
         },
         mappings = {
           i = {
-            -- All these don't work
-            -- ['<M-space>'] = function(_)
-            --   vim.cmd 'stopinsert'
-            --   vim.cmd 'Telescope cmdline'
-            --   vim.defer_fn(function()
-            --     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<M-space>', true, true, true), 'n', true)
-            --   end, 200)
-            -- end,
             ['<C-k>'] = function(prompt_bufnr)
               -- Get the current line and cursor position
               local line = vim.api.nvim_buf_get_lines(prompt_bufnr, 0, 1, false)[1] or ""
