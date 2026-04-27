@@ -19,10 +19,6 @@ vim.api.nvim_create_autocmd('TermOpen', {
     vim.cmd 'setlocal nonumber norelativenumber'
   end,
 })
-vim.api.nvim_create_autocmd('TermClose', {
-  pattern = 'term://*',
-  command = "lua vim.api.nvim_input('<CR>')",
-})
 
 -- Only load treesitter after the first buffer is loaded
 -- to try and avoid some delays
