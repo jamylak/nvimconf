@@ -1,6 +1,5 @@
 # nvim config
-Currently moved back to `NVIM v0.11.1`
-to fix issue with nvim opening telescope immediately with command
+In process of migrating to https://github.com/jamylak/nvimconf-minimal
 
 Note: This comes from:
 https://github.com/nvim-lua/kickstart.nvim/
